@@ -500,7 +500,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 5
-    joyNum: 0
+    joyNum: 1
   - serializedVersion: 3
     m_Name: P1_R1
     descriptiveName: 
@@ -516,7 +516,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 5
-    joyNum: 0
+    joyNum: 1
   - serializedVersion: 3
     m_Name: P1_L2
     descriptiveName: 
@@ -532,7 +532,7 @@ InputManager:
     invert: 0
     type: 2
     axis: 8
-    joyNum: 0
+    joyNum: 1
   - serializedVersion: 3
     m_Name: P1_R2
     descriptiveName: 
@@ -548,7 +548,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 5
-    joyNum: 0
+    joyNum: 1
   - serializedVersion: 3
     m_Name: P1_LeftStick_X
     descriptiveName: 
@@ -564,7 +564,7 @@ InputManager:
     invert: 0
     type: 2
     axis: 0
-    joyNum: 0
+    joyNum: 1
   - serializedVersion: 3
     m_Name: P2_L1
     descriptiveName: 
@@ -580,7 +580,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 5
-    joyNum: 0
+    joyNum: 2
   - serializedVersion: 3
     m_Name: P2_R1
     descriptiveName: 
@@ -596,7 +596,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 5
-    joyNum: 0
+    joyNum: 2
   - serializedVersion: 3
     m_Name: P2_RightStick_X
     descriptiveName: 
@@ -612,7 +612,7 @@ InputManager:
     invert: 0
     type: 2
     axis: 3
-    joyNum: 0
+    joyNum: 2
   - serializedVersion: 3
     m_Name: P2_RightStick_Y
     descriptiveName: 
@@ -628,5 +628,5 @@ InputManager:
     invert: 1
     type: 0
     axis: 4
-    joyNum: 0
+    joyNum: 2
   m_UsePhysicalKeys: 1
