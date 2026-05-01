@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class BikeMovement : MonoBehaviour
 {
@@ -19,8 +20,8 @@ public class BikeMovement : MonoBehaviour
     bool p1ExpectL = true;
     bool p2ExpectL = true;
 
-    float p1Multiplier = 1.5f; // stronger
-    float p2Multiplier = 0.5f; // weaker
+    float p1Multiplier = 1.5f;
+    float p2Multiplier = 0.5f;
 
     public TextMeshProUGUI speedText;
 
@@ -36,6 +37,9 @@ public class BikeMovement : MonoBehaviour
     public float coastDrag = 0.1f;
     public float coastSlowdown = 0.5f;
 
+    Gamepad p1;
+    Gamepad p2;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -44,19 +48,31 @@ public class BikeMovement : MonoBehaviour
         rb.linearDamping = coastDrag;
         rb.angularDamping = 5f;
 
-        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        rb.constraints = RigidbodyConstraints.FreezeRotationX |
+                         RigidbodyConstraints.FreezeRotationZ;
     }
 
     void Update()
     {
+        // PLAYER CONTROLLERS
+        p1 = Gamepad.all.Count > 0 ? Gamepad.all[0] : null;
+        p2 = Gamepad.all.Count > 1 ? Gamepad.all[1] : null;
+
         // ------------------------
-        // ?? PLAYER 1 TURN ONLY
+        // PLAYER 1 TURN
         // ------------------------
+
         float keyboardTurn = 0f;
+
         if (Input.GetKey(KeyCode.A)) keyboardTurn = -1f;
         if (Input.GetKey(KeyCode.D)) keyboardTurn = 1f;
 
-        float stickTurn = Input.GetAxis("P1_LeftStick_X");
+        float stickTurn = 0f;
+
+        if (p1 != null)
+        {
+            stickTurn = p1.leftStick.x.ReadValue();
+        }
 
         turnInput = keyboardTurn;
 
@@ -71,8 +87,9 @@ public class BikeMovement : MonoBehaviour
         bool p2Pedaled = false;
 
         // ------------------------
-        // ?? PLAYER 1 PEDAL (Q/E)
+        // PLAYER 1 PEDAL
         // ------------------------
+
         if (p1ExpectL && Input.GetKeyDown(KeyCode.Q))
         {
             p1ExpectL = false;
@@ -84,21 +101,24 @@ public class BikeMovement : MonoBehaviour
             p1Pedaled = true;
         }
 
-        // ?? PLAYER 1 PEDAL (L1/R1)
-        if (p1ExpectL && Input.GetKeyDown(KeyCode.Joystick1Button4)) // L1
+        if (p1 != null)
         {
-            p1ExpectL = false;
-            p1Pedaled = true;
-        }
-        else if (!p1ExpectL && Input.GetKeyDown(KeyCode.Joystick1Button5)) // R1
-        {
-            p1ExpectL = true;
-            p1Pedaled = true;
+            if (p1ExpectL && p1.leftShoulder.wasPressedThisFrame)
+            {
+                p1ExpectL = false;
+                p1Pedaled = true;
+            }
+            else if (!p1ExpectL && p1.rightShoulder.wasPressedThisFrame)
+            {
+                p1ExpectL = true;
+                p1Pedaled = true;
+            }
         }
 
         // ------------------------
-        // ?? PLAYER 2 PEDAL (U/O)
+        // PLAYER 2 PEDAL
         // ------------------------
+
         if (p2ExpectL && Input.GetKeyDown(KeyCode.U))
         {
             p2ExpectL = false;
@@ -110,21 +130,24 @@ public class BikeMovement : MonoBehaviour
             p2Pedaled = true;
         }
 
-        // ?? PLAYER 2 PEDAL (Controller 2)
-        if (p2ExpectL && Input.GetKeyDown(KeyCode.Joystick2Button4)) // L1
+        if (p2 != null)
         {
-            p2ExpectL = false;
-            p2Pedaled = true;
-        }
-        else if (!p2ExpectL && Input.GetKeyDown(KeyCode.Joystick2Button5)) // R1
-        {
-            p2ExpectL = true;
-            p2Pedaled = true;
+            if (p2ExpectL && p2.leftShoulder.wasPressedThisFrame)
+            {
+                p2ExpectL = false;
+                p2Pedaled = true;
+            }
+            else if (!p2ExpectL && p2.rightShoulder.wasPressedThisFrame)
+            {
+                p2ExpectL = true;
+                p2Pedaled = true;
+            }
         }
 
         // ------------------------
-        // ?? APPLY FORCE
+        // APPLY FORCE
         // ------------------------
+
         if (p1Pedaled || p2Pedaled)
         {
             float totalForce = 0f;
@@ -141,7 +164,7 @@ public class BikeMovement : MonoBehaviour
                 p2Timer = activeWindow;
             }
 
-            // BONUS if both pedal same frame
+            // BONUS IF BOTH PEDAL SAME FRAME
             if (p1Pedaled && p2Pedaled)
             {
                 totalForce *= 1.5f;
@@ -151,8 +174,9 @@ public class BikeMovement : MonoBehaviour
         }
 
         // ------------------------
-        // ?? SPEED UI
+        // SPEED UI
         // ------------------------
+
         Vector3 flatVel = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
         float speed = flatVel.magnitude;
 
@@ -164,7 +188,7 @@ public class BikeMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        // decay timers
+        // DECAY TIMERS
         if (p1Timer > 0) p1Timer -= Time.fixedDeltaTime;
         if (p2Timer > 0) p2Timer -= Time.fixedDeltaTime;
 
@@ -183,11 +207,12 @@ public class BikeMovement : MonoBehaviour
             currentMaxSpeed = bothMaxSpeed;
 
         // ------------------------
-        // ?? BRAKE (PLAYER 1 ONLY)
+        // BRAKE
         // ------------------------
+
         bool braking = Input.GetKey(KeyCode.S);
 
-        if (Input.GetKey(KeyCode.Joystick1Button6)) // L2
+        if (p1 != null && p1.leftTrigger.ReadValue() > 0.5f)
         {
             braking = true;
         }
@@ -196,14 +221,34 @@ public class BikeMovement : MonoBehaviour
 
         if (braking)
         {
-            Vector3 slowed = Vector3.Lerp(flat, Vector3.zero, brakeStrength * Time.fixedDeltaTime);
-            rb.linearVelocity = new Vector3(slowed.x, rb.linearVelocity.y, slowed.z);
+            Vector3 slowed = Vector3.Lerp(
+                flat,
+                Vector3.zero,
+                brakeStrength * Time.fixedDeltaTime
+            );
+
+            rb.linearVelocity = new Vector3(
+                slowed.x,
+                rb.linearVelocity.y,
+                slowed.z
+            );
+
             rb.linearDamping = brakeDrag;
         }
         else if (!p1Active && !p2Active)
         {
-            Vector3 slowed = Vector3.Lerp(flat, Vector3.zero, coastSlowdown * Time.fixedDeltaTime);
-            rb.linearVelocity = new Vector3(slowed.x, rb.linearVelocity.y, slowed.z);
+            Vector3 slowed = Vector3.Lerp(
+                flat,
+                Vector3.zero,
+                coastSlowdown * Time.fixedDeltaTime
+            );
+
+            rb.linearVelocity = new Vector3(
+                slowed.x,
+                rb.linearVelocity.y,
+                slowed.z
+            );
+
             rb.linearDamping = coastDrag;
         }
         else
@@ -211,19 +256,28 @@ public class BikeMovement : MonoBehaviour
             rb.linearDamping = coastDrag;
         }
 
-        // recalc AFTER changes
+        // RECALCULATE AFTER CHANGES
         flat = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
 
         // SPEED CAP
         if (flat.magnitude > currentMaxSpeed)
         {
             Vector3 limited = flat.normalized * currentMaxSpeed;
-            rb.linearVelocity = new Vector3(limited.x, rb.linearVelocity.y, limited.z);
+
+            rb.linearVelocity = new Vector3(
+                limited.x,
+                rb.linearVelocity.y,
+                limited.z
+            );
         }
 
-        // TURN (PLAYER 1 ONLY)
+        // TURN
         rb.MoveRotation(
-            rb.rotation * Quaternion.Euler(0, turnInput * turnSpeed * Time.fixedDeltaTime, 0)
+            rb.rotation * Quaternion.Euler(
+                0,
+                turnInput * turnSpeed * Time.fixedDeltaTime,
+                0
+            )
         );
     }
 }
