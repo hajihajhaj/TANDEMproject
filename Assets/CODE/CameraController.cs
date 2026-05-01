@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CameraController : MonoBehaviour
+public class BikeCameraOrbit : MonoBehaviour
 {
     [Header("Follow")]
     public Transform followTarget;
@@ -47,18 +47,22 @@ public class CameraController : MonoBehaviour
 
     void ReadInput()
     {
-        float inputX = 0f;
-        float inputY = 0f;
+        float inputX = Input.GetAxis("P2_RightStick_X");
+        float inputY = Input.GetAxis("P2_RightStick_Y");
 
-        // keyboard fallback
-        if (Input.GetKey(KeyCode.LeftArrow)) inputX = -1f;
-        if (Input.GetKey(KeyCode.RightArrow)) inputX = 1f;
-        if (Input.GetKey(KeyCode.UpArrow)) inputY = 1f;
-        if (Input.GetKey(KeyCode.DownArrow)) inputY = -1f;
+        if (Mathf.Abs(inputX) < 0.2f) inputX = 0f;
+        if (Mathf.Abs(inputY) < 0.2f) inputY = 0f;
+
+        if (inputX == 0f && inputY == 0f)
+        {
+            if (Input.GetKey(KeyCode.G)) inputX = -1f;
+            if (Input.GetKey(KeyCode.J)) inputX = 1f;
+            if (Input.GetKey(KeyCode.H)) inputY = 1f;
+            if (Input.GetKey(KeyCode.Y)) inputY = -1f;
+        }
 
         yaw += inputX * rotationSpeed * Time.deltaTime;
         pitch += inputY * verticalSpeed * Time.deltaTime;
-
         pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
     }
 

@@ -607,11 +607,11 @@ InputManager:
     altPositiveButton: 
     gravity: 1000
     dead: 0.001
-    sensitivity: 1000
+    sensitivity: 1
     snap: 0
     invert: 0
     type: 2
-    axis: 3
+    axis: 0
     joyNum: 2
   - serializedVersion: 3
     m_Name: P2_RightStick_Y
@@ -623,10 +623,10 @@ InputManager:
     altPositiveButton: 
     gravity: 1000
     dead: 0.001
-    sensitivity: 1000
+    sensitivity: 1
     snap: 0
-    invert: 1
-    type: 0
-    axis: 4
+    invert: 0
+    type: 2
+    axis: 1
     joyNum: 2
   m_UsePhysicalKeys: 1
