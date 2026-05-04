@@ -1540,6 +1540,7 @@ MonoBehaviour:
   upwardForce: 10
   linePoints: 30
   timeBetweenPoints: 0.1
+  cameraTransform: {fileID: 875115619}
 --- !u!1 &875115617
 GameObject:
   m_ObjectHideFlags: 0

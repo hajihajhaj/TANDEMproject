@@ -23,6 +23,8 @@ public class Player2Throw : MonoBehaviour
     private bool isCharging;
     private float currentThrowForce;
 
+    public Transform cameraTransform;
+
     void Update()
     {
         // Player 2 = second connected gamepad
@@ -81,13 +83,21 @@ public class Player2Throw : MonoBehaviour
 
     void ThrowBox()
     {
-        GameObject box = Instantiate(boxPrefab, throwPoint.position, Quaternion.identity);
+        GameObject box = Instantiate(
+            boxPrefab,
+            throwPoint.position,
+            Quaternion.identity
+        );
+
         Destroy(box, 15f);
+
         Rigidbody rb = box.GetComponent<Rigidbody>();
 
         if (rb != null)
         {
-            Vector3 throwDirection = transform.forward;
+            Vector3 throwDirection = cameraTransform.forward;
+            throwDirection.y = 0f;
+            throwDirection.Normalize();
 
             Vector3 force =
                 (throwDirection * currentThrowForce) +
@@ -110,17 +120,22 @@ public class Player2Throw : MonoBehaviour
 
         Vector3 startPosition = throwPoint.position;
 
+        Vector3 throwDirection = cameraTransform.forward;
+        throwDirection.y = 0f;
+        throwDirection.Normalize();
+
         Vector3 startVelocity =
-            (transform.forward * currentThrowForce) +
+            (throwDirection * currentThrowForce) +
             (Vector3.up * upwardForce);
 
         for (int i = 0; i < linePoints; i++)
         {
             float time = i * timeBetweenPoints;
 
-            Vector3 point = startPosition +
-                            (startVelocity * time) +
-                            (0.5f * Physics.gravity * time * time);
+            Vector3 point =
+                startPosition +
+                (startVelocity * time) +
+                (0.5f * Physics.gravity * time * time);
 
             aimLine.SetPosition(i, point);
         }
