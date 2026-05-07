@@ -26,8 +26,8 @@ public class PlayerUpgradeManager : MonoBehaviour
     private float cooldownRemaining;
 
     [Header("Jump Boost")]
-    public float jumpForce = 12f;
-    public float jumpCooldown = 3f;
+    public float jumpForce = 55f;
+    public float jumpCooldown = 6f;
 
     void Start()
     {
