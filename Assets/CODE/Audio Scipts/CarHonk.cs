@@ -28,14 +28,14 @@ public class CarHonk : MonoBehaviour
 
         if (rb == null) return;
 
-        BikeMovement bikeMovement = rb.GetComponent<BikeMovement>();
+        TandemBikeController bikeMovement = rb.GetComponent<TandemBikeController>();
         if (bikeMovement == null) return;
 
         onCooldown = true;
         StartCoroutine(HitBike(rb, bikeMovement));
     }
 
-    IEnumerator HitBike(Rigidbody rb, BikeMovement bikeMovement)
+    IEnumerator HitBike(Rigidbody rb, TandemBikeController bikeMovement)
     {
         PlayRandomMainSound();
         StartCoroutine(PlaySecondarySoundSometimes());

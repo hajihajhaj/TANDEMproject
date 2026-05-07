@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
 
-public class BikeMovement : MonoBehaviour
+public class TandemBikeController : MonoBehaviour
 {
     public Rigidbody rb;
 
@@ -13,6 +13,12 @@ public class BikeMovement : MonoBehaviour
     public float p1MaxSpeed = 12f;
     public float p2MaxSpeed = 8f;
     public float bothMaxSpeed = 18f;
+
+    [HideInInspector] public float currentP1MaxSpeed;
+    [HideInInspector] public float currentP2MaxSpeed;
+    [HideInInspector] public float currentBothMaxSpeed;
+
+    [HideInInspector] public bool isBoosting;
 
     float turnInput;
 
@@ -50,6 +56,10 @@ public class BikeMovement : MonoBehaviour
 
         rb.constraints = RigidbodyConstraints.FreezeRotationX |
                          RigidbodyConstraints.FreezeRotationZ;
+
+        currentP1MaxSpeed = p1MaxSpeed;
+        currentP2MaxSpeed = p2MaxSpeed;
+        currentBothMaxSpeed = bothMaxSpeed;
     }
 
     void Update()
@@ -198,13 +208,13 @@ public class BikeMovement : MonoBehaviour
         float currentMaxSpeed;
 
         if (p1Active && p2Active)
-            currentMaxSpeed = bothMaxSpeed;
+            currentMaxSpeed = currentBothMaxSpeed;
         else if (p1Active)
-            currentMaxSpeed = p1MaxSpeed;
+            currentMaxSpeed = currentP1MaxSpeed;
         else if (p2Active)
-            currentMaxSpeed = p2MaxSpeed;
+            currentMaxSpeed = currentP2MaxSpeed;
         else
-            currentMaxSpeed = bothMaxSpeed;
+            currentMaxSpeed = currentBothMaxSpeed;
 
         // ------------------------
         // BRAKE
@@ -219,38 +229,44 @@ public class BikeMovement : MonoBehaviour
 
         Vector3 flat = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
 
-        if (braking)
+        if (!isBoosting)
         {
-            Vector3 slowed = Vector3.Lerp(
-                flat,
-                Vector3.zero,
-                brakeStrength * Time.fixedDeltaTime
-            );
 
-            rb.linearVelocity = new Vector3(
-                slowed.x,
-                rb.linearVelocity.y,
-                slowed.z
-            );
+            if (braking)
+            {
+                Vector3 slowed = Vector3.Lerp(
+                    flat,
+                    Vector3.zero,
+                    brakeStrength * Time.fixedDeltaTime
+                );
 
-            rb.linearDamping = brakeDrag;
+                rb.linearVelocity = new Vector3(
+                    slowed.x,
+                    rb.linearVelocity.y,
+                    slowed.z
+                );
+
+                rb.linearDamping = brakeDrag;
+            }
+            else if (!p1Active && !p2Active)
+            {
+                Vector3 slowed = Vector3.Lerp(
+                    flat,
+                    Vector3.zero,
+                    coastSlowdown * Time.fixedDeltaTime
+                );
+
+                rb.linearVelocity = new Vector3(
+                    slowed.x,
+                    rb.linearVelocity.y,
+                    slowed.z
+                );
+
+                rb.linearDamping = coastDrag;
+            }
         }
-        else if (!p1Active && !p2Active)
-        {
-            Vector3 slowed = Vector3.Lerp(
-                flat,
-                Vector3.zero,
-                coastSlowdown * Time.fixedDeltaTime
-            );
 
-            rb.linearVelocity = new Vector3(
-                slowed.x,
-                rb.linearVelocity.y,
-                slowed.z
-            );
-
-            rb.linearDamping = coastDrag;
-        }
+     
         else
         {
             rb.linearDamping = coastDrag;
@@ -260,7 +276,7 @@ public class BikeMovement : MonoBehaviour
         flat = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
 
         // SPEED CAP
-        if (flat.magnitude > currentMaxSpeed)
+        if (!isBoosting && flat.magnitude > currentMaxSpeed)
         {
             Vector3 limited = flat.normalized * currentMaxSpeed;
 

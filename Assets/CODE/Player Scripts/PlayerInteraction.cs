@@ -13,9 +13,16 @@ public class PlayerInteraction : MonoBehaviour
 
     void Update()
     {
+        // OPEN UI
         if (Keyboard.current.eKey.wasPressedThisFrame)
         {
             OpenCurrentUI();
+        }
+
+        // CLOSE UI
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            CloseAllUI();
         }
     }
 
