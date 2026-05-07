@@ -21,9 +21,13 @@ public class PlayerUpgradeManager : MonoBehaviour
     public float boostDuration = 2f;
 
     private bool canUseAbility = true;
-    private bool speedBoostEquipped;
+ 
 
     private float cooldownRemaining;
+
+    [Header("Jump Boost")]
+    public float jumpForce = 12f;
+    public float jumpCooldown = 3f;
 
     void Start()
     {
@@ -41,15 +45,20 @@ public class PlayerUpgradeManager : MonoBehaviour
     {
         if (Keyboard.current.leftShiftKey.wasPressedThisFrame)
         {
-            // STOP if cooldown active
             if (!canUseAbility)
                 return;
 
-            // STOP if no upgrade equipped
-            if (UpgradeData.equippedUpgrade != "SpeedBoost")
-                return;
+            // SPEED BOOST
+            if (UpgradeData.equippedUpgrade == "SpeedBoost")
+            {
+                StartCoroutine(ActivateSpeedBoost());
+            }
 
-            StartCoroutine(ActivateSpeedBoost());
+            // JUMP BOOST
+            else if (UpgradeData.equippedUpgrade == "JumpBoost")
+            {
+                StartCoroutine(ActivateJumpBoost());
+            }
         }
     }
 
@@ -87,47 +96,54 @@ public class PlayerUpgradeManager : MonoBehaviour
         canUseAbility = true;
     }
 
+    IEnumerator ActivateJumpBoost()
+    {
+        canUseAbility = false;
+
+        // JUMP
+        bikeMovement.rb.AddForce(
+            Vector3.up * jumpForce,
+            ForceMode.Impulse
+        );
+
+        cooldownRemaining = jumpCooldown;
+
+        while (cooldownRemaining > 0)
+        {
+            cooldownRemaining -= Time.deltaTime;
+            yield return null;
+        }
+
+        cooldownRemaining = 0;
+        canUseAbility = true;
+    }
+
     void UpdateCooldownUI()
     {
         if (UpgradeData.equippedUpgrade == "SpeedBoost")
         {
             upgradeNameText.text = "Speed Boost";
-
-            if (canUseAbility)
-            {
-                cooldownText.text = "Ready";
-            }
-            else
-            {
-                cooldownText.text =
-                    Mathf.Ceil(cooldownRemaining).ToString();
-            }
+        }
+        else if (UpgradeData.equippedUpgrade == "JumpBoost")
+        {
+            upgradeNameText.text = "Jump Boost";
         }
         else
         {
             upgradeNameText.text = "No Upgrade Equipped";
             cooldownText.text = "";
+            return;
+        }
+
+        if (canUseAbility)
+        {
+            cooldownText.text = "Ready";
+        }
+        else
+        {
+            cooldownText.text =
+                Mathf.Ceil(cooldownRemaining).ToString();
         }
     }
 
-    // PURCHASE
-    public void BuySpeedBoost()
-    {
-        ownsSpeedBoost = true;
-
-        EquipSpeedBoost();
-    }
-
-    // EQUIP
-    public void EquipSpeedBoost()
-    {
-        if (!ownsSpeedBoost)
-            return;
-
-        // UNEQUIP EVERYTHING
-        speedBoostEquipped = false;
-
-        // EQUIP THIS
-        speedBoostEquipped = true;
-    }
 }
