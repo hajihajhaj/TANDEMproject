@@ -1170,7 +1170,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: speed boost
+  m_text: jump
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1775,7 +1775,7 @@ GameObject:
   - component: {fileID: 597717537}
   - component: {fileID: 597717536}
   m_Layer: 5
-  m_Name: Buy jump
+  m_Name: Buy speedboost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1798,7 +1798,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -246, y: 19.7}
+  m_AnchoredPosition: {x: -246, y: 65.75}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &597717536
@@ -1847,7 +1847,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1396508516}
         m_TargetAssemblyTypeName: HomeShopUI, Assembly-CSharp
-        m_MethodName: EquipJumpBoost
+        m_MethodName: BuySpeedBoost
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2466,7 +2466,7 @@ GameObject:
   - component: {fileID: 916917555}
   - component: {fileID: 916917554}
   m_Layer: 5
-  m_Name: Buy speedboost
+  m_Name: Buy jump
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2538,7 +2538,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1396508516}
         m_TargetAssemblyTypeName: HomeShopUI, Assembly-CSharp
-        m_MethodName: BuySpeedBoost
+        m_MethodName: BuyJumpBoost
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2848,7 +2848,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: speed boost
+  m_text: speedboost
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3490,8 +3490,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f92221eb9804be043bd5c000b1477b85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedBoostButtonText: {fileID: 465504489}
-  jumpBoostButtonText: {fileID: 1117834710}
+  speedBoostButtonText: {fileID: 1117834710}
+  jumpBoostButtonText: {fileID: 465504489}
 --- !u!1 &1446414444
 GameObject:
   m_ObjectHideFlags: 0

@@ -39,6 +39,8 @@ public class HomeShopUI : MonoBehaviour
         Debug.Log("HOME SHOP JUMP BUTTON");
 
         UpgradeData.ownsJumpBoost = true;
+        UpgradeData.equippedUpgrade = "JumpBoost";
+
 
         EquipJumpBoost();
 
