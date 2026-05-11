@@ -135,6 +135,7 @@ public class PhoneController : MonoBehaviour
             if (currentIndex == 2)
             {
                 FindObjectOfType<PhoneCameraApp>().OpenCameraApp();
+                appOpen = true;
                 return;
             }
 
@@ -160,20 +161,24 @@ public class PhoneController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Backspace) || p2Circle)
         {
-            CloseAllApps();
-            appOpen = false;
+            if (appOpen)
+            {
+                CloseAllApps();
+                appOpen = false;
+            }
+            else
+            {
+                // fully close phone
+                phoneOpen = false;
+                phoneUI.SetActive(false);
+                CloseAllApps();
+            }
         }
     }
 
-    public void ForceOpenApp()
-    {
-        phoneOpen = true;
-        phoneUI.SetActive(true);
-    }
 
     public void CloseApp()
     {
-        // Close whatever app is open
         appOpen = false;
 
         foreach (GameObject panel in appPanels)
@@ -181,10 +186,7 @@ public class PhoneController : MonoBehaviour
             panel.SetActive(false);
         }
 
-        // Return to phone home state
-        phoneOpen = true;
-        phoneUI.SetActive(true);
-
+        // return to phone HOME (but DO NOT force open UI)
         SelectButton(currentIndex);
     }
 
@@ -199,5 +201,15 @@ public class PhoneController : MonoBehaviour
         }
 
         FindObjectOfType<PhoneCameraApp>()?.ExitCameraApp();
+    }
+
+    public void ReturnToHome()
+    {
+        appOpen = false;
+
+        foreach (GameObject panel in appPanels)
+            panel.SetActive(false);
+
+        SelectButton(currentIndex);
     }
 }

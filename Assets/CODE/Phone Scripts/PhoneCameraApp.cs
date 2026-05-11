@@ -47,7 +47,6 @@ public class PhoneCameraApp : MonoBehaviour
             ExitCameraApp();
         }
 
-        // ?? TAKE PHOTO
         if (Input.GetKeyDown(captureKey))
         {
             StartCoroutine(TakePhoto());
@@ -57,8 +56,6 @@ public class PhoneCameraApp : MonoBehaviour
     public void OpenCameraApp()
     {
         cameraAppOpen = true;
-
-        phoneController.ForceOpenApp();
 
         mainCamera.enabled = false;
 
@@ -85,7 +82,10 @@ public class PhoneCameraApp : MonoBehaviour
 
         cameraPanel.SetActive(false);
 
-        phoneController.CloseApp();
+        // ? IMPORTANT FIX:
+        // Do NOT close the whole phone or app system
+        // Just tell controller to return to phone home UI
+        phoneController.ReturnToHome();
     }
 
     public void SwitchCamera()
@@ -115,11 +115,9 @@ public class PhoneCameraApp : MonoBehaviour
     // -------------------------
     IEnumerator TakePhoto()
     {
-        // show shutter immediately
         if (shutterPanel != null)
             shutterPanel.SetActive(true);
 
-        // IMPORTANT: wait until frame is fully rendered
         yield return new WaitForEndOfFrame();
 
         Texture2D photo = null;
@@ -138,7 +136,6 @@ public class PhoneCameraApp : MonoBehaviour
             Debug.LogError("Photo capture failed: " + e.Message);
         }
 
-        // ALWAYS hide shutter even if something breaks
         if (shutterPanel != null)
             shutterPanel.SetActive(false);
     }
