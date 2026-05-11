@@ -49,7 +49,7 @@ public class PhoneController : MonoBehaviour
     }
 
     // -------------------------
-    // OPEN / CLOSE PHONE
+    // PHONE TOGGLE
     // -------------------------
     void HandlePhoneToggle()
     {
@@ -62,7 +62,6 @@ public class PhoneController : MonoBehaviour
             p2Circle = Gamepad.all[1].buttonEast.wasPressedThisFrame;
         }
 
-        // TAB or DPad Up
         if (Input.GetKeyDown(KeyCode.Tab) || p2DpadUp)
         {
             phoneOpen = true;
@@ -71,11 +70,15 @@ public class PhoneController : MonoBehaviour
             SelectButton(currentIndex);
         }
 
-        // BACKSPACE or O
-        if ((Input.GetKeyDown(KeyCode.Backspace) || p2Circle) && !appOpen)
+        if (Input.GetKeyDown(KeyCode.Backspace) || p2Circle)
         {
-            phoneOpen = false;
-            phoneUI.SetActive(false);
+            if (!appOpen)
+            {
+                phoneOpen = false;
+                phoneUI.SetActive(false);
+
+                CloseAllApps();
+            }
         }
     }
 
@@ -93,84 +96,22 @@ public class PhoneController : MonoBehaviour
         {
             Vector2 dpad = Gamepad.all[1].dpad.ReadValue();
 
-            // reset dpad lock
             if (Mathf.Abs(dpad.x) < 0.5f && Mathf.Abs(dpad.y) < 0.5f)
-            {
                 dpadInUse = false;
-            }
 
             if (!dpadInUse)
             {
-                if (dpad.x < -0.5f)
-                {
-                    left = true;
-                    dpadInUse = true;
-                }
-
-                if (dpad.x > 0.5f)
-                {
-                    right = true;
-                    dpadInUse = true;
-                }
-
-                if (dpad.y > 0.5f)
-                {
-                    up = true;
-                    dpadInUse = true;
-                }
-
-                if (dpad.y < -0.5f)
-                {
-                    down = true;
-                    dpadInUse = true;
-                }
+                if (dpad.x < -0.5f) { left = true; dpadInUse = true; }
+                if (dpad.x > 0.5f) { right = true; dpadInUse = true; }
+                if (dpad.y > 0.5f) { up = true; dpadInUse = true; }
+                if (dpad.y < -0.5f) { down = true; dpadInUse = true; }
             }
         }
 
-        // Layout:
-        //
-        // 0 1
-        // 2 3
-
-        // LEFT
-        if (left)
-        {
-            if (currentIndex % 2 == 1)
-            {
-                currentIndex--;
-                SelectButton(currentIndex);
-            }
-        }
-
-        // RIGHT
-        if (right)
-        {
-            if (currentIndex % 2 == 0)
-            {
-                currentIndex++;
-                SelectButton(currentIndex);
-            }
-        }
-
-        // UP
-        if (up)
-        {
-            if (currentIndex >= 2)
-            {
-                currentIndex -= 2;
-                SelectButton(currentIndex);
-            }
-        }
-
-        // DOWN
-        if (down)
-        {
-            if (currentIndex <= 1)
-            {
-                currentIndex += 2;
-                SelectButton(currentIndex);
-            }
-        }
+        if (left && currentIndex % 2 == 1) { currentIndex--; SelectButton(currentIndex); }
+        if (right && currentIndex % 2 == 0) { currentIndex++; SelectButton(currentIndex); }
+        if (up && currentIndex >= 2) { currentIndex -= 2; SelectButton(currentIndex); }
+        if (down && currentIndex <= 1) { currentIndex += 2; SelectButton(currentIndex); }
     }
 
     void SelectButton(int index)
@@ -186,37 +127,77 @@ public class PhoneController : MonoBehaviour
         bool p2X = false;
 
         if (Gamepad.all.Count > 1)
-        {
             p2X = Gamepad.all[1].buttonSouth.wasPressedThisFrame;
-        }
 
-        // ENTER or X
         if (Input.GetKeyDown(KeyCode.Return) || p2X)
         {
-            appPanels[currentIndex].SetActive(true);
+            // CAMERA APP
+            if (currentIndex == 2)
+            {
+                FindObjectOfType<PhoneCameraApp>().OpenCameraApp();
+                return;
+            }
+
+            int panelIndex = currentIndex;
+
+            if (currentIndex > 2)
+                panelIndex--;
+
+            appPanels[panelIndex].SetActive(true);
             appOpen = true;
         }
     }
 
     // -------------------------
-    // BACK / CLOSE APP
+    // BACK
     // -------------------------
     void HandleBack()
     {
         bool p2Circle = false;
 
         if (Gamepad.all.Count > 1)
-        {
             p2Circle = Gamepad.all[1].buttonEast.wasPressedThisFrame;
-        }
 
-        // BACKSPACE or O
         if (Input.GetKeyDown(KeyCode.Backspace) || p2Circle)
         {
-            appPanels[currentIndex].SetActive(false);
+            CloseAllApps();
             appOpen = false;
-
-            SelectButton(currentIndex);
         }
+    }
+
+    public void ForceOpenApp()
+    {
+        phoneOpen = true;
+        phoneUI.SetActive(true);
+    }
+
+    public void CloseApp()
+    {
+        // Close whatever app is open
+        appOpen = false;
+
+        foreach (GameObject panel in appPanels)
+        {
+            panel.SetActive(false);
+        }
+
+        // Return to phone home state
+        phoneOpen = true;
+        phoneUI.SetActive(true);
+
+        SelectButton(currentIndex);
+    }
+
+    // -------------------------
+    // CENTRAL RESET (IMPORTANT FIX)
+    // -------------------------
+    void CloseAllApps()
+    {
+        foreach (GameObject panel in appPanels)
+        {
+            panel.SetActive(false);
+        }
+
+        FindObjectOfType<PhoneCameraApp>()?.ExitCameraApp();
     }
 }
