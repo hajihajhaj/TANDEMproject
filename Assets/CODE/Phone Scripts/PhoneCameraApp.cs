@@ -28,6 +28,9 @@ public class PhoneCameraApp : MonoBehaviour
     [Header("UI")]
     public GameObject cameraPanel;
 
+    [Header("Render Texture")]
+    public RenderTexture renderTexture;
+
     [Header("Capture")]
     public KeyCode captureKey = KeyCode.P;
     public GameObject shutterPanel;
@@ -57,7 +60,6 @@ public class PhoneCameraApp : MonoBehaviour
     {
         cameraAppOpen = true;
 
-        mainCamera.enabled = false;
 
         cameraState = CameraState.Front;
 
@@ -76,7 +78,6 @@ public class PhoneCameraApp : MonoBehaviour
         frontCamera.enabled = false;
         backCamera.enabled = false;
 
-        mainCamera.enabled = true;
 
         currentCamera = null;
 
@@ -120,20 +121,32 @@ public class PhoneCameraApp : MonoBehaviour
 
         yield return new WaitForEndOfFrame();
 
-        Texture2D photo = null;
+        RenderTexture currentRT = RenderTexture.active;
 
-        try
-        {
-            photo = ScreenCapture.CaptureScreenshotAsTexture();
+        RenderTexture.active = renderTexture;
 
-            if (photo != null && galleryManager != null)
-            {
-                galleryManager.AddPhoto(photo);
-            }
-        }
-        catch (System.Exception e)
+        currentCamera.Render();
+
+        Texture2D photo = new Texture2D(
+            renderTexture.width,
+            renderTexture.height,
+            TextureFormat.RGB24,
+            false
+        );
+
+        photo.ReadPixels(
+            new Rect(0, 0, renderTexture.width, renderTexture.height),
+            0,
+            0
+        );
+
+        photo.Apply();
+
+        RenderTexture.active = currentRT;
+
+        if (galleryManager != null)
         {
-            Debug.LogError("Photo capture failed: " + e.Message);
+            galleryManager.AddPhoto(photo);
         }
 
         if (shutterPanel != null)
