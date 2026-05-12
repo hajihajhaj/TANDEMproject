@@ -116,6 +116,14 @@ public class PhoneCameraApp : MonoBehaviour
     // -------------------------
     IEnumerator TakePhoto()
     {
+        // STOP if storage full
+        if (galleryManager != null &&
+     galleryManager.IsGalleryFull())
+        {
+            galleryManager.ShowFullPopup();
+            yield break;
+        }
+        // shutter flash
         if (shutterPanel != null)
             shutterPanel.SetActive(true);
 
@@ -149,6 +157,7 @@ public class PhoneCameraApp : MonoBehaviour
             galleryManager.AddPhoto(photo);
         }
 
+        // remove shutter
         if (shutterPanel != null)
             shutterPanel.SetActive(false);
     }

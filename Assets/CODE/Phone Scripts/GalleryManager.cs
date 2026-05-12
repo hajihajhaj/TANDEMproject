@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class GalleryManager : MonoBehaviour
 {
@@ -32,6 +33,9 @@ public class GalleryManager : MonoBehaviour
     private int currentIndex = 0;
 
     bool dpadInUse = false;
+
+    [Header("Popups")]
+    public GameObject galleryFullPopup;
 
     // -------------------------
 
@@ -69,30 +73,38 @@ public class GalleryManager : MonoBehaviour
         }
     }
 
-   void UpdateScroll()
-{
-    Canvas.ForceUpdateCanvases();
+    void UpdateScroll()
+    {
+        int row = currentIndex / 2;
 
-    RectTransform selected =
-        photoButtons[currentIndex].GetComponent<RectTransform>();
+        // how many rows fit on screen
+        int rowsPerPage = 4;
 
-    RectTransform content =
-        scrollRect.content;
+        // determine which page we're on
+        int currentPage = row / rowsPerPage;
 
-    float contentHeight = content.rect.height;
-    float viewportHeight =
-        scrollRect.viewport.rect.height;
+        // total rows
+        int totalRows =
+            Mathf.CeilToInt(photoButtons.Length / 2f);
 
-    float targetY =
-        Mathf.Abs(selected.anchoredPosition.y);
+        // total pages
+        int totalPages =
+            Mathf.CeilToInt((float)totalRows / rowsPerPage);
 
-    float normalized =
-        1 - Mathf.Clamp01(
-            targetY / (contentHeight - viewportHeight)
-        );
+        // if only one page, stay at top
+        if (totalPages <= 1)
+        {
+            scrollRect.verticalNormalizedPosition = 1f;
+            return;
+        }
 
-    scrollRect.verticalNormalizedPosition = normalized;
-}
+        // normalize page position
+        float normalized =
+            1f - ((float)currentPage / (totalPages - 1));
+
+        scrollRect.verticalNormalizedPosition =
+            Mathf.Clamp01(normalized);
+    }
 
     // -------------------------
     void HandleNavigation()
@@ -166,7 +178,6 @@ public class GalleryManager : MonoBehaviour
         UpdateScroll();
     }
 
-    
     // -------------------------
     public void OpenGallery()
     {
@@ -224,7 +235,8 @@ public class GalleryManager : MonoBehaviour
         // gallery full
         if (emptyIndex == -1)
         {
-            Debug.Log("Gallery Full");
+            StartCoroutine(ShowGalleryFullPopup());
+            
             return;
         }
 
@@ -308,5 +320,33 @@ public class GalleryManager : MonoBehaviour
     public void CloseFullscreen()
     {
         fullscreenPanel.SetActive(false);
+    }
+
+    IEnumerator ShowGalleryFullPopup()
+    {
+        if (galleryFullPopup == null)
+            yield break;
+
+        galleryFullPopup.SetActive(true);
+
+        yield return new WaitForSeconds(2f);
+
+        galleryFullPopup.SetActive(false);
+    }
+
+    public bool IsGalleryFull()
+    {
+        for (int i = 0; i < occupiedSlots.Length; i++)
+        {
+            if (!occupiedSlots[i])
+                return false;
+        }
+
+        return true;
+    }
+
+    public void ShowFullPopup()
+    {
+        StartCoroutine(ShowGalleryFullPopup());
     }
 }
