@@ -9,17 +9,23 @@ public class DeliveryManager : MonoBehaviour
     public float mainLevelTime = 300f;
 
     float currentMainTime;
+
     public TMP_Text mainTimerText;
 
     [Header("Customers")]
     public CustomerDelivery[] customers;
 
-    [Header("Messages")]
+    [Header("Message UI")]
+    public GameObject messagePanel;
+
     public TMP_Text customerNameText;
     public TMP_Text customerMessageText;
 
+    public Image customerImageUI;
+
     [Header("Summary")]
     public GameObject summaryPanel;
+
     public TMP_Text starsText;
     public TMP_Text deliveredText;
     public TMP_Text failedText;
@@ -30,9 +36,9 @@ public class DeliveryManager : MonoBehaviour
 
     bool levelEnded;
 
-    public static DeliveryManager instance;
-
     Coroutine messageRoutine;
+
+    public static DeliveryManager instance;
 
     void Awake()
     {
@@ -42,6 +48,9 @@ public class DeliveryManager : MonoBehaviour
     void Start()
     {
         currentMainTime = mainLevelTime;
+
+        messagePanel.SetActive(false);
+        summaryPanel.SetActive(false);
 
         foreach (CustomerDelivery customer in customers)
         {
@@ -57,17 +66,20 @@ public class DeliveryManager : MonoBehaviour
 
     void Update()
     {
-        if (levelEnded) return;
+        if (levelEnded)
+            return;
 
         UpdateMainTimer();
         UpdateCustomerTimers();
-        CheckLevelEnd();
+  
     }
 
     void UpdateMainTimer()
     {
         currentMainTime -= Time.deltaTime;
-        if (currentMainTime < 0) currentMainTime = 0;
+
+        if (currentMainTime < 0)
+            currentMainTime = 0;
 
         int minutes = Mathf.FloorToInt(currentMainTime / 60);
         int seconds = Mathf.FloorToInt(currentMainTime % 60);
@@ -75,7 +87,9 @@ public class DeliveryManager : MonoBehaviour
         mainTimerText.text = $"{minutes:00}:{seconds:00}";
 
         if (currentMainTime <= 0)
+        {
             EndLevel();
+        }
     }
 
     void UpdateCustomerTimers()
@@ -88,13 +102,16 @@ public class DeliveryManager : MonoBehaviour
             customer.currentTime -= Time.deltaTime;
 
             if (customer.timerBar != null)
-                customer.timerBar.value = customer.currentTime / customer.maxTime;
+            {
+                customer.timerBar.value =
+                    customer.currentTime / customer.maxTime;
+            }
 
-            // HURRY MESSAGE (only once per update range, simple version)
+            // HURRY MESSAGE
             if (customer.currentTime < customer.maxTime * 0.5f &&
                 customer.currentTime > customer.maxTime * 0.49f)
             {
-                ShowMessage(customer.customerName, customer.hurryMessage);
+                ShowMessage(customer, customer.hurryMessage);
             }
 
             // FAIL
@@ -103,7 +120,7 @@ public class DeliveryManager : MonoBehaviour
                 customer.failed = true;
                 failedCount++;
 
-                ShowMessage(customer.customerName, customer.angryMessage);
+                ShowMessage(customer, customer.angryMessage);
             }
         }
     }
@@ -116,14 +133,26 @@ public class DeliveryManager : MonoBehaviour
         customer.delivered = true;
         deliveredCount++;
 
-        float percent = customer.currentTime / customer.maxTime;
+        float percent =
+            customer.currentTime / customer.maxTime;
+
         int stars = CalculateStars(percent);
+
         totalStars += stars;
 
         ShowMessage(
-            customer.customerName,
+            customer,
             customer.successMessage + "\nStars: " + stars
         );
+
+        StartCoroutine(CheckEndAfterMessage());
+    }
+
+    IEnumerator CheckEndAfterMessage()
+    {
+        yield return new WaitForSeconds(2.2f);
+
+        CheckLevelEnd();
     }
 
     int CalculateStars(float percent)
@@ -132,51 +161,71 @@ public class DeliveryManager : MonoBehaviour
         if (percent >= 0.6f) return 4;
         if (percent >= 0.4f) return 3;
         if (percent >= 0.2f) return 2;
+
         return 1;
     }
 
-    void ShowMessage(string customerName, string message)
+    void ShowMessage(CustomerDelivery customer, string message)
     {
         if (messageRoutine != null)
             StopCoroutine(messageRoutine);
 
-        messageRoutine = StartCoroutine(MessagePopup(customerName, message));
+        messageRoutine =
+            StartCoroutine(MessagePopup(customer, message));
+    }
+
+    IEnumerator MessagePopup(CustomerDelivery customer, string message)
+    {
+        messagePanel.SetActive(true);
+
+        customerNameText.text =
+            customer.customerName;
+
+        customerMessageText.text =
+            message;
+
+        customerImageUI.sprite =
+            customer.customerImage;
+
+        yield return new WaitForSeconds(2f);
+
+        messagePanel.SetActive(false);
     }
 
     void CheckLevelEnd()
     {
         int finished = 0;
 
-        foreach (CustomerDelivery c in customers)
+        foreach (CustomerDelivery customer in customers)
         {
-            if (c.delivered || c.failed)
+            if (customer.delivered || customer.failed)
+            {
                 finished++;
+            }
         }
 
         if (finished >= customers.Length)
+        {
             EndLevel();
-    }
-
-    IEnumerator MessagePopup(string customerName, string message)
-    {
-        customerNameText.text = customerName;
-        customerMessageText.text = message;
-
-        yield return new WaitForSeconds(2f);
-
-        customerNameText.text = "";
-        customerMessageText.text = "";
+        }
     }
 
     void EndLevel()
     {
-        if (levelEnded) return;
+        if (levelEnded)
+            return;
 
         levelEnded = true;
+
         summaryPanel.SetActive(true);
 
-        starsText.text = "Stars: " + totalStars;
-        deliveredText.text = "Delivered: " + deliveredCount;
-        failedText.text = "Failed: " + failedCount;
+        starsText.text =
+            "Stars: " + totalStars;
+
+        deliveredText.text =
+            "Delivered: " + deliveredCount;
+
+        failedText.text =
+            "Failed: " + failedCount;
     }
 }

@@ -6,6 +6,9 @@ public class CustomerDelivery
 {
     public string customerName;
 
+    [Header("Customer Visuals")]
+    public Sprite customerImage;
+
     [Header("Delivery")]
     public DeliveryHouse targetHouse;
 
