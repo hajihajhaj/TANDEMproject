@@ -933,8 +933,8 @@ MonoBehaviour:
   mainLevelTime: 300
   mainTimerText: {fileID: 1888726834}
   customers:
-  - customerName: Hajar
-    customerImage: {fileID: 21300000, guid: 7a717ec8ab22aeb4d87753057d67409f, type: 3}
+  - customerName: Mariam
+    customerImage: {fileID: 21300000, guid: d4f437404d116ae4cbb1fe38d23bea45, type: 3}
     targetHouse: {fileID: 494259792}
     maxTime: 50
     currentTime: 0
@@ -945,8 +945,8 @@ MonoBehaviour:
     hurryMessage: hurry the damn up
     angryMessage: k no
     successMessage: thank you
-  - customerName: amelia
-    customerImage: {fileID: 21300000, guid: 02859bf63525a764384ba84d25d99df7, type: 3}
+  - customerName: Bella
+    customerImage: {fileID: 21300000, guid: 9d2d3a8030f739847b7459ea4dc26466, type: 3}
     targetHouse: {fileID: 1634261869}
     maxTime: 60
     currentTime: 0
@@ -957,8 +957,8 @@ MonoBehaviour:
     hurryMessage: im starving asl
     angryMessage: girl get
     successMessage: thank you mamaaa
-  - customerName: bana
-    customerImage: {fileID: 21300000, guid: b0062e28638cb974daebf8685e5d3fc4, type: 3}
+  - customerName: Chase
+    customerImage: {fileID: 21300000, guid: 8648be29288719b47a24d960272ae4cf, type: 3}
     targetHouse: {fileID: 1923926804}
     maxTime: 70
     currentTime: 0
@@ -1526,7 +1526,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b0062e28638cb974daebf8685e5d3fc4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8648be29288719b47a24d960272ae4cf, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9262,7 +9262,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Amelia
+  m_text: Bella
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -14077,7 +14077,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Hajar
+  m_text: Mariam
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -17342,7 +17342,7 @@ RectTransform:
   m_GameObject: {fileID: 1058563333}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.8487828, y: 2.8487828, z: 2.8487828}
+  m_LocalScale: {x: 2.4055693, y: 2.4055693, z: 2.4055693}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1683671639}
@@ -17354,7 +17354,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 740.81, y: 177.65999}
+  m_AnchoredPosition: {x: 737.51, y: 214.72}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1058563335
@@ -19164,7 +19164,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Bana
+  m_text: Chase
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -20916,7 +20916,7 @@ RectTransform:
   m_GameObject: {fileID: 1339166096}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.8487828, y: 2.8487828, z: 2.8487828}
+  m_LocalScale: {x: 2.4055693, y: 2.4055693, z: 2.4055693}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 696381992}
@@ -20928,7 +20928,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 740.81, y: 313}
+  m_AnchoredPosition: {x: 737.51, y: 329}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1339166098
@@ -21633,7 +21633,7 @@ RectTransform:
   m_GameObject: {fileID: 1430902144}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.8487828, y: 2.8487828, z: 2.8487828}
+  m_LocalScale: {x: 2.4055693, y: 2.4055693, z: 2.4055693}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 993725467}
@@ -21645,7 +21645,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 740.81, y: 36.235985}
+  m_AnchoredPosition: {x: 737.51, y: 95.294}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1430902146
@@ -26632,7 +26632,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: bf863f8ec100e9f43bca842f7a8fe42b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d4f437404d116ae4cbb1fe38d23bea45, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -26729,7 +26729,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 02859bf63525a764384ba84d25d99df7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9d2d3a8030f739847b7459ea4dc26466, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
