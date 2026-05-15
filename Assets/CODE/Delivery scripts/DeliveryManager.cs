@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
@@ -71,7 +71,6 @@ public class DeliveryManager : MonoBehaviour
 
         UpdateMainTimer();
         UpdateCustomerTimers();
-  
     }
 
     void UpdateMainTimer()
@@ -85,6 +84,9 @@ public class DeliveryManager : MonoBehaviour
         int seconds = Mathf.FloorToInt(currentMainTime % 60);
 
         mainTimerText.text = $"{minutes:00}:{seconds:00}";
+
+        float percent = currentMainTime / mainLevelTime;
+        mainTimerText.color = GetTimerColor(percent);
 
         if (currentMainTime <= 0)
         {
@@ -103,8 +105,15 @@ public class DeliveryManager : MonoBehaviour
 
             if (customer.timerBar != null)
             {
-                customer.timerBar.value =
+                float percent =
                     customer.currentTime / customer.maxTime;
+
+                customer.timerBar.value = percent;
+
+                Image fillImage =
+                    customer.timerBar.fillRect.GetComponent<Image>();
+
+                fillImage.color = GetTimerColor(percent);
             }
 
             // HURRY MESSAGE
@@ -178,14 +187,9 @@ public class DeliveryManager : MonoBehaviour
     {
         messagePanel.SetActive(true);
 
-        customerNameText.text =
-            customer.customerName;
-
-        customerMessageText.text =
-            message;
-
-        customerImageUI.sprite =
-            customer.customerImage;
+        customerNameText.text = customer.customerName;
+        customerMessageText.text = message;
+        customerImageUI.sprite = customer.customerImage;
 
         yield return new WaitForSeconds(2f);
 
@@ -219,13 +223,27 @@ public class DeliveryManager : MonoBehaviour
 
         summaryPanel.SetActive(true);
 
-        starsText.text =
-            "Stars: " + totalStars;
+        starsText.text = "Stars: " + totalStars;
+        deliveredText.text = "Delivered: " + deliveredCount;
+        failedText.text = "Failed: " + failedCount;
+    }
 
-        deliveredText.text =
-            "Delivered: " + deliveredCount;
+    // (WHITE → ORANGE → RED)
+    Color GetTimerColor(float percent)
+    {
+        Color white = Color.white;
+        Color orange = new Color(1f, 0.5f, 0f);
+        Color red = Color.red;
 
-        failedText.text =
-            "Failed: " + failedCount;
+        if (percent > 0.5f)
+        {
+            float t = (1f - percent) / 0.5f;
+            return Color.Lerp(white, orange, t);
+        }
+        else
+        {
+            float t = (0.5f - percent) / 0.5f;
+            return Color.Lerp(orange, red, t);
+        }
     }
 }
