@@ -30,6 +30,13 @@ public class DeliveryManager : MonoBehaviour
     public TMP_Text deliveredText;
     public TMP_Text failedText;
 
+    [Header("Audio")]
+    public AudioSource audioSource;
+
+    public AudioClip messageSound;
+    public AudioClip successSound;
+    public AudioClip failSound;
+
     int totalStars;
     int deliveredCount;
     int failedCount;
@@ -37,6 +44,9 @@ public class DeliveryManager : MonoBehaviour
     bool levelEnded;
 
     Coroutine messageRoutine;
+
+    // prevents audio spam overlap
+    bool messageAudioLock;
 
     public static DeliveryManager instance;
 
@@ -55,12 +65,7 @@ public class DeliveryManager : MonoBehaviour
         foreach (CustomerDelivery customer in customers)
         {
             customer.currentTime = customer.maxTime;
-
-            if (customer.targetHouse != null)
-            {
-                customer.targetHouse.deliveryManager = this;
-                customer.targetHouse.customer = customer;
-            }
+            customer.hurryShown = false;
         }
     }
 
@@ -76,22 +81,17 @@ public class DeliveryManager : MonoBehaviour
     void UpdateMainTimer()
     {
         currentMainTime -= Time.deltaTime;
-
-        if (currentMainTime < 0)
-            currentMainTime = 0;
+        if (currentMainTime < 0) currentMainTime = 0;
 
         int minutes = Mathf.FloorToInt(currentMainTime / 60);
         int seconds = Mathf.FloorToInt(currentMainTime % 60);
 
         mainTimerText.text = $"{minutes:00}:{seconds:00}";
 
-        float percent = currentMainTime / mainLevelTime;
-        mainTimerText.color = GetTimerColor(percent);
+        mainTimerText.color = GetTimerColor(currentMainTime / mainLevelTime);
 
         if (currentMainTime <= 0)
-        {
             EndLevel();
-        }
     }
 
     void UpdateCustomerTimers()
@@ -105,22 +105,18 @@ public class DeliveryManager : MonoBehaviour
 
             if (customer.timerBar != null)
             {
-                float percent =
-                    customer.currentTime / customer.maxTime;
+                float percent = customer.currentTime / customer.maxTime;
 
                 customer.timerBar.value = percent;
-
-                Image fillImage =
-                    customer.timerBar.fillRect.GetComponent<Image>();
-
-                fillImage.color = GetTimerColor(percent);
+                customer.timerBar.fillRect.GetComponent<Image>().color = GetTimerColor(percent);
             }
 
-            // HURRY MESSAGE
-            if (customer.currentTime < customer.maxTime * 0.5f &&
-                customer.currentTime > customer.maxTime * 0.49f)
+            // HURRY (ONCE ONLY)
+            if (!customer.hurryShown &&
+                customer.currentTime <= customer.maxTime * 0.5f)
             {
-                ShowMessage(customer, customer.hurryMessage);
+                customer.hurryShown = true;
+                ShowMessage(customer, customer.hurryMessage, true);
             }
 
             // FAIL
@@ -129,7 +125,9 @@ public class DeliveryManager : MonoBehaviour
                 customer.failed = true;
                 failedCount++;
 
-                ShowMessage(customer, customer.angryMessage);
+                PlaySoundSafe(failSound, 0.7f);
+
+                ShowMessage(customer, customer.angryMessage, false);
             }
         }
     }
@@ -142,45 +140,30 @@ public class DeliveryManager : MonoBehaviour
         customer.delivered = true;
         deliveredCount++;
 
-        float percent =
-            customer.currentTime / customer.maxTime;
-
+        float percent = customer.currentTime / customer.maxTime;
         int stars = CalculateStars(percent);
 
         totalStars += stars;
 
-        ShowMessage(
-            customer,
-            customer.successMessage + "\nStars: " + stars
+        PlaySoundSafe(successSound, 0.6f);
+
+        ShowMessage(customer,
+            customer.successMessage + "\nStars: " + stars,
+            false
         );
 
         StartCoroutine(CheckEndAfterMessage());
     }
 
-    IEnumerator CheckEndAfterMessage()
-    {
-        yield return new WaitForSeconds(2.2f);
-
-        CheckLevelEnd();
-    }
-
-    int CalculateStars(float percent)
-    {
-        if (percent >= 0.8f) return 5;
-        if (percent >= 0.6f) return 4;
-        if (percent >= 0.4f) return 3;
-        if (percent >= 0.2f) return 2;
-
-        return 1;
-    }
-
-    void ShowMessage(CustomerDelivery customer, string message)
+    void ShowMessage(CustomerDelivery customer, string message, bool playSound)
     {
         if (messageRoutine != null)
             StopCoroutine(messageRoutine);
 
-        messageRoutine =
-            StartCoroutine(MessagePopup(customer, message));
+        messageRoutine = StartCoroutine(MessagePopup(customer, message));
+
+        if (playSound)
+            PlayMessageSound();
     }
 
     IEnumerator MessagePopup(CustomerDelivery customer, string message)
@@ -196,28 +179,51 @@ public class DeliveryManager : MonoBehaviour
         messagePanel.SetActive(false);
     }
 
+    void PlayMessageSound()
+    {
+        if (messageAudioLock) return;
+
+        StartCoroutine(MessageSoundCooldown());
+    }
+
+    IEnumerator MessageSoundCooldown()
+    {
+        messageAudioLock = true;
+
+        PlaySoundSafe(messageSound, 1f);
+
+        yield return new WaitForSeconds(0.2f);
+
+        messageAudioLock = false;
+    }
+
+    void PlaySoundSafe(AudioClip clip, float volume)
+    {
+        if (audioSource != null && clip != null)
+            audioSource.PlayOneShot(clip, volume);
+    }
+
+    IEnumerator CheckEndAfterMessage()
+    {
+        yield return new WaitForSeconds(2.2f);
+        CheckLevelEnd();
+    }
+
     void CheckLevelEnd()
     {
         int finished = 0;
 
-        foreach (CustomerDelivery customer in customers)
-        {
-            if (customer.delivered || customer.failed)
-            {
+        foreach (CustomerDelivery c in customers)
+            if (c.delivered || c.failed)
                 finished++;
-            }
-        }
 
         if (finished >= customers.Length)
-        {
             EndLevel();
-        }
     }
 
     void EndLevel()
     {
-        if (levelEnded)
-            return;
+        if (levelEnded) return;
 
         levelEnded = true;
 
@@ -228,7 +234,15 @@ public class DeliveryManager : MonoBehaviour
         failedText.text = "Failed: " + failedCount;
     }
 
-    // (WHITE → ORANGE → RED)
+    int CalculateStars(float percent)
+    {
+        if (percent >= 0.8f) return 5;
+        if (percent >= 0.6f) return 4;
+        if (percent >= 0.4f) return 3;
+        if (percent >= 0.2f) return 2;
+        return 1;
+    }
+
     Color GetTimerColor(float percent)
     {
         Color white = Color.white;
@@ -236,14 +250,8 @@ public class DeliveryManager : MonoBehaviour
         Color red = Color.red;
 
         if (percent > 0.5f)
-        {
-            float t = (1f - percent) / 0.5f;
-            return Color.Lerp(white, orange, t);
-        }
-        else
-        {
-            float t = (0.5f - percent) / 0.5f;
-            return Color.Lerp(orange, red, t);
-        }
+            return Color.Lerp(white, orange, (1f - percent) / 0.5f);
+
+        return Color.Lerp(orange, red, (0.5f - percent) / 0.5f);
     }
 }

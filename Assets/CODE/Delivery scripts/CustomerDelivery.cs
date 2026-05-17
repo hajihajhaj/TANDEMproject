@@ -27,4 +27,7 @@ public class CustomerDelivery
     [TextArea] public string hurryMessage;
     [TextArea] public string angryMessage;
     [TextArea] public string successMessage;
+
+    // prevents repeated audio/message spam
+    [HideInInspector] public bool hurryShown;
 }

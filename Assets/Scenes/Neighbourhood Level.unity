@@ -1903,6 +1903,7 @@ GameObject:
   - component: {fileID: 39032363}
   - component: {fileID: 39032362}
   - component: {fileID: 39032364}
+  - component: {fileID: 39032365}
   m_Layer: 5
   m_Name: Delivery
   m_TagString: Untagged
@@ -1998,6 +1999,7 @@ MonoBehaviour:
     hurryMessage: hurry the damn up
     angryMessage: k no
     successMessage: thank you
+    hurryShown: 0
   - customerName: Bella
     customerImage: {fileID: 21300000, guid: 9d2d3a8030f739847b7459ea4dc26466, type: 3}
     targetHouse: {fileID: 1634261869}
@@ -2010,6 +2012,7 @@ MonoBehaviour:
     hurryMessage: im starving asl
     angryMessage: girl get
     successMessage: thank you mamaaa
+    hurryShown: 0
   - customerName: Chase
     customerImage: {fileID: 21300000, guid: 8648be29288719b47a24d960272ae4cf, type: 3}
     targetHouse: {fileID: 1923926804}
@@ -2022,6 +2025,7 @@ MonoBehaviour:
     hurryMessage: hey what happened? still coming?
     angryMessage: im cancelling
     successMessage: thanks btw
+    hurryShown: 0
   messagePanel: {fileID: 2051728769}
   customerNameText: {fileID: 623624763}
   customerMessageText: {fileID: 90111377}
@@ -2030,6 +2034,107 @@ MonoBehaviour:
   starsText: {fileID: 163439174}
   deliveredText: {fileID: 644690786}
   failedText: {fileID: 3408050}
+  audioSource: {fileID: 39032365}
+  messageSound: {fileID: 8300000, guid: 46f8db25a579f764e9a76d668e888f1a, type: 3}
+  successSound: {fileID: 8300000, guid: c16e9a0c6264cba4c93bd58c6ef0e372, type: 3}
+  failSound: {fileID: 8300000, guid: f0efc4e7ab8821740804a6d6c61ae65e, type: 3}
+--- !u!82 &39032365
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 39032360}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.3
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &39348324
 GameObject:
   m_ObjectHideFlags: 0
@@ -13366,6 +13471,7 @@ MonoBehaviour:
     hurryMessage: 
     angryMessage: 
     successMessage: 
+    hurryShown: 0
 --- !u!114 &494259793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21861,7 +21967,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: b5b9c2b24ef1fe544995881a61df2b9a, type: 3}
   m_Resource: {fileID: 8300000, guid: b5b9c2b24ef1fe544995881a61df2b9a, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.4
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -44273,6 +44379,7 @@ MonoBehaviour:
     hurryMessage: 
     angryMessage: 
     successMessage: 
+    hurryShown: 0
 --- !u!114 &1634261870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54446,6 +54553,7 @@ MonoBehaviour:
     hurryMessage: 
     angryMessage: 
     successMessage: 
+    hurryShown: 0
 --- !u!114 &1923926805
 MonoBehaviour:
   m_ObjectHideFlags: 0
