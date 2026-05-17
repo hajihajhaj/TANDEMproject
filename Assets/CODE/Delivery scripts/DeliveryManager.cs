@@ -45,7 +45,7 @@ public class DeliveryManager : MonoBehaviour
 
     Coroutine messageRoutine;
 
-    // prevents audio spam overlap
+    // prevents audio overlap spam
     bool messageAudioLock;
 
     public static DeliveryManager instance;
@@ -66,6 +66,13 @@ public class DeliveryManager : MonoBehaviour
         {
             customer.currentTime = customer.maxTime;
             customer.hurryShown = false;
+
+            // IMPORTANT: reconnect delivery houses
+            if (customer.targetHouse != null)
+            {
+                customer.targetHouse.deliveryManager = this;
+                customer.targetHouse.customer = customer;
+            }
         }
     }
 
@@ -81,14 +88,17 @@ public class DeliveryManager : MonoBehaviour
     void UpdateMainTimer()
     {
         currentMainTime -= Time.deltaTime;
-        if (currentMainTime < 0) currentMainTime = 0;
+
+        if (currentMainTime < 0)
+            currentMainTime = 0;
 
         int minutes = Mathf.FloorToInt(currentMainTime / 60);
         int seconds = Mathf.FloorToInt(currentMainTime % 60);
 
         mainTimerText.text = $"{minutes:00}:{seconds:00}";
 
-        mainTimerText.color = GetTimerColor(currentMainTime / mainLevelTime);
+        float percent = currentMainTime / mainLevelTime;
+        mainTimerText.color = GetTimerColor(percent);
 
         if (currentMainTime <= 0)
             EndLevel();
@@ -105,17 +115,23 @@ public class DeliveryManager : MonoBehaviour
 
             if (customer.timerBar != null)
             {
-                float percent = customer.currentTime / customer.maxTime;
+                float percent =
+                    customer.currentTime / customer.maxTime;
 
                 customer.timerBar.value = percent;
-                customer.timerBar.fillRect.GetComponent<Image>().color = GetTimerColor(percent);
+
+                Image fillImage =
+                    customer.timerBar.fillRect.GetComponent<Image>();
+
+                fillImage.color = GetTimerColor(percent);
             }
 
-            // HURRY (ONCE ONLY)
+            // HURRY MESSAGE (ONLY ONCE)
             if (!customer.hurryShown &&
                 customer.currentTime <= customer.maxTime * 0.5f)
             {
                 customer.hurryShown = true;
+
                 ShowMessage(customer, customer.hurryMessage, true);
             }
 
@@ -140,14 +156,17 @@ public class DeliveryManager : MonoBehaviour
         customer.delivered = true;
         deliveredCount++;
 
-        float percent = customer.currentTime / customer.maxTime;
+        float percent =
+            customer.currentTime / customer.maxTime;
+
         int stars = CalculateStars(percent);
 
         totalStars += stars;
 
         PlaySoundSafe(successSound, 0.6f);
 
-        ShowMessage(customer,
+        ShowMessage(
+            customer,
             customer.successMessage + "\nStars: " + stars,
             false
         );
@@ -155,12 +174,17 @@ public class DeliveryManager : MonoBehaviour
         StartCoroutine(CheckEndAfterMessage());
     }
 
-    void ShowMessage(CustomerDelivery customer, string message, bool playSound)
+    void ShowMessage(
+        CustomerDelivery customer,
+        string message,
+        bool playSound
+    )
     {
         if (messageRoutine != null)
             StopCoroutine(messageRoutine);
 
-        messageRoutine = StartCoroutine(MessagePopup(customer, message));
+        messageRoutine =
+            StartCoroutine(MessagePopup(customer, message));
 
         if (playSound)
             PlayMessageSound();
@@ -181,7 +205,8 @@ public class DeliveryManager : MonoBehaviour
 
     void PlayMessageSound()
     {
-        if (messageAudioLock) return;
+        if (messageAudioLock)
+            return;
 
         StartCoroutine(MessageSoundCooldown());
     }
@@ -190,6 +215,7 @@ public class DeliveryManager : MonoBehaviour
     {
         messageAudioLock = true;
 
+        // increase/decrease this number for volume
         PlaySoundSafe(messageSound, 1f);
 
         yield return new WaitForSeconds(0.2f);
@@ -200,12 +226,15 @@ public class DeliveryManager : MonoBehaviour
     void PlaySoundSafe(AudioClip clip, float volume)
     {
         if (audioSource != null && clip != null)
+        {
             audioSource.PlayOneShot(clip, volume);
+        }
     }
 
     IEnumerator CheckEndAfterMessage()
     {
         yield return new WaitForSeconds(2.2f);
+
         CheckLevelEnd();
     }
 
@@ -213,17 +242,24 @@ public class DeliveryManager : MonoBehaviour
     {
         int finished = 0;
 
-        foreach (CustomerDelivery c in customers)
-            if (c.delivered || c.failed)
+        foreach (CustomerDelivery customer in customers)
+        {
+            if (customer.delivered || customer.failed)
+            {
                 finished++;
+            }
+        }
 
         if (finished >= customers.Length)
+        {
             EndLevel();
+        }
     }
 
     void EndLevel()
     {
-        if (levelEnded) return;
+        if (levelEnded)
+            return;
 
         levelEnded = true;
 
@@ -240,6 +276,7 @@ public class DeliveryManager : MonoBehaviour
         if (percent >= 0.6f) return 4;
         if (percent >= 0.4f) return 3;
         if (percent >= 0.2f) return 2;
+
         return 1;
     }
 
@@ -250,8 +287,12 @@ public class DeliveryManager : MonoBehaviour
         Color red = Color.red;
 
         if (percent > 0.5f)
-            return Color.Lerp(white, orange, (1f - percent) / 0.5f);
+        {
+            float t = (1f - percent) / 0.5f;
+            return Color.Lerp(white, orange, t);
+        }
 
-        return Color.Lerp(orange, red, (0.5f - percent) / 0.5f);
+        float t2 = (0.5f - percent) / 0.5f;
+        return Color.Lerp(orange, red, t2);
     }
 }
