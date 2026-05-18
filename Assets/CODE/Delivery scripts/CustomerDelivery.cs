@@ -9,6 +9,9 @@ public class CustomerDelivery
     [Header("Customer Visuals")]
     public Sprite customerImage;
 
+    [Header("Persistent UI")]
+    public Image persistentImageUI;
+
     [Header("Delivery")]
     public DeliveryHouse targetHouse;
 
@@ -31,3 +34,4 @@ public class CustomerDelivery
     // prevents repeated audio/message spam
     [HideInInspector] public bool hurryShown;
 }
+

@@ -45,7 +45,6 @@ public class DeliveryManager : MonoBehaviour
 
     Coroutine messageRoutine;
 
-    // prevents audio overlap spam
     bool messageAudioLock;
 
     public static DeliveryManager instance;
@@ -67,11 +66,16 @@ public class DeliveryManager : MonoBehaviour
             customer.currentTime = customer.maxTime;
             customer.hurryShown = false;
 
-            // IMPORTANT: reconnect delivery houses
             if (customer.targetHouse != null)
             {
                 customer.targetHouse.deliveryManager = this;
                 customer.targetHouse.customer = customer;
+            }
+
+            // Hide persistent customer images at start
+            if (customer.persistentImageUI != null)
+            {
+                customer.persistentImageUI.gameObject.SetActive(false);
             }
         }
     }
@@ -126,7 +130,7 @@ public class DeliveryManager : MonoBehaviour
                 fillImage.color = GetTimerColor(percent);
             }
 
-            // HURRY MESSAGE (ONLY ONCE)
+            // HURRY MESSAGE
             if (!customer.hurryShown &&
                 customer.currentTime <= customer.maxTime * 0.5f)
             {
@@ -165,6 +169,14 @@ public class DeliveryManager : MonoBehaviour
 
         PlaySoundSafe(successSound, 0.6f);
 
+        // SHOW PERSISTENT CUSTOMER IMAGE
+        if (customer.persistentImageUI != null)
+        {
+       
+            Debug.Log("Showing image for " + customer.customerName);
+            customer.persistentImageUI.gameObject.SetActive(true);
+        }
+
         ShowMessage(
             customer,
             customer.successMessage + "\nStars: " + stars,
@@ -196,6 +208,7 @@ public class DeliveryManager : MonoBehaviour
 
         customerNameText.text = customer.customerName;
         customerMessageText.text = message;
+
         customerImageUI.sprite = customer.customerImage;
 
         yield return new WaitForSeconds(2f);
@@ -215,7 +228,6 @@ public class DeliveryManager : MonoBehaviour
     {
         messageAudioLock = true;
 
-        // increase/decrease this number for volume
         PlaySoundSafe(messageSound, 1f);
 
         yield return new WaitForSeconds(0.2f);
