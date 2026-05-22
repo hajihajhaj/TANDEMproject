@@ -6,4 +6,6 @@ public static class UpgradeData
 
     // EQUIPPED
     public static string equippedUpgrade = "";
+
+    public static int totalCoins;
 }

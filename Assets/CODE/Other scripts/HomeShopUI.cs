@@ -3,25 +3,72 @@ using TMPro;
 
 public class HomeShopUI : MonoBehaviour
 {
+    [Header("Buttons")]
     public TMP_Text speedBoostButtonText;
     public TMP_Text jumpBoostButtonText;
 
+    [Header("Coins")]
+    public TMP_Text coinsText;
+
+    [Header("Not Enough Coins Popup")]
+    public GameObject notEnoughCoinsPopup;
+
+    int speedBoostCost = 25;
+    int jumpBoostCost = 25;
+
     void Start()
     {
+        if (notEnoughCoinsPopup != null)
+        {
+            notEnoughCoinsPopup.SetActive(false);
+        }
+
         UpdateUI();
     }
 
+    void Update()
+    {
+        if (notEnoughCoinsPopup != null &&
+            notEnoughCoinsPopup.activeSelf)
+        {
+            if (Input.GetKeyDown(KeyCode.Backspace))
+            {
+                CloseNotEnoughCoinsPopup();
+            }
+        }
+    }
+
+    // =========================
+    // SPEED BOOST
+    // =========================
+
     public void BuySpeedBoost()
     {
+        // ALREADY OWNED
+        if (UpgradeData.ownsSpeedBoost)
+        {
+            EquipSpeedBoost();
+            return;
+        }
+
+        // NOT ENOUGH MONEY
+        if (UpgradeData.totalCoins < speedBoostCost)
+        {
+            ShowNotEnoughCoins();
+            return;
+        }
+
+        // BUY
+        UpgradeData.totalCoins -= speedBoostCost;
+
         UpgradeData.ownsSpeedBoost = true;
 
-        // IMPORTANT
-        UpgradeData.equippedUpgrade = "SpeedBoost";
+        UpgradeData.equippedUpgrade =
+            "SpeedBoost";
 
         UpdateUI();
 
         Debug.Log("Bought Speed Boost");
-        Debug.Log("Equipped: " + UpgradeData.equippedUpgrade);
     }
 
     public void EquipSpeedBoost()
@@ -29,22 +76,45 @@ public class HomeShopUI : MonoBehaviour
         if (!UpgradeData.ownsSpeedBoost)
             return;
 
-        UpgradeData.equippedUpgrade = "SpeedBoost";
+        UpgradeData.equippedUpgrade =
+            "SpeedBoost";
 
         UpdateUI();
+
+        Debug.Log("Equipped Speed Boost");
     }
+
+    // =========================
+    // JUMP BOOST
+    // =========================
 
     public void BuyJumpBoost()
     {
-        Debug.Log("HOME SHOP JUMP BUTTON");
+        // ALREADY OWNED
+        if (UpgradeData.ownsJumpBoost)
+        {
+            EquipJumpBoost();
+            return;
+        }
+
+        // NOT ENOUGH MONEY
+        if (UpgradeData.totalCoins < jumpBoostCost)
+        {
+            ShowNotEnoughCoins();
+            return;
+        }
+
+        // BUY
+        UpgradeData.totalCoins -= jumpBoostCost;
 
         UpgradeData.ownsJumpBoost = true;
-        UpgradeData.equippedUpgrade = "JumpBoost";
 
-
-        EquipJumpBoost();
+        UpgradeData.equippedUpgrade =
+            "JumpBoost";
 
         UpdateUI();
+
+        Debug.Log("Bought Jump Boost");
     }
 
     public void EquipJumpBoost()
@@ -52,31 +122,87 @@ public class HomeShopUI : MonoBehaviour
         if (!UpgradeData.ownsJumpBoost)
             return;
 
-        UpgradeData.equippedUpgrade = "JumpBoost";
+        UpgradeData.equippedUpgrade =
+            "JumpBoost";
 
         UpdateUI();
+
+        Debug.Log("Equipped Jump Boost");
     }
+
+    // =========================
+    // POPUP
+    // =========================
+
+    void ShowNotEnoughCoins()
+    {
+        if (notEnoughCoinsPopup != null)
+        {
+            notEnoughCoinsPopup.SetActive(true);
+        }
+    }
+
+    public void CloseNotEnoughCoinsPopup()
+    {
+        if (notEnoughCoinsPopup != null)
+        {
+            notEnoughCoinsPopup.SetActive(false);
+        }
+    }
+
+    // =========================
+    // UI
+    // =========================
 
     void UpdateUI()
     {
-        // SPEED BOOST BUTTON
-        if (UpgradeData.equippedUpgrade == "SpeedBoost")
+        // TOTAL COINS
+        if (coinsText != null)
         {
-            speedBoostButtonText.text = "Owned";
-        }
-        else
-        {
-            speedBoostButtonText.text = "Speed Boost";
+            coinsText.text =
+                UpgradeData.totalCoins.ToString();
         }
 
-        // JUMP BOOST BUTTON
-        if (UpgradeData.equippedUpgrade == "JumpBoost")
+        // =========================
+        // SPEED BOOST BUTTON
+        // =========================
+
+        if (UpgradeData.equippedUpgrade ==
+            "SpeedBoost")
         {
-            jumpBoostButtonText.text = "Owned";
+            speedBoostButtonText.text =
+                "Equipped";
+        }
+        else if (UpgradeData.ownsSpeedBoost)
+        {
+            speedBoostButtonText.text =
+                "Owned";
         }
         else
         {
-            jumpBoostButtonText.text = "Jump Boost";
+            speedBoostButtonText.text =
+                speedBoostCost.ToString();
+        }
+
+        // =========================
+        // JUMP BOOST BUTTON
+        // =========================
+
+        if (UpgradeData.equippedUpgrade ==
+            "JumpBoost")
+        {
+            jumpBoostButtonText.text =
+                "Equipped";
+        }
+        else if (UpgradeData.ownsJumpBoost)
+        {
+            jumpBoostButtonText.text =
+                "Owned";
+        }
+        else
+        {
+            jumpBoostButtonText.text =
+                jumpBoostCost.ToString();
         }
     }
 }

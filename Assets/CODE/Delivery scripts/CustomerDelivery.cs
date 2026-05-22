@@ -1,6 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum DeliveryDifficulty
+{
+    Easy = 2,
+    Medium = 3,
+    Hard = 4
+}
+
 [System.Serializable]
 public class CustomerDelivery
 {
@@ -14,6 +21,10 @@ public class CustomerDelivery
 
     [Header("Delivery")]
     public DeliveryHouse targetHouse;
+
+    [Header("Difficulty")]
+    public DeliveryDifficulty difficulty =
+        DeliveryDifficulty.Easy;
 
     [Header("Timer")]
     public float maxTime = 60f;
@@ -31,7 +42,5 @@ public class CustomerDelivery
     [TextArea] public string angryMessage;
     [TextArea] public string successMessage;
 
-    // prevents repeated audio/message spam
     [HideInInspector] public bool hurryShown;
 }
-

@@ -30,6 +30,12 @@ public class DeliveryManager : MonoBehaviour
     public TMP_Text deliveredText;
     public TMP_Text failedText;
 
+    [Header("Coins")]
+    public TMP_Text totalCoinsText;
+    public TMP_Text summaryCoinsText;
+
+    public TMP_Text totalStarsText;
+
     [Header("Audio")]
     public AudioSource audioSource;
 
@@ -38,6 +44,8 @@ public class DeliveryManager : MonoBehaviour
     public AudioClip failSound;
 
     int totalStars;
+    int totalCoins;
+
     int deliveredCount;
     int failedCount;
 
@@ -61,6 +69,10 @@ public class DeliveryManager : MonoBehaviour
         messagePanel.SetActive(false);
         summaryPanel.SetActive(false);
 
+        UpdateCoinUI();
+
+        UpdateStarsUI();
+
         foreach (CustomerDelivery customer in customers)
         {
             customer.currentTime = customer.maxTime;
@@ -72,7 +84,6 @@ public class DeliveryManager : MonoBehaviour
                 customer.targetHouse.customer = customer;
             }
 
-            // Hide ALL persistent images at start
             if (customer.persistentImages != null)
             {
                 foreach (GameObject image in customer.persistentImages)
@@ -105,10 +116,14 @@ public class DeliveryManager : MonoBehaviour
         int minutes = Mathf.FloorToInt(currentMainTime / 60);
         int seconds = Mathf.FloorToInt(currentMainTime % 60);
 
-        mainTimerText.text = $"{minutes:00}:{seconds:00}";
+        mainTimerText.text =
+            $"{minutes:00}:{seconds:00}";
 
-        float percent = currentMainTime / mainLevelTime;
-        mainTimerText.color = GetTimerColor(percent);
+        float percent =
+            currentMainTime / mainLevelTime;
+
+        mainTimerText.color =
+            GetTimerColor(percent);
 
         if (currentMainTime <= 0)
             EndLevel();
@@ -126,34 +141,47 @@ public class DeliveryManager : MonoBehaviour
             if (customer.timerBar != null)
             {
                 float percent =
-                    customer.currentTime / customer.maxTime;
+                    customer.currentTime /
+                    customer.maxTime;
 
                 customer.timerBar.value = percent;
 
                 Image fillImage =
-                    customer.timerBar.fillRect.GetComponent<Image>();
+                    customer.timerBar.fillRect
+                    .GetComponent<Image>();
 
-                fillImage.color = GetTimerColor(percent);
+                fillImage.color =
+                    GetTimerColor(percent);
             }
 
             // HURRY MESSAGE
             if (!customer.hurryShown &&
-                customer.currentTime <= customer.maxTime * 0.5f)
+                customer.currentTime <=
+                customer.maxTime * 0.5f)
             {
                 customer.hurryShown = true;
 
-                ShowMessage(customer, customer.hurryMessage, true);
+                ShowMessage(
+                    customer,
+                    customer.hurryMessage,
+                    true
+                );
             }
 
             // FAIL
             if (customer.currentTime <= 0)
             {
                 customer.failed = true;
+
                 failedCount++;
 
                 PlaySoundSafe(failSound, 0.7f);
 
-                ShowMessage(customer, customer.angryMessage, false);
+                ShowMessage(
+                    customer,
+                    customer.angryMessage,
+                    false
+                );
             }
         }
     }
@@ -164,26 +192,42 @@ public class DeliveryManager : MonoBehaviour
             return;
 
         customer.delivered = true;
+
         deliveredCount++;
 
         float percent =
-            customer.currentTime / customer.maxTime;
+            customer.currentTime /
+            customer.maxTime;
 
-        int stars = CalculateStars(percent);
+        int stars =
+            CalculateStars(percent);
 
         totalStars += stars;
 
+        UpdateStarsUI();
+
+        // COINS
+        int coinMultiplier =
+            (int)customer.difficulty;
+
+        int earnedCoins =
+            stars * coinMultiplier;
+
+        totalCoins += earnedCoins;
+        UpgradeData.totalCoins = totalCoins;
+
+        UpdateCoinUI();
+
         PlaySoundSafe(successSound, 0.6f);
 
-        // SHOW ALL PERSISTENT CUSTOMER IMAGES
+        // SHOW PERSISTENT IMAGES
         if (customer.persistentImages != null)
         {
-            foreach (GameObject image in customer.persistentImages)
+            foreach (GameObject image
+                in customer.persistentImages)
             {
                 if (image != null)
                 {
-                    Debug.Log("Showing image for " + customer.customerName);
-
                     image.SetActive(true);
                 }
             }
@@ -191,11 +235,31 @@ public class DeliveryManager : MonoBehaviour
 
         ShowMessage(
             customer,
-            customer.successMessage + "\nStars: " + stars,
+            customer.successMessage +
+            "\nStars: " + stars +
+            "\nCoins: +" + earnedCoins,
             false
         );
 
         StartCoroutine(CheckEndAfterMessage());
+    }
+
+    void UpdateCoinUI()
+    {
+        if (totalCoinsText != null)
+        {
+            totalCoinsText.text =
+      totalCoins.ToString();
+        }
+    }
+
+    void UpdateStarsUI()
+    {
+        if (totalStarsText != null)
+        {
+            totalStarsText.text =
+    totalStars.ToString();
+        }
     }
 
     void ShowMessage(
@@ -208,20 +272,29 @@ public class DeliveryManager : MonoBehaviour
             StopCoroutine(messageRoutine);
 
         messageRoutine =
-            StartCoroutine(MessagePopup(customer, message));
+            StartCoroutine(
+                MessagePopup(customer, message)
+            );
 
         if (playSound)
             PlayMessageSound();
     }
 
-    IEnumerator MessagePopup(CustomerDelivery customer, string message)
+    IEnumerator MessagePopup(
+        CustomerDelivery customer,
+        string message
+    )
     {
         messagePanel.SetActive(true);
 
-        customerNameText.text = customer.customerName;
-        customerMessageText.text = message;
+        customerNameText.text =
+            customer.customerName;
 
-        customerImageUI.sprite = customer.customerImage;
+        customerMessageText.text =
+            message;
+
+        customerImageUI.sprite =
+            customer.customerImage;
 
         yield return new WaitForSeconds(2f);
 
@@ -233,7 +306,9 @@ public class DeliveryManager : MonoBehaviour
         if (messageAudioLock)
             return;
 
-        StartCoroutine(MessageSoundCooldown());
+        StartCoroutine(
+            MessageSoundCooldown()
+        );
     }
 
     IEnumerator MessageSoundCooldown()
@@ -247,11 +322,18 @@ public class DeliveryManager : MonoBehaviour
         messageAudioLock = false;
     }
 
-    void PlaySoundSafe(AudioClip clip, float volume)
+    void PlaySoundSafe(
+        AudioClip clip,
+        float volume
+    )
     {
-        if (audioSource != null && clip != null)
+        if (audioSource != null &&
+            clip != null)
         {
-            audioSource.PlayOneShot(clip, volume);
+            audioSource.PlayOneShot(
+                clip,
+                volume
+            );
         }
     }
 
@@ -266,9 +348,11 @@ public class DeliveryManager : MonoBehaviour
     {
         int finished = 0;
 
-        foreach (CustomerDelivery customer in customers)
+        foreach (CustomerDelivery customer
+            in customers)
         {
-            if (customer.delivered || customer.failed)
+            if (customer.delivered ||
+                customer.failed)
             {
                 finished++;
             }
@@ -289,14 +373,26 @@ public class DeliveryManager : MonoBehaviour
 
         summaryPanel.SetActive(true);
 
-        starsText.text = "Stars: " + totalStars;
-        deliveredText.text = "Delivered: " + deliveredCount;
-        failedText.text = "Failed: " + failedCount;
+        starsText.text =
+            "Stars: " + totalStars;
+
+        deliveredText.text =
+            "Delivered: " + deliveredCount;
+
+        failedText.text =
+            "Failed: " + failedCount;
+
+        if (summaryCoinsText != null)
+        {
+            summaryCoinsText.text =
+                "Coins: " + totalCoins;
+        }
     }
 
     public float GetRemainingTimePercent()
     {
-        return currentMainTime / mainLevelTime;
+        return currentMainTime /
+               mainLevelTime;
     }
 
     int CalculateStars(float percent)
@@ -312,16 +408,31 @@ public class DeliveryManager : MonoBehaviour
     Color GetTimerColor(float percent)
     {
         Color white = Color.white;
-        Color orange = new Color(1f, 0.5f, 0f);
+
+        Color orange =
+            new Color(1f, 0.5f, 0f);
+
         Color red = Color.red;
 
         if (percent > 0.5f)
         {
-            float t = (1f - percent) / 0.5f;
-            return Color.Lerp(white, orange, t);
+            float t =
+                (1f - percent) / 0.5f;
+
+            return Color.Lerp(
+                white,
+                orange,
+                t
+            );
         }
 
-        float t2 = (0.5f - percent) / 0.5f;
-        return Color.Lerp(orange, red, t2);
+        float t2 =
+            (0.5f - percent) / 0.5f;
+
+        return Color.Lerp(
+            orange,
+            red,
+            t2
+        );
     }
 }
