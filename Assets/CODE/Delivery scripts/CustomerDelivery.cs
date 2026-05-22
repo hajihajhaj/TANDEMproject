@@ -43,4 +43,7 @@ public class CustomerDelivery
     [TextArea] public string successMessage;
 
     [HideInInspector] public bool hurryShown;
+
+    [HideInInspector] public int earnedStars;
+    [HideInInspector] public float deliveryTimeTaken;
 }

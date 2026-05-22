@@ -2,6 +2,17 @@
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
+
+[System.Serializable]
+public class DeliverySummaryUI
+{
+    public Image customerImage;
+    public TMP_Text customerNameText;
+    public TMP_Text timeText;
+
+    public GameObject[] starImages;
+}
 
 public class DeliveryManager : MonoBehaviour
 {
@@ -29,6 +40,18 @@ public class DeliveryManager : MonoBehaviour
     public TMP_Text starsText;
     public TMP_Text deliveredText;
     public TMP_Text failedText;
+
+    [Header("Level Summary Extra")]
+
+    public TMP_Text totalTimeTakenText;
+
+    public TMP_Text deliveriesSummaryText;
+
+    public TMP_Text averageStarsText;
+
+    public GameObject[] averageStarImages;
+
+    public DeliverySummaryUI[] customerSummaryUI;
 
     [Header("Coins")]
     public TMP_Text totalCoinsText;
@@ -202,6 +225,11 @@ public class DeliveryManager : MonoBehaviour
         int stars =
             CalculateStars(percent);
 
+        customer.earnedStars = stars;
+
+        customer.deliveryTimeTaken =
+            customer.maxTime - customer.currentTime;
+
         totalStars += stars;
 
         UpdateStarsUI();
@@ -373,20 +401,109 @@ public class DeliveryManager : MonoBehaviour
 
         summaryPanel.SetActive(true);
 
+        // TOTAL STARS
         starsText.text =
-            "Stars: " + totalStars;
+            totalStars.ToString();
 
+        // DELIVERIES
         deliveredText.text =
-            "Delivered: " + deliveredCount;
+            deliveredCount.ToString();
 
         failedText.text =
-            "Failed: " + failedCount;
+            failedCount.ToString();
 
+        // TOTAL COINS
         if (summaryCoinsText != null)
         {
             summaryCoinsText.text =
-                "Coins: " + totalCoins;
+                totalCoins.ToString();
         }
+
+        // TOTAL TIME TAKEN
+        float timeTaken =
+            mainLevelTime - currentMainTime;
+
+        int minutes =
+            Mathf.FloorToInt(timeTaken / 60);
+
+        int seconds =
+            Mathf.FloorToInt(timeTaken % 60);
+
+        totalTimeTakenText.text =
+            $"{minutes:00}:{seconds:00}";
+
+        // DELIVERIES SUMMARY
+        deliveriesSummaryText.text =
+            deliveredCount + "/" + customers.Length;
+
+        // AVERAGE STARS
+        float averageStars =
+            (float)totalStars / customers.Length;
+
+        averageStarsText.text =
+            averageStars.ToString("0.0");
+
+        // SHOW AVERAGE STAR IMAGES
+        int roundedAverage =
+            Mathf.RoundToInt(averageStars);
+
+        for (int i = 0; i < averageStarImages.Length; i++)
+        {
+            averageStarImages[i]
+                .SetActive(i < roundedAverage);
+        }
+
+        // CUSTOMER DELIVERY SUMMARY
+        for (int i = 0; i < customerSummaryUI.Length; i++)
+        {
+            if (i >= customers.Length)
+                continue;
+
+            CustomerDelivery customer =
+                customers[i];
+
+            DeliverySummaryUI ui =
+                customerSummaryUI[i];
+
+            // IMAGE
+            ui.customerImage.sprite =
+                customer.customerImage;
+
+            // NAME
+            ui.customerNameText.text =
+                customer.customerName;
+
+            // TIME
+            int mins =
+                Mathf.FloorToInt(
+                    customer.deliveryTimeTaken / 60);
+
+            int secs =
+                Mathf.FloorToInt(
+                    customer.deliveryTimeTaken % 60);
+
+            ui.timeText.text =
+                $"{mins:00}:{secs:00}";
+
+            // STARS
+            for (int s = 0; s < ui.starImages.Length; s++)
+            {
+                ui.starImages[s]
+                    .SetActive(
+                        s < customer.earnedStars
+                    );
+            }
+        }
+    }
+
+    public void RestartLevel()
+    {
+        Scene currentScene =
+            SceneManager.GetActiveScene();
+
+        SceneManager.LoadScene(
+            currentScene.buildIndex
+        );
     }
 
     public float GetRemainingTimePercent()
