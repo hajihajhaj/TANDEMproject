@@ -2410,17 +2410,17 @@ MonoBehaviour:
   customers:
   - customerName: Mariam
     customerImage: {fileID: 21300000, guid: d4f437404d116ae4cbb1fe38d23bea45, type: 3}
-    persistentImageUI: {fileID: 0}
+    persistentImageUI: {fileID: 2001924792}
     targetHouse: {fileID: 494259792}
     maxTime: 50
     currentTime: 0
     delivered: 0
     failed: 0
     timerBar: {fileID: 1339166098}
-    patientMessage: where are you lyke
-    hurryMessage: hurry the damn up
-    angryMessage: k no
-    successMessage: thank you
+    patientMessage: where are you ?
+    hurryMessage: hurry the damn up!!
+    angryMessage: k no I'm switching to Uder !!!
+    successMessage: Thank you!
     hurryShown: 0
   - customerName: Bella
     customerImage: {fileID: 21300000, guid: 9d2d3a8030f739847b7459ea4dc26466, type: 3}
@@ -2431,10 +2431,11 @@ MonoBehaviour:
     delivered: 0
     failed: 0
     timerBar: {fileID: 1058563335}
-    patientMessage: where u at?
-    hurryMessage: im starving asl
-    angryMessage: girl get
-    successMessage: thank you mamaaa
+    patientMessage: Are u on ur way? :)
+    hurryMessage: I need that package today !  :/
+    angryMessage: What kind of delivery service is this?? I'm calling your boss !
+      >:(
+    successMessage: Thank you, have a great day! :D
     hurryShown: 0
   - customerName: Chase
     customerImage: {fileID: 21300000, guid: 8648be29288719b47a24d960272ae4cf, type: 3}
@@ -2445,10 +2446,10 @@ MonoBehaviour:
     delivered: 0
     failed: 0
     timerBar: {fileID: 1430902146}
-    patientMessage: are you on the way ?
-    hurryMessage: hey what happened? still coming?
-    angryMessage: im cancelling
-    successMessage: thanks btw
+    patientMessage: hey bro let me know when you arrive
+    hurryMessage: hey what happened? still coming yo?
+    angryMessage: bruh I'm cancelling
+    successMessage: 'Thanks man, have a good one '
     hurryShown: 0
   messagePanel: {fileID: 2051728769}
   customerNameText: {fileID: 623624763}
@@ -4502,6 +4503,8 @@ Transform:
   - {fileID: 1882706779}
   - {fileID: 439350283}
   - {fileID: 1546279344}
+  - {fileID: 1243238008}
+  - {fileID: 1787295807}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &92541937
@@ -45850,15 +45853,15 @@ Transform:
   m_GameObject: {fileID: 1243238007}
   serializedVersion: 2
   m_LocalRotation: {x: -1.946016e-18, y: 0.6793715, z: 0.000000080987384, w: 0.7337946}
-  m_LocalPosition: {x: -750.5, y: 7.9, z: 327.5}
-  m_LocalScale: {x: 3.724852, y: 3.7248485, z: 3.724852}
+  m_LocalPosition: {x: -528.7901, y: -2.309564, z: 353.87024}
+  m_LocalScale: {x: 3.7248518, y: 3.7248485, z: 3.7248518}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1560006362}
   - {fileID: 1932563937}
   - {fileID: 2029743906}
   - {fileID: 1333452530}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 90926187}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1243667173
 MeshCollider:
@@ -61911,14 +61914,14 @@ Transform:
   m_GameObject: {fileID: 1787295806}
   serializedVersion: 2
   m_LocalRotation: {x: -3.6140774e-18, y: 0.6793715, z: 0.000000080987384, w: 0.7337946}
-  m_LocalPosition: {x: -740.2, y: 7.9, z: 229.9}
-  m_LocalScale: {x: 3.7248497, y: 3.7248485, z: 3.7248497}
+  m_LocalPosition: {x: -518.4901, y: -2.309564, z: 256.27023}
+  m_LocalScale: {x: 3.7248495, y: 3.7248485, z: 3.7248495}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1190615449}
   - {fileID: 2077952052}
   - {fileID: 1531466784}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 90926187}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1787810003
 MeshCollider:
@@ -78460,5 +78463,3 @@ SceneRoots:
   - {fileID: 1217188869}
   - {fileID: 90926187}
   - {fileID: 811154387}
-  - {fileID: 1243238008}
-  - {fileID: 1787295807}
