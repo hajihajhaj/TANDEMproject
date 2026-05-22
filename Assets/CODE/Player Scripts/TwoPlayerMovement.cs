@@ -14,6 +14,9 @@ public class TwoPlayerMovement : MonoBehaviour
     {
         MovePlayer1();
         MovePlayer2();
+
+        Debug.DrawRay(transform.position, transform.forward * 5f, Color.green);
+        Debug.DrawRay(transform.position, Vector3.forward * 5f, Color.red);
     }
 
     void MovePlayer1()
