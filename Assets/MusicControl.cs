@@ -13,37 +13,70 @@ public class MusicControl : MonoBehaviour
     [Header("Controller Volume")]
     public float volumeStep = 0.1f;
 
+    [Header("Delivery Timer")]
+    public DeliveryManager deliveryManager;
+
     void Start()
     {
-        // Start volume
         musicSource.volume = 1f;
 
-        // Slider setup
         volumeSlider.minValue = 0f;
         volumeSlider.maxValue = 1f;
         volumeSlider.value = musicSource.volume;
 
-        // Listen for slider movement
         volumeSlider.onValueChanged.AddListener(ChangeVolume);
     }
 
     void Update()
     {
-        // PS5 / controller D-pad controls
         if (Gamepad.current != null)
         {
-            // Volume Up
             if (Gamepad.current.dpad.up.wasPressedThisFrame)
             {
                 VolumeUp();
             }
 
-            // Volume Down
             if (Gamepad.current.dpad.down.wasPressedThisFrame)
             {
                 VolumeDown();
             }
         }
+
+        UpdateMusicSpeed();
+    }
+
+    void UpdateMusicSpeed()
+    {
+        if (deliveryManager == null)
+            return;
+
+        float percent = deliveryManager.GetRemainingTimePercent();
+
+        float targetPitch = 1f;
+
+        // SLIGHT TENSION
+        if (percent <= 0.50f)
+        {
+            targetPitch = 1.03f;
+        }
+
+        // MEDIUM PANIC
+        if (percent <= 0.25f)
+        {
+            targetPitch = 1.08f;
+        }
+
+        // FINAL PANIC
+        if (percent <= 0.10f)
+        {
+            targetPitch = 1.15f;
+        }
+
+        musicSource.pitch = Mathf.Lerp(
+            musicSource.pitch,
+            targetPitch,
+            Time.deltaTime * 2f
+        );
     }
 
     public void ChangeVolume(float volume)
@@ -54,16 +87,12 @@ public class MusicControl : MonoBehaviour
     public void VolumeUp()
     {
         musicSource.volume = Mathf.Clamp01(musicSource.volume + volumeStep);
-
-        // Update slider visually
         volumeSlider.value = musicSource.volume;
     }
 
     public void VolumeDown()
     {
         musicSource.volume = Mathf.Clamp01(musicSource.volume - volumeStep);
-
-        // Update slider visually
         volumeSlider.value = musicSource.volume;
     }
 }

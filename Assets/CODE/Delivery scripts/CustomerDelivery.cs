@@ -10,7 +10,7 @@ public class CustomerDelivery
     public Sprite customerImage;
 
     [Header("Persistent UI")]
-    public Image persistentImageUI;
+    public GameObject[] persistentImages;
 
     [Header("Delivery")]
     public DeliveryHouse targetHouse;

@@ -72,10 +72,16 @@ public class DeliveryManager : MonoBehaviour
                 customer.targetHouse.customer = customer;
             }
 
-            // Hide persistent customer images at start
-            if (customer.persistentImageUI != null)
+            // Hide ALL persistent images at start
+            if (customer.persistentImages != null)
             {
-                customer.persistentImageUI.gameObject.SetActive(false);
+                foreach (GameObject image in customer.persistentImages)
+                {
+                    if (image != null)
+                    {
+                        image.SetActive(false);
+                    }
+                }
             }
         }
     }
@@ -169,12 +175,18 @@ public class DeliveryManager : MonoBehaviour
 
         PlaySoundSafe(successSound, 0.6f);
 
-        // SHOW PERSISTENT CUSTOMER IMAGE
-        if (customer.persistentImageUI != null)
+        // SHOW ALL PERSISTENT CUSTOMER IMAGES
+        if (customer.persistentImages != null)
         {
-       
-            Debug.Log("Showing image for " + customer.customerName);
-            customer.persistentImageUI.gameObject.SetActive(true);
+            foreach (GameObject image in customer.persistentImages)
+            {
+                if (image != null)
+                {
+                    Debug.Log("Showing image for " + customer.customerName);
+
+                    image.SetActive(true);
+                }
+            }
         }
 
         ShowMessage(
@@ -280,6 +292,11 @@ public class DeliveryManager : MonoBehaviour
         starsText.text = "Stars: " + totalStars;
         deliveredText.text = "Delivered: " + deliveredCount;
         failedText.text = "Failed: " + failedCount;
+    }
+
+    public float GetRemainingTimePercent()
+    {
+        return currentMainTime / mainLevelTime;
     }
 
     int CalculateStars(float percent)
