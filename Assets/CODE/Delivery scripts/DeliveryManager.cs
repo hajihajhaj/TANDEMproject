@@ -36,10 +36,8 @@ public class DeliveryManager : MonoBehaviour
 
     [Header("Summary")]
     public GameObject summaryPanel;
-
-    public TMP_Text starsText;
+    
     public TMP_Text deliveredText;
-    public TMP_Text failedText;
 
     [Header("Level Summary Extra")]
 
@@ -401,16 +399,12 @@ public class DeliveryManager : MonoBehaviour
 
         summaryPanel.SetActive(true);
 
-        // TOTAL STARS
-        starsText.text =
-            totalStars.ToString();
-
+       
         // DELIVERIES
         deliveredText.text =
             deliveredCount.ToString();
 
-        failedText.text =
-            failedCount.ToString();
+       
 
         // TOTAL COINS
         if (summaryCoinsText != null)
@@ -436,17 +430,22 @@ public class DeliveryManager : MonoBehaviour
         deliveriesSummaryText.text =
             deliveredCount + "/" + customers.Length;
 
-        // AVERAGE STARS
+        // AVERAGE STARS OUT OF 3
         float averageStars =
             (float)totalStars / customers.Length;
 
-        averageStarsText.text =
-            averageStars.ToString("0.0");
+        // convert 5-star scale to 3-star scale
+        float averageOutOf3 =
+            (averageStars / 5f) * 3f;
 
-        // SHOW AVERAGE STAR IMAGES
+        // round whole number only
         int roundedAverage =
-            Mathf.RoundToInt(averageStars);
+            Mathf.RoundToInt(averageOutOf3);
 
+        averageStarsText.text =
+            roundedAverage + "/3";
+
+        // SHOW STAR IMAGES
         for (int i = 0; i < averageStarImages.Length; i++)
         {
             averageStarImages[i]
