@@ -26,15 +26,6 @@ public class DeliveryManager : MonoBehaviour
     [Header("Customers")]
     public CustomerDelivery[] customers;
 
-    [Header("MiniMap")]
-    public Transform player;
-
-    public RectTransform miniMapRect;
-
-    public GameObject miniMapIconPrefab;
-
-    public Transform miniMapIconParent;
-
     [Header("Message UI")]
     public GameObject messagePanel;
 
@@ -125,22 +116,7 @@ public class DeliveryManager : MonoBehaviour
                 }
             }
 
-            // CREATE MINIMAP ICON
-            CreateMiniMapIcon(customer);
-        }
-
-        foreach (CustomerDelivery customer in customers)
-        {
-            customer.currentTime = customer.maxTime;
-            customer.delivered = false;
-            customer.failed = false;
-            customer.hurryShown = false;
-
-            customer.earnedStars = 0;
-            customer.deliveryTimeTaken = 0f;
-
-            if (customer.timerBar != null)
-                customer.timerBar.value = 1f;
+         
         }
     }
 
@@ -594,45 +570,4 @@ public class DeliveryManager : MonoBehaviour
         );
     }
 
-    void CreateMiniMapIcon(CustomerDelivery customer)
-    {
-        if (miniMapIconPrefab == null)
-            return;
-
-        if (customer.targetHouse == null)
-            return;
-
-        GameObject icon =
-            Instantiate(
-                miniMapIconPrefab,
-                miniMapIconParent
-            );
-
-        Image iconImage =
-            icon.GetComponent<Image>();
-
-        if (iconImage != null)
-        {
-            iconImage.sprite =
-                customer.minimapIcon;
-        }
-
-        DeliveryMiniMapIcon miniMapScript =
-            icon.GetComponent<DeliveryMiniMapIcon>();
-
-        miniMapScript.player = player;
-
-        miniMapScript.target =
-            customer.targetHouse.transform;
-
-        miniMapScript.miniMapRect =
-            miniMapRect;
-
-        miniMapScript.iconRect =
-            icon.GetComponent<RectTransform>();
-
-        // save icon so we can disable later
-        customer.targetHouse.miniMapIcon =
-            icon;
-    }
 }

@@ -15,7 +15,6 @@ public class CustomerDelivery
 
     [Header("Customer Visuals")]
     public Sprite customerImage;
-    public Sprite minimapIcon;
 
     [Header("Persistent UI")]
     public GameObject[] persistentImages;

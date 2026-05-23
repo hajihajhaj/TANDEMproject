@@ -4,8 +4,7 @@ public class DeliveryHouse : MonoBehaviour
 {
     [HideInInspector] public DeliveryManager deliveryManager;
     [HideInInspector] public CustomerDelivery customer;
-    [HideInInspector]
-    public GameObject miniMapIcon;
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -17,10 +16,7 @@ public class DeliveryHouse : MonoBehaviour
 
         deliveryManager.CompleteDelivery(customer);
 
-        if (miniMapIcon != null)
-        {
-            miniMapIcon.SetActive(false);
-        }
+     
         Destroy(other.gameObject);
     }
 }
