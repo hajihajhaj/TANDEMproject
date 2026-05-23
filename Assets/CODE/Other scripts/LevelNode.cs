@@ -67,19 +67,37 @@ public class LevelNode : MonoBehaviour
     {
         loadingScreen.SetActive(true);
 
+        // force UI to update first
+        yield return null;
+
         AsyncOperation operation =
             SceneManager.LoadSceneAsync(sceneName);
 
+        float displayedProgress = 0f;
+
         while (!operation.isDone)
         {
-            float progress =
+            float targetProgress =
                 Mathf.Clamp01(
                     operation.progress / 0.9f
                 );
 
+            displayedProgress =
+    Mathf.MoveTowards(
+        displayedProgress,
+        targetProgress,
+        0.8f * Time.deltaTime
+    );
+
             if (loadingBar != null)
             {
-                loadingBar.value = progress;
+                loadingBar.value = displayedProgress;
+
+                if (targetProgress >= 0.99f)
+                {
+                    loadingBar.value = 1f;
+                }
+
             }
 
             yield return null;
