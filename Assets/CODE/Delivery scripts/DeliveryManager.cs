@@ -468,6 +468,22 @@ public class DeliveryManager : MonoBehaviour
         int roundedAverage =
             Mathf.RoundToInt(averageOutOf3);
 
+        string sceneName =
+    SceneManager.GetActiveScene().name;
+
+        int currentBest =
+            PlayerPrefs.GetInt(sceneName + "_Stars", 0);
+
+        if (roundedAverage > currentBest)
+        {
+            PlayerPrefs.SetInt(
+                sceneName + "_Stars",
+                roundedAverage
+            );
+
+            PlayerPrefs.Save();
+        }
+
         averageStarsText.text =
             roundedAverage + "/3";
 

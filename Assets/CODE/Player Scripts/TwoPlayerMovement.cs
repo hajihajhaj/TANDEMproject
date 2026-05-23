@@ -10,8 +10,12 @@ public class TwoPlayerMovement : MonoBehaviour
     [Header("Settings")]
     public float moveSpeed = 5f;
 
+    public bool canMove = true;
+
     void Update()
     {
+        if (!canMove) return;
+
         MovePlayer1();
         MovePlayer2();
 
@@ -25,7 +29,6 @@ public class TwoPlayerMovement : MonoBehaviour
 
         Vector3 move = Vector3.zero;
 
-        // WASD (correct mapping)
         if (Keyboard.current.aKey.isPressed) move += Vector3.forward;
         if (Keyboard.current.dKey.isPressed) move += Vector3.back;
         if (Keyboard.current.sKey.isPressed) move += Vector3.left;
@@ -40,7 +43,6 @@ public class TwoPlayerMovement : MonoBehaviour
 
         Vector3 move = Vector3.zero;
 
-        // YGHJ controls (correct mapping)
         if (Keyboard.current.gKey.isPressed) move += Vector3.forward;
         if (Keyboard.current.jKey.isPressed) move += Vector3.back;
         if (Keyboard.current.hKey.isPressed) move += Vector3.left;
