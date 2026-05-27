@@ -3,7 +3,37 @@ guid: 03e3e6c9c8a4ba04d985c54adb7b3fde
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.001
+    second: {fileID: 2100000, guid: 5144171562593654eb5ab692bafccdfb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.003
+    second: {fileID: 2100000, guid: 4b55d1538e61dda419bb062876653722, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.004
+    second: {fileID: 2100000, guid: c504a3bae4c161d4f9cf339903d03fb8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.006
+    second: {fileID: 2100000, guid: b0d5f812ebd3c864ab5d5a1792f6c27b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.007
+    second: {fileID: 2100000, guid: 3e277e231759adb438c87b1224a644b2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.008
+    second: {fileID: 2100000, guid: 7c22e333f0b526c44afd22c24a5021a3, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -80,7 +110,62 @@ ModelImporter:
   humanDescription:
     serializedVersion: 3
     human: []
-    skeleton: []
+    skeleton:
+    - name: femaleNPC(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "B\xE9zierCurve.008"
+      parentName: femaleNPC(Clone)
+      position: {x: 4.3800783, y: -7.31988, z: -0.35991955}
+      rotation: {x: 0.70472324, y: -0.012089921, z: 0.7091583, w: -0.017705986}
+      scale: {x: 180.17621, y: 133.46452, z: 180.17354}
+    - name: "B\xE9zierCurve.009"
+      parentName: femaleNPC(Clone)
+      position: {x: 5.353871, y: -7.31988, z: -0.35991955}
+      rotation: {x: 0.70472324, y: -0.012089921, z: 0.7091583, w: -0.017705986}
+      scale: {x: 180.17621, y: 133.46452, z: 180.17354}
+    - name: Cube.008
+      parentName: femaleNPC(Clone)
+      position: {x: 4.8421564, y: -3.9721515, z: 0.029253317}
+      rotation: {x: -0.6920429, y: 0, z: -0, w: 0.72185636}
+      scale: {x: 120.55166, y: 122.61838, z: 87.4387}
+    - name: Cube.009
+      parentName: femaleNPC(Clone)
+      position: {x: 4.356369, y: -5.628312, z: 0.10860182}
+      rotation: {x: -0.279458, y: 0.6331086, z: 0.6603832, w: 0.29149732}
+      scale: {x: 120.55165, y: 120.55165, z: 87.43601}
+    - name: Cube.010
+      parentName: femaleNPC(Clone)
+      position: {x: 5.343304, y: -5.628312, z: 0.10860182}
+      rotation: {x: -0.6920429, y: 0, z: -0, w: 0.7218564}
+      scale: {x: 120.55166, y: 120.55166, z: 87.43602}
+    - name: NurbsPath.009
+      parentName: femaleNPC(Clone)
+      position: {x: 3.6190372, y: -3.5725179, z: 0.08900565}
+      rotation: {x: 0.7206897, y: -0.09609228, z: -0.674426, w: -0.12853861}
+      scale: {x: 99.99999, y: 100, z: 99.99999}
+    - name: NurbsPath.010
+      parentName: femaleNPC(Clone)
+      position: {x: 5.9402866, y: -3.541867, z: -0.06528634}
+      rotation: {x: 0.7189524, y: 0.1330568, z: -0.67669696, w: 0.08651319}
+      scale: {x: 99.99999, y: 99.999985, z: 100}
+    - name: Sphere.001
+      parentName: femaleNPC(Clone)
+      position: {x: 4.897579, y: -0.12067615, z: 0.28180143}
+      rotation: {x: -0.640787, y: 0.0009118658, z: -0.0010506512, w: 0.7677175}
+      scale: {x: 17.539536, y: 17.539536, z: 17.539532}
+    - name: Sphere.008
+      parentName: femaleNPC(Clone)
+      position: {x: 4.356002, y: -5.2626677, z: 0.12769364}
+      rotation: {x: -0.69204277, y: 0, z: -0, w: 0.7218565}
+      scale: {x: 27.755663, y: 27.755665, z: 27.755665}
+    - name: Sphere.009
+      parentName: femaleNPC(Clone)
+      position: {x: 5.319984, y: -5.2629766, z: 0.13501033}
+      rotation: {x: -0.69204277, y: 0, z: -0, w: 0.7218565}
+      scale: {x: 27.755663, y: 27.755665, z: 27.755665}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5

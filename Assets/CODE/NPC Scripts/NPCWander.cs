@@ -1,0 +1,103 @@
+using UnityEngine;
+using UnityEngine.AI;
+
+public class NPCWander : MonoBehaviour
+{
+    public Transform player;
+
+    public float walkSpeed = 2f;
+    public float runSpeed = 6f;
+
+    public float scareDistance = 5f;
+
+    private NavMeshAgent agent;
+    private Animator animator;
+
+    private bool runningAway;
+    private float idleTimer;
+
+    void Start()
+    {
+        agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
+
+        GoToRandomPoint();
+    }
+
+    void Update()
+    {
+        if (!agent.isOnNavMesh || player == null) return;
+
+        float distanceToPlayer =
+            Vector3.Distance(transform.position, player.position);
+
+        // RUN LOGIC
+        if (distanceToPlayer < scareDistance)
+        {
+            if (!runningAway)
+                RunAway();
+        }
+        else
+        {
+            runningAway = false;
+
+            // when reached destination, pick new one
+            if (!agent.pathPending &&
+                agent.remainingDistance <= 0.5f)
+            {
+                idleTimer += Time.deltaTime;
+
+                if (idleTimer > 1.5f)
+                {
+                    GoToRandomPoint();
+                    idleTimer = 0f;
+                }
+            }
+        }
+
+        // ANIMATION
+        animator.SetFloat("Speed", agent.velocity.magnitude);
+        animator.SetBool("Running", runningAway);
+    }
+
+    void GoToRandomPoint()
+    {
+        runningAway = false;
+        agent.speed = walkSpeed;
+
+        Vector3 randomPoint = GetRandomNavMeshPoint();
+        agent.SetDestination(randomPoint);
+    }
+
+    Vector3 GetRandomNavMeshPoint()
+    {
+        NavMeshTriangulation navMeshData = NavMesh.CalculateTriangulation();
+
+        int randomIndex = Random.Range(0, navMeshData.vertices.Length);
+        Vector3 randomPoint = navMeshData.vertices[randomIndex];
+
+        NavMeshHit hit;
+        NavMesh.SamplePosition(randomPoint, out hit, 2f, NavMesh.AllAreas);
+
+        return hit.position;
+    }
+
+    void RunAway()
+    {
+        runningAway = true;
+        agent.speed = runSpeed;
+
+        Vector3 direction =
+            (transform.position - player.position).normalized;
+
+        Vector3 runTarget =
+            transform.position + direction * 10f;
+
+        NavMeshHit hit;
+
+        if (NavMesh.SamplePosition(runTarget, out hit, 10f, NavMesh.AllAreas))
+        {
+            agent.SetDestination(hit.position);
+        }
+    }
+}
