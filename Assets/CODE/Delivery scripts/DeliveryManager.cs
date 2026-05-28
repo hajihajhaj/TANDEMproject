@@ -32,6 +32,11 @@ public class DeliveryManager : MonoBehaviour
     public TMP_Text customerNameText;
     public TMP_Text customerMessageText;
 
+    [Header("Delivery Reward UI")]
+    public TMP_Text rewardCoinsText;
+
+    public GameObject[] rewardStarImages;
+
     public Image customerImageUI;
 
     [Header("Summary")]
@@ -260,14 +265,27 @@ public class DeliveryManager : MonoBehaviour
                 }
             }
         }
-
         ShowMessage(
             customer,
-            customer.successMessage +
-            "\nStars: " + stars +
-            "\nCoins: +" + earnedCoins,
+            customer.successMessage,
             false
         );
+
+        // STAR IMAGES
+        for (int i = 0; i < rewardStarImages.Length; i++)
+        {
+            rewardStarImages[i]
+                .SetActive(i < stars);
+        }
+
+        // COINS TEXT
+        if (rewardCoinsText != null)
+        {
+            rewardCoinsText.gameObject.SetActive(true);
+
+            rewardCoinsText.text =
+                "+" + earnedCoins;
+        }
 
         StartCoroutine(CheckEndAfterMessage());
     }
@@ -313,7 +331,11 @@ public class DeliveryManager : MonoBehaviour
         string message
     )
     {
+      
+
         messagePanel.SetActive(true);
+
+        rewardCoinsText.gameObject.SetActive(false);
 
         customerNameText.text =
             customer.customerName;
@@ -327,6 +349,14 @@ public class DeliveryManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         messagePanel.SetActive(false);
+
+        rewardCoinsText.gameObject.SetActive(false);
+
+        for (int i = 0; i < rewardStarImages.Length; i++)
+        {
+            rewardStarImages[i]
+                .SetActive(false);
+        }
     }
 
     void PlayMessageSound()
