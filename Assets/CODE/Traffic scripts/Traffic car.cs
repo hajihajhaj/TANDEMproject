@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class TrafficCar : MonoBehaviour
 {
@@ -8,6 +9,10 @@ public class TrafficCar : MonoBehaviour
     public float turnSpeed = 5f;
 
     int currentWaypoint;
+
+    bool blocked;
+
+    bool waitingAtStop;
 
     void Update()
     {
@@ -34,6 +39,8 @@ public class TrafficCar : MonoBehaviour
             return;
         }
 
+       
+
         Quaternion lookRotation =
             Quaternion.LookRotation(direction);
 
@@ -44,9 +51,32 @@ public class TrafficCar : MonoBehaviour
                 turnSpeed * Time.deltaTime
             );
 
-        transform.position +=
-            transform.forward *
-            speed *
-            Time.deltaTime;
+        if (!blocked &&
+            !waitingAtStop)
+        {
+            transform.position +=
+                transform.forward *
+                speed *
+                Time.deltaTime;
+        }
     }
+
+    public IEnumerator WaitThenGo(
+    float waitTime,
+    IntersectionController intersection)
+    {
+        waitingAtStop = true;
+
+        yield return new WaitForSeconds(waitTime);
+
+        waitingAtStop = false;
+
+        intersection.ReleaseCar();
+    }
+
+    public void SetBlocked(bool value)
+    {
+        blocked = value;
+    }
+
 }
