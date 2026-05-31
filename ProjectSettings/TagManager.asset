@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Bike
   - Package
+  - TrafficCar
   layers:
   - Default
   - TransparentFX

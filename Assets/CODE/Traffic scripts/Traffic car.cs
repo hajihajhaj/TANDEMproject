@@ -55,9 +55,10 @@ public class TrafficCar : MonoBehaviour
             !waitingAtStop)
         {
             transform.position +=
-                transform.forward *
-                speed *
-                Time.deltaTime;
+    transform.forward *
+    speed *
+    speedMultiplier *
+    Time.deltaTime;
         }
     }
 
@@ -79,4 +80,12 @@ public class TrafficCar : MonoBehaviour
         blocked = value;
     }
 
+    float speedMultiplier = 1f;
+
+  
+
+    public void SetSpeedMultiplier(float value)
+    {
+        speedMultiplier = value;
+    }
 }
