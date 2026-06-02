@@ -1,45 +1,50 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TrafficCar : MonoBehaviour
 {
-    public Transform[] waypoints;
+    public RoadNode startingNode;
 
     public float speed = 6f;
     public float turnSpeed = 5f;
+    public float nodeReachDistance = 1f;
 
-    int currentWaypoint;
+    RoadNode currentNode;
+    RoadNode targetNode;
+    RoadNode previousNode;
 
     bool blocked;
-
     bool waitingAtStop;
+
+    float speedMultiplier = 1f;
+
+    void Start()
+    {
+        currentNode = startingNode;
+
+        ChooseNextNode();
+    }
 
     void Update()
     {
-        if (waypoints.Length == 0)
+        if (targetNode == null)
             return;
 
-        Transform target =
-            waypoints[currentWaypoint];
-
         Vector3 direction =
-            target.position - transform.position;
+            targetNode.transform.position -
+            transform.position;
 
         direction.y = 0;
 
-        if (direction.magnitude < 1f)
+        if (direction.magnitude < nodeReachDistance)
         {
-            currentWaypoint++;
+            currentNode = targetNode;
 
-            if (currentWaypoint >= waypoints.Length)
-            {
-                currentWaypoint = 0;
-            }
+            ChooseNextNode();
 
             return;
         }
-
-       
 
         Quaternion lookRotation =
             Quaternion.LookRotation(direction);
@@ -55,16 +60,50 @@ public class TrafficCar : MonoBehaviour
             !waitingAtStop)
         {
             transform.position +=
-    transform.forward *
-    speed *
-    speedMultiplier *
-    Time.deltaTime;
+                transform.forward *
+                speed *
+                speedMultiplier *
+                Time.deltaTime;
         }
     }
 
+    void ChooseNextNode()
+    {
+        if (currentNode.connectedNodes.Count == 0)
+            return;
+
+        List<RoadNode> possibleNodes =
+            new List<RoadNode>();
+
+        foreach (RoadNode node in currentNode.connectedNodes)
+        {
+            if (node != previousNode)
+            {
+                possibleNodes.Add(node);
+            }
+        }
+
+        if (possibleNodes.Count == 0)
+        {
+            possibleNodes.AddRange(
+                currentNode.connectedNodes
+            );
+        }
+
+        previousNode = currentNode;
+
+        targetNode =
+            possibleNodes[
+                Random.Range(
+                    0,
+                    possibleNodes.Count
+                )
+            ];
+    }
+
     public IEnumerator WaitThenGo(
-    float waitTime,
-    IntersectionController intersection)
+        float waitTime,
+        IntersectionController intersection)
     {
         waitingAtStop = true;
 
@@ -79,10 +118,6 @@ public class TrafficCar : MonoBehaviour
     {
         blocked = value;
     }
-
-    float speedMultiplier = 1f;
-
-  
 
     public void SetSpeedMultiplier(float value)
     {
