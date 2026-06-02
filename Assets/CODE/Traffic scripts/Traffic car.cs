@@ -41,6 +41,11 @@ public class TrafficCar : MonoBehaviour
         {
             currentNode = targetNode;
 
+            if (currentNode.isStopNode)
+            {
+                StartCoroutine(StopAtNode());
+            }
+
             ChooseNextNode();
 
             return;
@@ -112,6 +117,15 @@ public class TrafficCar : MonoBehaviour
         waitingAtStop = false;
 
         intersection.ReleaseCar();
+    }
+
+    IEnumerator StopAtNode()
+    {
+        waitingAtStop = true;
+
+        yield return new WaitForSeconds(3f);
+
+        waitingAtStop = false;
     }
 
     public void SetBlocked(bool value)
