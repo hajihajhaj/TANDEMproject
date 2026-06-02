@@ -6,9 +6,9 @@ public class TrafficCar : MonoBehaviour
 {
     public RoadNode startingNode;
 
-    public float speed = 6f;
-    public float turnSpeed = 5f;
-    public float nodeReachDistance = 1f;
+    public float speed = 10f;
+    public float turnSpeed = 7f;
+    public float nodeReachDistance = 4f;
 
     RoadNode currentNode;
     RoadNode targetNode;
@@ -41,9 +41,23 @@ public class TrafficCar : MonoBehaviour
         {
             currentNode = targetNode;
 
+            if (currentNode.isSlowdownNode)
+            {
+                SetSpeedMultiplier(
+                    currentNode.slowdownMultiplier
+                );
+            }
+            else
+            {
+                SetSpeedMultiplier(1f);
+            }
+
             if (currentNode.isStopNode)
             {
-                StartCoroutine(StopAtNode());
+                if (currentNode.isStopNode)
+                {
+                    StartCoroutine(StopAtNode());
+                }
             }
 
             ChooseNextNode();

@@ -7,7 +7,12 @@ public class RoadNode : MonoBehaviour
         new List<RoadNode>();
 
     public bool isIntersection;
+
     public bool isStopNode;
+    public float stopTime = 3f;
+
+    public bool isSlowdownNode;
+    public float slowdownMultiplier = 0.7f;
 
     private void OnDrawGizmos()
     {
