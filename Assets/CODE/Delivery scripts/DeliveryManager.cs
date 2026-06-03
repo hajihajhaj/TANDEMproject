@@ -223,6 +223,10 @@ public class DeliveryManager : MonoBehaviour
 
         deliveredCount++;
 
+        AchievementManager.Instance.AddDelivery();
+
+
+
         float percent =
             customer.currentTime /
             customer.maxTime;
