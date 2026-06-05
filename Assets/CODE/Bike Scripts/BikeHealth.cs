@@ -34,6 +34,17 @@ public class BikeHealth : MonoBehaviour
         }
     }
 
+    public void Heal(float amount)
+    {
+        currentHealth += amount;
+
+        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
+
+        UpdateUI();
+
+        Debug.Log("Bike Healed: " + currentHealth);
+    }
+
     void UpdateUI()
     {
         if (healthSlider)
