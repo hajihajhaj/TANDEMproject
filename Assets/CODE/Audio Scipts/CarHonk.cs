@@ -17,6 +17,12 @@ public class CarHonk : MonoBehaviour
 
     public float secondarySoundDelay = 0.15f;
 
+    [Range(0f, 1f)]
+    public float carHitVolume = 1f;
+
+    [Range(0f, 1f)]
+    public float secondaryVolume = 1f;
+
     private void OnTriggerEnter(Collider other)
     {
         if (onCooldown) return;
@@ -64,7 +70,11 @@ public class CarHonk : MonoBehaviour
         AudioClip randomClip = carHitSounds[Random.Range(0, carHitSounds.Length)];
         if (randomClip != null)
         {
-            AudioSource.PlayClipAtPoint(randomClip, transform.position);
+            AudioSource.PlayClipAtPoint(
+      randomClip,
+      transform.position,
+      5f
+  );
         }
     }
 
@@ -79,7 +89,11 @@ public class CarHonk : MonoBehaviour
             AudioClip randomClip = secondarySounds[Random.Range(0, secondarySounds.Length)];
             if (randomClip != null)
             {
-                AudioSource.PlayClipAtPoint(randomClip, transform.position);
+                AudioSource.PlayClipAtPoint(
+     randomClip,
+     transform.position,
+     secondaryVolume
+ );
             }
         }
     }
