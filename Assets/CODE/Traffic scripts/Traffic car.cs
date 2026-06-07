@@ -16,6 +16,7 @@ public class TrafficCar : MonoBehaviour
 
     bool blocked;
     bool waitingAtStop;
+    bool waitingForIntersection;
 
     float speedMultiplier = 1f;
 
@@ -54,7 +55,12 @@ public class TrafficCar : MonoBehaviour
 
             if (currentNode.isStopNode)
             {
-                if (currentNode.isStopNode)
+                if (currentNode.intersectionController != null)
+                {
+                    currentNode.intersectionController
+                        .RegisterCar(this);
+                }
+                else
                 {
                     StartCoroutine(StopAtNode());
                 }
@@ -76,7 +82,8 @@ public class TrafficCar : MonoBehaviour
             );
 
         if (!blocked &&
-            !waitingAtStop)
+    !waitingAtStop &&
+    !waitingForIntersection)
         {
             transform.position +=
                 transform.forward *
@@ -121,14 +128,16 @@ public class TrafficCar : MonoBehaviour
     }
 
     public IEnumerator WaitThenGo(
-        float waitTime,
-        IntersectionController intersection)
+     float waitTime,
+     IntersectionController intersection)
     {
-        waitingAtStop = true;
+        waitingForIntersection = true;
 
         yield return new WaitForSeconds(waitTime);
 
-        waitingAtStop = false;
+        waitingForIntersection = false;
+
+        yield return new WaitForSeconds(1f);
 
         intersection.ReleaseCar();
     }

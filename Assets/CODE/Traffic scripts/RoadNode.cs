@@ -8,6 +8,8 @@ public class RoadNode : MonoBehaviour
 
     public bool isIntersection;
 
+    public IntersectionController intersectionController;
+
     public bool isStopNode;
     public float stopTime = 3f;
 
