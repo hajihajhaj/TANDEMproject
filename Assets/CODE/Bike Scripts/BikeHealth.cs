@@ -20,6 +20,13 @@ public class BikeHealth : MonoBehaviour
     [Header("Wasted UI")]
     public TMP_Text wastedText;
 
+    [Header("Damage Overlay")]
+    public Image damageOverlay;
+    public float damageOverlayAlpha = 0.5f;
+    public float damageFadeSpeed = 2f;
+
+    Coroutine damageFadeRoutine;
+
     bool isDead = false;
 
     void Start()
@@ -31,6 +38,13 @@ public class BikeHealth : MonoBehaviour
             wastedText.gameObject.SetActive(false);
         }
 
+        if (damageOverlay != null)
+        {
+            Color c = damageOverlay.color;
+            c.a = 0f;
+            damageOverlay.color = c;
+        }
+
         UpdateUI();
     }
 
@@ -39,6 +53,8 @@ public class BikeHealth : MonoBehaviour
         if (isDead) return;
 
         currentHealth -= damage;
+
+        ShowDamageOverlay();
 
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
 
@@ -61,6 +77,60 @@ public class BikeHealth : MonoBehaviour
         UpdateUI();
 
         Debug.Log("Bike Healed: " + currentHealth);
+    }
+
+    public void ShowDamageOverlay()
+    {
+        if (damageOverlay == null) return;
+
+        if (damageFadeRoutine != null)
+        {
+            StopCoroutine(damageFadeRoutine);
+            damageFadeRoutine = null;
+        }
+
+        Color c = damageOverlay.color;
+        c.a = damageOverlayAlpha;
+        damageOverlay.color = c;
+
+        StopCoroutine(nameof(AutoHideDamageOverlay));
+        StartCoroutine(nameof(AutoHideDamageOverlay));
+    }
+
+    public void HideDamageOverlay()
+    {
+        if (damageOverlay == null) return;
+
+        if (damageFadeRoutine != null)
+        {
+            StopCoroutine(damageFadeRoutine);
+        }
+
+        damageFadeRoutine = StartCoroutine(FadeDamageOverlay());
+    }
+
+    IEnumerator AutoHideDamageOverlay()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        HideDamageOverlay();
+    }
+
+    IEnumerator FadeDamageOverlay()
+    {
+        Color c = damageOverlay.color;
+
+        while (c.a > 0f)
+        {
+            c.a -= damageFadeSpeed * Time.deltaTime;
+            c.a = Mathf.Clamp01(c.a);
+
+            damageOverlay.color = c;
+
+            yield return null;
+        }
+
+        damageFadeRoutine = null;
     }
 
     IEnumerator RespawnBike()
