@@ -31164,9 +31164,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1ab1977f7a7b7e4690a77eb8a6c91bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageImage: {fileID: 0}
-  flashAlpha: 0.5
-  fadeSpeed: 3
 --- !u!64 &252180494
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -101440,7 +101437,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &773073107
 MonoBehaviour:
   m_ObjectHideFlags: 0
