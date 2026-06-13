@@ -5,38 +5,64 @@ public class BikeMovementLevelSelection : MonoBehaviour
 {
     public float moveSpeed = 6f;
     public float rotateSpeed = 10f;
+    public float smoothTime = 0.15f;
+
+    private Vector3 currentMove;
+    private Vector3 moveVelocity;
 
     void Update()
     {
-        Vector3 move = Vector3.zero;
+        Vector3 targetMove = Vector3.zero;
 
         // PLAYER 1
-        if (Keyboard.current.sKey.isPressed) move += Vector3.forward;
-        if (Keyboard.current.wKey.isPressed) move += Vector3.back;
-        if (Keyboard.current.dKey.isPressed) move += Vector3.left;
-        if (Keyboard.current.aKey.isPressed) move += Vector3.right;
-
-        // PLAYER 2
-        if (Keyboard.current.hKey.isPressed) move += Vector3.forward;
-        if (Keyboard.current.yKey.isPressed) move += Vector3.back;
-        if (Keyboard.current.jKey.isPressed) move += Vector3.left;
-        if (Keyboard.current.gKey.isPressed) move += Vector3.right;
-
-        move = move.normalized;
-
-        if (move != Vector3.zero)
+        if (Keyboard.current != null)
         {
-            transform.position += move * moveSpeed * Time.deltaTime;
+            if (Keyboard.current.aKey.isPressed) targetMove += Vector3.forward;
+            if (Keyboard.current.dKey.isPressed) targetMove += Vector3.back;
+            if (Keyboard.current.sKey.isPressed) targetMove += Vector3.left;
+            if (Keyboard.current.wKey.isPressed) targetMove += Vector3.right;
 
-            Quaternion targetRotation =
-                Quaternion.LookRotation(move);
+            // PLAYER 2
+            if (Keyboard.current.gKey.isPressed) targetMove += Vector3.forward;
+            if (Keyboard.current.jKey.isPressed) targetMove += Vector3.back;
+            if (Keyboard.current.hKey.isPressed) targetMove += Vector3.left;
+            if (Keyboard.current.yKey.isPressed) targetMove += Vector3.right;
+        }
 
-            transform.rotation =
-                Quaternion.Slerp(
-                    transform.rotation,
-                    targetRotation,
-                    rotateSpeed * Time.deltaTime
-                );
+        // Controllers (supports both)
+        foreach (Gamepad pad in Gamepad.all)
+        {
+            Vector2 stick = pad.leftStick.ReadValue();
+
+            targetMove += new Vector3(
+                stick.y,
+                0,
+                -stick.x
+            );
+        }
+
+        targetMove = targetMove.normalized * moveSpeed;
+
+        // Smoothly move toward target direction
+        currentMove = Vector3.SmoothDamp(
+            currentMove,
+            targetMove,
+            ref moveVelocity,
+            smoothTime
+        );
+
+        transform.position += currentMove * Time.deltaTime;
+
+        // Smoothly rotate toward movement direction
+        if (currentMove.sqrMagnitude > 0.01f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(currentMove);
+
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetRotation,
+                rotateSpeed * Time.deltaTime
+            );
         }
     }
 }

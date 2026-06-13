@@ -26,7 +26,26 @@ public class LevelNode : MonoBehaviour
 
     void Update()
     {
-        if (playerInRange && Keyboard.current.eKey.wasPressedThisFrame)
+        bool startPressed = false;
+
+        // Keyboard
+        if (Keyboard.current != null &&
+            Keyboard.current.eKey.wasPressedThisFrame)
+        {
+            startPressed = true;
+        }
+
+        // Both controllers
+        foreach (Gamepad pad in Gamepad.all)
+        {
+            if (pad.buttonSouth.wasPressedThisFrame)
+            {
+                startPressed = true;
+                break;
+            }
+        }
+
+        if (playerInRange && startPressed)
         {
             StartCoroutine(LoadLevelAsync());
         }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class HomeShopUI : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class HomeShopUI : MonoBehaviour
     int speedBoostCost = 25;
     int jumpBoostCost = 25;
 
+    public GameObject firstSelectedButton;
+
     void Start()
     {
         if (notEnoughCoinsPopup != null)
@@ -26,17 +29,7 @@ public class HomeShopUI : MonoBehaviour
         UpdateUI();
     }
 
-    void Update()
-    {
-        if (notEnoughCoinsPopup != null &&
-            notEnoughCoinsPopup.activeSelf)
-        {
-            if (Input.GetKeyDown(KeyCode.Backspace))
-            {
-                CloseNotEnoughCoinsPopup();
-            }
-        }
-    }
+    
 
     // =========================
     // SPEED BOOST
@@ -205,4 +198,19 @@ public class HomeShopUI : MonoBehaviour
                 jumpBoostCost.ToString();
         }
     }
+
+    public void SelectFirstButton()
+    {
+        EventSystem.current.SetSelectedGameObject(null);
+
+        EventSystem.current.SetSelectedGameObject(firstSelectedButton);
+    }
+
+    public bool IsPopupOpen()
+    {
+        return notEnoughCoinsPopup != null &&
+               notEnoughCoinsPopup.activeSelf;
+    }
+
+
 }

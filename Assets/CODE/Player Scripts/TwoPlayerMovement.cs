@@ -18,9 +18,6 @@ public class TwoPlayerMovement : MonoBehaviour
 
         MovePlayer1();
         MovePlayer2();
-
-        Debug.DrawRay(transform.position, transform.forward * 5f, Color.green);
-        Debug.DrawRay(transform.position, Vector3.forward * 5f, Color.red);
     }
 
     void MovePlayer1()
@@ -29,10 +26,26 @@ public class TwoPlayerMovement : MonoBehaviour
 
         Vector3 move = Vector3.zero;
 
-        if (Keyboard.current.aKey.isPressed) move += Vector3.forward;
-        if (Keyboard.current.dKey.isPressed) move += Vector3.back;
-        if (Keyboard.current.sKey.isPressed) move += Vector3.left;
-        if (Keyboard.current.wKey.isPressed) move += Vector3.right;
+        // Keyboard WASD
+        if (Keyboard.current != null)
+        {
+            if (Keyboard.current.aKey.isPressed) move += Vector3.forward;
+            if (Keyboard.current.dKey.isPressed) move += Vector3.back;
+            if (Keyboard.current.sKey.isPressed) move += Vector3.left;
+            if (Keyboard.current.wKey.isPressed) move += Vector3.right;
+        }
+
+        // Controller 1 left stick
+        if (Gamepad.all.Count > 0)
+        {
+            Vector2 stick = Gamepad.all[0].leftStick.ReadValue();
+
+            move += new Vector3(
+                stick.y,
+                0f,
+                -stick.x
+            );
+        }
 
         player1.position += move.normalized * moveSpeed * Time.deltaTime;
     }
@@ -43,10 +56,26 @@ public class TwoPlayerMovement : MonoBehaviour
 
         Vector3 move = Vector3.zero;
 
-        if (Keyboard.current.gKey.isPressed) move += Vector3.forward;
-        if (Keyboard.current.jKey.isPressed) move += Vector3.back;
-        if (Keyboard.current.hKey.isPressed) move += Vector3.left;
-        if (Keyboard.current.yKey.isPressed) move += Vector3.right;
+        // Keyboard YGHJ
+        if (Keyboard.current != null)
+        {
+            if (Keyboard.current.gKey.isPressed) move += Vector3.forward;
+            if (Keyboard.current.jKey.isPressed) move += Vector3.back;
+            if (Keyboard.current.hKey.isPressed) move += Vector3.left;
+            if (Keyboard.current.yKey.isPressed) move += Vector3.right;
+        }
+
+        // Controller 2 left stick
+        if (Gamepad.all.Count > 1)
+        {
+            Vector2 stick = Gamepad.all[1].leftStick.ReadValue();
+
+            move += new Vector3(
+                stick.y,
+                0f,
+                -stick.x
+            );
+        }
 
         player2.position += move.normalized * moveSpeed * Time.deltaTime;
     }
