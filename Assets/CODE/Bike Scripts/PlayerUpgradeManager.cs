@@ -43,7 +43,23 @@ public class PlayerUpgradeManager : MonoBehaviour
 
     void HandleAbilityInput()
     {
-        if (Keyboard.current.leftShiftKey.wasPressedThisFrame)
+        bool abilityPressed = false;
+
+        // Keyboard Player 1
+        if (Keyboard.current != null &&
+            Keyboard.current.leftShiftKey.wasPressedThisFrame)
+        {
+            abilityPressed = true;
+        }
+
+        // Controller Player 1 only
+        if (Gamepad.all.Count > 0 &&
+            Gamepad.all[0].buttonSouth.wasPressedThisFrame)
+        {
+            abilityPressed = true;
+        }
+
+        if (abilityPressed)
         {
             if (!canUseAbility)
                 return;

@@ -5936,6 +5936,9 @@ MonoBehaviour:
   customerImageUI: {fileID: 823194976}
   summaryPanel: {fileID: 1286363142}
   deliveredText: {fileID: 644690786}
+  homeButton: {fileID: 1933359721}
+  restartButton: {fileID: 405484525}
+  firstSelectedButton: {fileID: 1933359721}
   totalTimeTakenText: {fileID: 1139380875}
   deliveriesSummaryText: {fileID: 644690786}
   averageStarsText: {fileID: 348915174}
@@ -53116,18 +53119,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnLeft: {fileID: 1933359721}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.6392157, g: 0.43529415, b: 0.80392164, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0.6392157, g: 0.43137258, b: 0.8000001, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -200664,7 +200667,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d10b18f27a724b140aa07d50b939ae96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bikeMovement: {fileID: 774114848}
+  bikeMovement: {fileID: 1521819269}
   upgradeNameText: {fileID: 391213441}
   cooldownText: {fileID: 1462648053}
   ownsSpeedBoost: 0
@@ -259980,18 +259983,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
+    m_SelectOnRight: {fileID: 405484525}
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.6392157, g: 0.43529415, b: 0.80392164, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0.6392157, g: 0.427451, b: 0.7960785, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1

@@ -14,7 +14,7 @@ public class HomeShopUI : MonoBehaviour
     [Header("Not Enough Coins Popup")]
     public GameObject notEnoughCoinsPopup;
 
-    int speedBoostCost = 25;
+    int speedBoostCost = 0;
     int jumpBoostCost = 25;
 
     public GameObject firstSelectedButton;

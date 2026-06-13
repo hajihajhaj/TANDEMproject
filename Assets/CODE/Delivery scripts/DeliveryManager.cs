@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 [System.Serializable]
 public class DeliverySummaryUI
@@ -43,6 +44,11 @@ public class DeliveryManager : MonoBehaviour
     public GameObject summaryPanel;
     
     public TMP_Text deliveredText;
+
+    [Header("Summary Buttons")]
+    public Button homeButton;
+    public Button restartButton;
+    public Button firstSelectedButton;
 
     [Header("Level Summary Extra")]
 
@@ -435,7 +441,14 @@ public class DeliveryManager : MonoBehaviour
 
         summaryPanel.SetActive(true);
 
-       
+        // Select button for controller navigation
+        if (firstSelectedButton != null)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(firstSelectedButton.gameObject);
+        }
+
+
         // DELIVERIES
         deliveredText.text =
             deliveredCount.ToString();
