@@ -75,6 +75,10 @@ public class DeliveryManager : MonoBehaviour
     public AudioClip successSound;
     public AudioClip failSound;
 
+    [Header("5 Star Celebration")]
+    public ParticleSystem[] confettiEffects;
+
+
     int totalStars;
     int totalCoins;
 
@@ -241,6 +245,15 @@ public class DeliveryManager : MonoBehaviour
             CalculateStars(percent);
 
         customer.earnedStars = stars;
+
+        if (stars == 5)
+        {
+            foreach (ParticleSystem confetti in confettiEffects)
+            {
+                if (confetti != null)
+                    confetti.Play();
+            }
+        }
 
         customer.deliveryTimeTaken =
             customer.maxTime - customer.currentTime;
