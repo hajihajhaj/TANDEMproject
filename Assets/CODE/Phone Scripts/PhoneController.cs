@@ -2,11 +2,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class PhoneController : MonoBehaviour
 {
     [Header("Phone")]
     public GameObject phoneUI;
+    public Vector2 closedPosition;
+    public Vector2 openPosition;
+
+    public float slideSpeed = 0.3f;
 
     [Header("Apps")]
     public Button[] appButtons;
@@ -21,9 +26,13 @@ public class PhoneController : MonoBehaviour
 
     bool dpadInUse = false;
 
+    Coroutine phoneAnimation;
+    bool isAnimating;
+
     void Start()
     {
-        phoneUI.SetActive(false);
+        phoneUI.SetActive(true);
+        phoneUI.GetComponent<RectTransform>().anchoredPosition = closedPosition;
 
         foreach (GameObject panel in appPanels)
         {
@@ -64,20 +73,28 @@ public class PhoneController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Tab) || p2DpadUp)
         {
-            phoneOpen = true;
-            phoneUI.SetActive(true);
+            if (!phoneOpen && !isAnimating)
+            {
+                phoneOpen = true;
 
-            SelectButton(currentIndex);
+                StartPhoneAnimation(openPosition);
+
+                SelectButton(currentIndex);
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Backspace) || p2Circle)
         {
             if (!appOpen)
             {
-                phoneOpen = false;
-                phoneUI.SetActive(false);
+                if (!isAnimating)
+                {
+                    phoneOpen = false;
 
-                CloseAllApps();
+                    StartPhoneAnimation(closedPosition);
+
+                    CloseAllApps();
+                }
             }
         }
     }
@@ -211,5 +228,48 @@ public class PhoneController : MonoBehaviour
             panel.SetActive(false);
 
         SelectButton(currentIndex);
+    }
+
+    void StartPhoneAnimation(Vector2 targetPosition)
+    {
+        if (phoneAnimation != null)
+            StopCoroutine(phoneAnimation);
+
+        phoneAnimation = StartCoroutine(
+            SlidePhone(targetPosition)
+        );
+    }
+
+
+    IEnumerator SlidePhone(Vector2 targetPosition)
+    {
+        isAnimating = true;
+
+        RectTransform rect =
+            phoneUI.GetComponent<RectTransform>();
+
+        Vector2 startPosition = rect.anchoredPosition;
+
+        float time = 0;
+
+        while (time < slideSpeed)
+        {
+            time += Time.deltaTime;
+
+            float t = time / slideSpeed;
+
+            rect.anchoredPosition =
+                Vector2.Lerp(
+                    startPosition,
+                    targetPosition,
+                    t
+                );
+
+            yield return null;
+        }
+
+        rect.anchoredPosition = targetPosition;
+
+        isAnimating = false;
     }
 }
