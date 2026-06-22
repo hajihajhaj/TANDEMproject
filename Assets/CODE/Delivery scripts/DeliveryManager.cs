@@ -30,6 +30,8 @@ public class DeliveryManager : MonoBehaviour
     [Header("Message UI")]
     public GameObject messagePanel;
 
+    public Animator messageAnimator;
+
     public TMP_Text customerNameText;
     public TMP_Text customerMessageText;
 
@@ -354,9 +356,12 @@ public class DeliveryManager : MonoBehaviour
         string message
     )
     {
-      
-
         messagePanel.SetActive(true);
+
+        if (messageAnimator != null)
+        {
+            messageAnimator.Play("messagesupanddown", 0, 0f);
+        }
 
         rewardCoinsText.gameObject.SetActive(false);
 
@@ -369,7 +374,7 @@ public class DeliveryManager : MonoBehaviour
         customerImageUI.sprite =
             customer.customerImage;
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(5f);
 
         messagePanel.SetActive(false);
 
