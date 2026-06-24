@@ -78,7 +78,17 @@ public class DeliveryManager : MonoBehaviour
     public AudioClip failSound;
 
     [Header("5 Star Celebration")]
-    public ParticleSystem[] confettiEffects;
+    public GameObject confettiPrefab;
+
+    public Camera celebrationCamera;
+
+    public Vector3 leftConfettiPos =
+        new Vector3(-2f, 1f, 5f);
+
+    public Vector3 rightConfettiPos =
+        new Vector3(2f, 1f, 5f);
+
+    public float confettiDestroyTime = 4f;
 
 
     int totalStars;
@@ -250,11 +260,7 @@ public class DeliveryManager : MonoBehaviour
 
         if (stars == 5)
         {
-            foreach (ParticleSystem confetti in confettiEffects)
-            {
-                if (confetti != null)
-                    confetti.Play();
-            }
+            PlayFiveStarConfetti();
         }
 
         customer.deliveryTimeTaken =
@@ -633,6 +639,56 @@ public class DeliveryManager : MonoBehaviour
             red,
             t2
         );
+    }
+
+    void PlayFiveStarConfetti()
+    {
+        Debug.Log("CONFETTI FUNCTION CALLED");
+
+        if (confettiPrefab == null)
+        {
+            Debug.Log("NO CONFETTI PREFAB");
+            return;
+        }
+
+        if (celebrationCamera == null)
+        {
+            Debug.Log("NO CAMERA");
+            return;
+        }
+
+        // LEFT
+        GameObject left =
+            Instantiate(
+                confettiPrefab,
+                celebrationCamera.transform
+            );
+
+        left.transform.localPosition =
+            leftConfettiPos;
+
+        foreach (ParticleSystem ps in left.GetComponentsInChildren<ParticleSystem>())
+        {
+            ps.Play();
+        }
+
+        // RIGHT
+        GameObject right =
+            Instantiate(
+                confettiPrefab,
+                celebrationCamera.transform
+            );
+
+        right.transform.localPosition =
+            rightConfettiPos;
+
+        foreach (ParticleSystem ps in right.GetComponentsInChildren<ParticleSystem>())
+        {
+            ps.Play();
+        }
+
+        Destroy(left, 5f);
+        Destroy(right, 5f);
     }
 
 }
