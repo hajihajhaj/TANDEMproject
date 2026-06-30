@@ -62877,6 +62877,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: players on bike
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 28a25900d0157864fb12cdb6e51f717f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4049758288100197695, guid: 28a25900d0157864fb12cdb6e51f717f, type: 3}
       propertyPath: 'm_Materials.Array.data[3]'
       value: 

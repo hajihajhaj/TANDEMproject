@@ -45,18 +45,20 @@ public class Manhole : MonoBehaviour
             c.a = 0f;
             bigSmokeImage.color = c;
         }
-
-        // AUTO FIND BIKE HEALTH IF NOT ASSIGNED
-        if (bikeHealth == null)
-        {
-            bikeHealth = FindObjectOfType<BikeHealth>();
-        }
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player"))
             return;
+
+        bikeHealth = other.GetComponentInParent<BikeHealth>();
+
+        if (bikeHealth == null)
+        {
+            Debug.LogWarning("No BikeHealth found on the entering bike!");
+            return;
+        }
 
         inTriggerArea = true;
 
@@ -96,6 +98,14 @@ public class Manhole : MonoBehaviour
     {
         if (!collision.collider.CompareTag("Player"))
             return;
+
+        bikeHealth = collision.collider.GetComponentInParent<BikeHealth>();
+
+        if (bikeHealth == null)
+        {
+            Debug.LogWarning("No BikeHealth found on the colliding bike!");
+            return;
+        }
 
         inCollision = true;
 
@@ -137,8 +147,7 @@ public class Manhole : MonoBehaviour
         {
             if (damageRoutine == null)
             {
-                damageRoutine =
-                    StartCoroutine(DamageLoop());
+                damageRoutine = StartCoroutine(DamageLoop());
             }
         }
         else
