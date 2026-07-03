@@ -105,6 +105,12 @@ public class DeliveryManager : MonoBehaviour
 
     public static DeliveryManager instance;
 
+    bool successMessageShowing = false;
+
+    CustomerDelivery pendingCustomer;
+    string pendingMessage;
+    bool pendingPlaySound;
+
     void Awake()
     {
         instance = this;
@@ -212,10 +218,11 @@ public class DeliveryManager : MonoBehaviour
                 customer.hurryShown = true;
 
                 ShowMessage(
-                    customer,
-                    customer.hurryMessage,
-                    true
-                );
+     customer,
+     customer.hurryMessage,
+     true,
+     false
+ );
             }
 
             // FAIL
@@ -228,10 +235,11 @@ public class DeliveryManager : MonoBehaviour
                 PlaySoundSafe(failSound, 0.7f);
 
                 ShowMessage(
-                    customer,
-                    customer.angryMessage,
-                    false
-                );
+     customer,
+     customer.angryMessage,
+     false,
+     false
+ );
             }
         }
     }
@@ -297,26 +305,13 @@ public class DeliveryManager : MonoBehaviour
             }
         }
         ShowMessage(
-            customer,
-            customer.successMessage,
-            false
-        );
+    customer,
+    customer.successMessage,
+    false,
+    true
+);
 
-        // STAR IMAGES
-        for (int i = 0; i < rewardStarImages.Length; i++)
-        {
-            rewardStarImages[i]
-                .SetActive(i < stars);
-        }
-
-        // COINS TEXT
-        if (rewardCoinsText != null)
-        {
-            rewardCoinsText.gameObject.SetActive(true);
-
-            rewardCoinsText.text =
-                "+" + earnedCoins;
-        }
+        rewardCoinsText.text = "+" + earnedCoins;
 
         StartCoroutine(CheckEndAfterMessage());
     }
@@ -340,17 +335,27 @@ public class DeliveryManager : MonoBehaviour
     }
 
     void ShowMessage(
-        CustomerDelivery customer,
-        string message,
-        bool playSound
-    )
+    CustomerDelivery customer,
+    string message,
+    bool playSound,
+    bool showRewards = false
+)
     {
+        // Don't let hurry/angry messages interrupt a success popup
+        if (successMessageShowing && !showRewards)
+        {
+            pendingCustomer = customer;
+            pendingMessage = message;
+            pendingPlaySound = playSound;
+            return;
+        }
+
         if (messageRoutine != null)
             StopCoroutine(messageRoutine);
 
         messageRoutine =
             StartCoroutine(
-                MessagePopup(customer, message)
+                MessagePopup(customer, message, showRewards)
             );
 
         if (playSound)
@@ -358,18 +363,28 @@ public class DeliveryManager : MonoBehaviour
     }
 
     IEnumerator MessagePopup(
-        CustomerDelivery customer,
-        string message
-    )
+     CustomerDelivery customer,
+     string message,
+     bool showRewards
+ )
     {
         messagePanel.SetActive(true);
+        successMessageShowing = showRewards;
 
         if (messageAnimator != null)
         {
             messageAnimator.Play("messagesupanddown", 0, 0f);
         }
 
-        rewardCoinsText.gameObject.SetActive(false);
+        rewardCoinsText.gameObject.SetActive(showRewards);
+
+        for (int i = 0; i < rewardStarImages.Length; i++)
+        {
+            rewardStarImages[i].SetActive(
+                showRewards &&
+                i < customer.earnedStars
+            );
+        }
 
         customerNameText.text =
             customer.customerName;
@@ -383,6 +398,7 @@ public class DeliveryManager : MonoBehaviour
         yield return new WaitForSeconds(5f);
 
         messagePanel.SetActive(false);
+        successMessageShowing = false;
 
         rewardCoinsText.gameObject.SetActive(false);
 
@@ -391,6 +407,22 @@ public class DeliveryManager : MonoBehaviour
             rewardStarImages[i]
                 .SetActive(false);
         }
+
+        // Show delayed message after success popup finishes
+        if (pendingCustomer != null)
+        {
+            ShowMessage(
+                pendingCustomer,
+                pendingMessage,
+                pendingPlaySound,
+                false
+            );
+
+            pendingCustomer = null;
+            pendingMessage = "";
+            pendingPlaySound = false;
+        }
+
     }
 
     void PlayMessageSound()
