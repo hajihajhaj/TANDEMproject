@@ -190988,7 +190988,7 @@ GameObject:
   - component: {fileID: 1521819263}
   - component: {fileID: 1521819274}
   m_Layer: 0
-  m_Name: bike root 2 bush
+  m_Name: 'bike root 2 '
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -235341,6 +235341,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9f08f5ba6972de4c927c742184fddff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  impactPrefab: {fileID: 6303048821724505627, guid: f5cf763a4c1b0e2478f9198d29d2a8c8, type: 3}
+  destroyDelay: 2
 --- !u!1 &1866670063 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7640558969779515294, guid: 9530660111ddbfa4ca74f217390c0f07, type: 3}
