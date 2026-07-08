@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 
@@ -12,6 +13,14 @@ public class PlayerUpgradeManager : MonoBehaviour
     public TMP_Text upgradeNameText;
     public TMP_Text cooldownText;
 
+    // Upgrade Images
+    public GameObject emptyUpgradeImage;
+    public GameObject speedBoostImage;
+    public GameObject jumpBoostImage;
+
+    // Cooldown Overlay
+    public Image cooldownOverlay;
+
     [Header("Speed Boost")]
     public bool ownsSpeedBoost;
     public float speedBoostMultiplier = 2f;
@@ -21,7 +30,6 @@ public class PlayerUpgradeManager : MonoBehaviour
     public float boostDuration = 2f;
 
     private bool canUseAbility = true;
- 
 
     private float cooldownRemaining;
 
@@ -33,6 +41,8 @@ public class PlayerUpgradeManager : MonoBehaviour
     {
         Debug.Log("Current Equipped Upgrade: " +
             UpgradeData.equippedUpgrade);
+
+        UpdateUpgradeImages();
     }
 
     void Update()
@@ -99,6 +109,7 @@ public class PlayerUpgradeManager : MonoBehaviour
 
             yield return null;
         }
+
         bikeMovement.isBoosting = false;
         cooldownRemaining = speedBoostCooldown;
 
@@ -136,30 +147,65 @@ public class PlayerUpgradeManager : MonoBehaviour
 
     void UpdateCooldownUI()
     {
+        float maxCooldown = 0f;
+
         if (UpgradeData.equippedUpgrade == "SpeedBoost")
         {
             upgradeNameText.text = "Speed Boost";
+            maxCooldown = speedBoostCooldown;
         }
         else if (UpgradeData.equippedUpgrade == "JumpBoost")
         {
             upgradeNameText.text = "Jump Boost";
+            maxCooldown = jumpCooldown;
         }
         else
         {
             upgradeNameText.text = "No Upgrade Equipped";
             cooldownText.text = "";
+            UpdateUpgradeImages();
+
+            if (cooldownOverlay != null)
+                cooldownOverlay.fillAmount = 0f;
+
             return;
         }
+
+        UpdateUpgradeImages();
 
         if (canUseAbility)
         {
             cooldownText.text = "Ready";
+
+            if (cooldownOverlay != null)
+                cooldownOverlay.fillAmount = 0f;
         }
         else
         {
-            cooldownText.text =
-                Mathf.Ceil(cooldownRemaining).ToString();
+            cooldownText.text = Mathf.Ceil(cooldownRemaining).ToString();
+
+            if (cooldownOverlay != null)
+                cooldownOverlay.fillAmount = cooldownRemaining / maxCooldown;
         }
     }
 
+    void UpdateUpgradeImages()
+    {
+        emptyUpgradeImage.SetActive(false);
+        speedBoostImage.SetActive(false);
+        jumpBoostImage.SetActive(false);
+
+        if (UpgradeData.equippedUpgrade == "SpeedBoost")
+        {
+            speedBoostImage.SetActive(true);
+        }
+        else if (UpgradeData.equippedUpgrade == "JumpBoost")
+        {
+            jumpBoostImage.SetActive(true);
+        }
+        else
+        {
+            emptyUpgradeImage.SetActive(true);
+        }
+    }
 }
