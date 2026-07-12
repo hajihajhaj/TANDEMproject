@@ -97897,11 +97897,13 @@ MonoBehaviour:
   currentP2MaxSpeed: 0
   currentBothMaxSpeed: 0
   isBoosting: 0
+  phoneCameraTurnInput: 0
   speedText: {fileID: 0}
   brakeStrength: 5
   brakeDrag: 3
   coastDrag: 0.1
   coastSlowdown: 0.5
+  phoneCameraOpen: 0
 --- !u!114 &774114849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135872,13 +135874,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1054098925}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
-  m_LocalPosition: {x: 0.02, y: 7.65, z: 7.26}
+  m_LocalRotation: {x: -0, y: -0.020487351, z: -0, w: -0.99979013}
+  m_LocalPosition: {x: 0.019989014, y: 7.65, z: 7.260002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1521819273}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 2.348, z: 0}
 --- !u!81 &1054098927
 AudioListener:
   m_ObjectHideFlags: 0
@@ -186598,13 +186600,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1488924148}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.0031353673, z: -0, w: -0.9999952}
-  m_LocalPosition: {x: -0.01, y: 7.65, z: 6.04}
+  m_LocalRotation: {x: -0, y: -0.9996476, z: -0, w: 0.026547838}
+  m_LocalPosition: {x: -0.010009766, y: 7.65, z: 7.15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1521819273}
-  m_LocalEulerAnglesHint: {x: 0, y: -180.359, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -176.958, z: 0}
 --- !u!81 &1488924150
 AudioListener:
   m_ObjectHideFlags: 0
@@ -191528,11 +191530,13 @@ MonoBehaviour:
   currentP2MaxSpeed: 0
   currentBothMaxSpeed: 0
   isBoosting: 0
+  phoneCameraTurnInput: 0
   speedText: {fileID: 0}
   brakeStrength: 5
   brakeDrag: 3
   coastDrag: 0.1
   coastSlowdown: 0.5
+  phoneCameraOpen: 0
 --- !u!114 &1521819270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -264239,6 +264243,8 @@ MonoBehaviour:
   captureKey: 112
   shutterPanel: {fileID: 2026998144}
   shutterFlashTime: 1
+  lookSpeed: 100
+  bikeController: {fileID: 1521819269}
 --- !u!1001 &2056459166
 PrefabInstance:
   m_ObjectHideFlags: 0

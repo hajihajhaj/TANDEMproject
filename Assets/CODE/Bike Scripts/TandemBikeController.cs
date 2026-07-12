@@ -21,6 +21,7 @@ public class TandemBikeController : MonoBehaviour
     [HideInInspector] public bool isBoosting;
 
     float turnInput;
+    public float phoneCameraTurnInput;
 
     // PEDAL STATES
     bool p1ExpectL = true;
@@ -45,6 +46,9 @@ public class TandemBikeController : MonoBehaviour
 
     Gamepad p1;
     Gamepad p2;
+
+    public bool phoneCameraOpen = false;
+
 
     void Awake()
     {
@@ -86,9 +90,12 @@ public class TandemBikeController : MonoBehaviour
 
         turnInput = keyboardTurn;
 
-        if (Mathf.Abs(stickTurn) > 0.2f)
+        if (!phoneCameraOpen)
         {
-            turnInput = stickTurn;
+            if (Mathf.Abs(stickTurn) > 0.2f)
+            {
+                turnInput = stickTurn;
+            }
         }
 
         turnInput = Mathf.Clamp(turnInput, -1f, 1f);
@@ -288,12 +295,26 @@ public class TandemBikeController : MonoBehaviour
         }
 
         // TURN
+        float finalTurnInput = turnInput + phoneCameraTurnInput;
+
         rb.MoveRotation(
             rb.rotation * Quaternion.Euler(
                 0,
-                turnInput * turnSpeed * Time.fixedDeltaTime,
+                finalTurnInput * turnSpeed * Time.fixedDeltaTime,
                 0
             )
         );
     }
+
+    public void RotateFromPhone(float amount)
+    {
+        rb.MoveRotation(
+            rb.rotation * Quaternion.Euler(
+                0f,
+                amount * turnSpeed * Time.fixedDeltaTime,
+                0f
+            )
+        );
+    }
+
 }
