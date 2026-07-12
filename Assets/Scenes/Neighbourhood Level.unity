@@ -97630,7 +97630,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &773073107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -264244,6 +264244,9 @@ MonoBehaviour:
   shutterPanel: {fileID: 2026998144}
   shutterFlashTime: 1
   lookSpeed: 100
+  frontOrbitDistance: 2
+  frontOrbitHeight: 1.5
+  frontOrbitLimit: 45
   bikeController: {fileID: 1521819269}
 --- !u!1001 &2056459166
 PrefabInstance:

@@ -38,15 +38,23 @@ public class PhoneCameraApp : MonoBehaviour
     public float shutterFlashTime = 0.08f;
 
     [Header("Look Settings")]
-    public float lookSpeed = 100f;
+    public float lookSpeed = 150f;
 
     float pitch;
     float yaw;
 
+    public float frontOrbitDistance = 2f;
+    public float frontOrbitHeight = 1.5f;
+    public float frontOrbitLimit = 45f;
+
+    Vector3 frontCameraStartPosition;
+
     Quaternion frontStartRotation;
     Quaternion backStartRotation;
 
-    
+    Vector3 frontStartPosition;
+
+
     public TandemBikeController bikeController;
 
     void Update()
@@ -106,10 +114,12 @@ public class PhoneCameraApp : MonoBehaviour
         // FRONT CAMERA
         else if (currentCamera == frontCamera)
         {
-            float frontLimit = 45f;
+            float frontLimit = 90f;
 
             yaw += lookX * lookSpeed * Time.deltaTime;
 
+
+            // Once camera reaches the side limit, rotate the bike
             if (yaw > frontLimit)
             {
                 float overflow = yaw - frontLimit;
@@ -125,13 +135,26 @@ public class PhoneCameraApp : MonoBehaviour
                 bikeController.RotateFromPhone(overflow);
             }
 
+
             yaw = Mathf.Clamp(yaw, -frontLimit, frontLimit);
 
-            pitch -= lookY * lookSpeed * Time.deltaTime;
-            pitch = Mathf.Clamp(pitch, -60f, 60f);
 
+            // Move camera sideways around the bike
+            float sideMovement = Mathf.Sin(yaw * Mathf.Deg2Rad);
+
+
+            frontCamera.transform.localPosition =
+                frontStartPosition +
+                new Vector3(
+                    sideMovement * 2f,
+                    0f,
+                    0f
+                );
+
+
+            // Keep the camera facing the player
             frontCamera.transform.localRotation =
-                frontStartRotation * Quaternion.Euler(pitch, yaw, 0f);
+                frontStartRotation;
         }
 
         // Switch camera (C or R3)
@@ -168,6 +191,10 @@ public class PhoneCameraApp : MonoBehaviour
         // SAVE ORIGINAL CAMERA ROTATIONS
         frontStartRotation = frontCamera.transform.localRotation;
         backStartRotation = backCamera.transform.localRotation;
+
+        frontStartPosition = frontCamera.transform.localPosition;
+
+        frontCameraStartPosition = frontCamera.transform.localPosition;
 
         yaw = 0f;
         pitch = 0f;
@@ -208,6 +235,10 @@ public class PhoneCameraApp : MonoBehaviour
 
             yaw = 0f;
             pitch = 0f;
+
+            frontCamera.transform.localPosition = frontCameraStartPosition;
+            frontCamera.transform.localRotation = frontStartRotation;
+            
             backCamera.transform.localRotation = backStartRotation;
         }
         else
