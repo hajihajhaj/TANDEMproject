@@ -118272,7 +118272,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -0.10000038, y: 39.835766}
+  m_AnchoredPosition: {x: -0.10000038, y: 39.835743}
   m_SizeDelta: {x: -9.551, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &927938181
@@ -191545,7 +191545,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a6ad1f2e0efbe24ea4d0471a1295df5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bellSound: {fileID: 774114851}
+  bellSound: {fileID: 1521819266}
 --- !u!82 &1521819266
 AudioSource:
   m_ObjectHideFlags: 0
@@ -267804,8 +267804,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1583599041}
   m_HandleRect: {fileID: 1583599040}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.12590311
+  m_Value: 1.0000001
+  m_Size: 0.12590323
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
