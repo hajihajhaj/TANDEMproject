@@ -43,19 +43,25 @@ public class PhoneCameraApp : MonoBehaviour
     float pitch;
     float yaw;
 
-    public float frontOrbitDistance = 2f;
-    public float frontOrbitHeight = 1.5f;
-    public float frontOrbitLimit = 45f;
-
-    Vector3 frontCameraStartPosition;
 
     Quaternion frontStartRotation;
     Quaternion backStartRotation;
 
     Vector3 frontStartPosition;
 
+    public float selfieLookHeight = 2.8f;
+    public float selfieTilt = -8f;
+
 
     public TandemBikeController bikeController;
+
+    void Start()
+    {
+        frontStartPosition = frontCamera.transform.localPosition;
+
+        frontStartRotation = frontCamera.transform.localRotation;
+        backStartRotation = backCamera.transform.localRotation;
+    }
 
     void Update()
     {
@@ -139,22 +145,27 @@ public class PhoneCameraApp : MonoBehaviour
             yaw = Mathf.Clamp(yaw, -frontLimit, frontLimit);
 
 
-            // Move camera sideways around the bike
-            float sideMovement = Mathf.Sin(yaw * Mathf.Deg2Rad);
+            // Update vertical look
+            pitch -= lookY * lookSpeed * Time.deltaTime;
+            pitch = Mathf.Clamp(pitch, -25f, 25f);
 
+            float radius = Mathf.Abs(frontStartPosition.z);
 
-            frontCamera.transform.localPosition =
-                frontStartPosition +
-                new Vector3(
-                    sideMovement * 2f,
-                    0f,
-                    0f
-                );
+            float yawRad = yaw * Mathf.Deg2Rad;
+            float pitchRad = pitch * Mathf.Deg2Rad;
 
+            // Move camera in a spherical arc
+            frontCamera.transform.localPosition = new Vector3(
+                Mathf.Sin(yawRad) * Mathf.Cos(pitchRad) * radius,
+                frontStartPosition.y + Mathf.Sin(pitchRad) * radius,
+                Mathf.Cos(yawRad) * Mathf.Cos(pitchRad) * radius
+            );
 
-            // Keep the camera facing the player
-            frontCamera.transform.localRotation =
-                frontStartRotation;
+            frontCamera.transform.LookAt(
+                bikeController.transform.position + Vector3.up * selfieLookHeight
+            );
+
+            frontCamera.transform.Rotate(selfieTilt, 0f, 0f, Space.Self);
         }
 
         // Switch camera (C or R3)
@@ -189,12 +200,8 @@ public class PhoneCameraApp : MonoBehaviour
         currentCamera = frontCamera;
 
         // SAVE ORIGINAL CAMERA ROTATIONS
-        frontStartRotation = frontCamera.transform.localRotation;
-        backStartRotation = backCamera.transform.localRotation;
+        
 
-        frontStartPosition = frontCamera.transform.localPosition;
-
-        frontCameraStartPosition = frontCamera.transform.localPosition;
 
         yaw = 0f;
         pitch = 0f;
@@ -235,8 +242,7 @@ public class PhoneCameraApp : MonoBehaviour
 
             yaw = 0f;
             pitch = 0f;
-
-            frontCamera.transform.localPosition = frontCameraStartPosition;
+            frontCamera.transform.localPosition = frontStartPosition;
             frontCamera.transform.localRotation = frontStartRotation;
             
             backCamera.transform.localRotation = backStartRotation;

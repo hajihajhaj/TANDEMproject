@@ -57,16 +57,25 @@ public class GalleryManager : MonoBehaviour
         {
             HandleNavigation();
 
-            // close fullscreen only
+            bool p2Circle = false;
+            bool p2Square = false;
+
+            if (Gamepad.all.Count > 1)
+            {
+                p2Circle = Gamepad.all[1].buttonEast.wasPressedThisFrame;   // Circle
+                p2Square = Gamepad.all[1].buttonWest.wasPressedThisFrame;   // Square
+            }
+
+            // Close fullscreen (Backspace or Circle)
             if (fullscreenPanel.activeSelf &&
-                Input.GetKeyDown(KeyCode.Backspace))
+                (Input.GetKeyDown(KeyCode.Backspace) || p2Circle))
             {
                 CloseFullscreen();
             }
 
-            // delete current photo
+            // Delete photo (X key or Square)
             if (fullscreenPanel.activeSelf &&
-                Input.GetKeyDown(KeyCode.X))
+                (Input.GetKeyDown(KeyCode.X) || p2Square))
             {
                 DeleteCurrentPhoto();
             }
