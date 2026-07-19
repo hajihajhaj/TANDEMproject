@@ -19,6 +19,9 @@ public class PhoneController : MonoBehaviour
     [Header("Opened App Panels")]
     public GameObject[] appPanels;
 
+    [Header("Home Screen")]
+    public GameObject homeScreen;
+
     int currentIndex = 0;
 
     bool phoneOpen = false;
@@ -161,6 +164,7 @@ public class PhoneController : MonoBehaviour
             if (currentIndex > 2)
                 panelIndex--;
 
+            homeScreen.SetActive(false);
             appPanels[panelIndex].SetActive(true);
             appOpen = true;
         }
@@ -220,6 +224,8 @@ public class PhoneController : MonoBehaviour
             panel.SetActive(false);
         }
 
+        homeScreen.SetActive(true);
+
         FindObjectOfType<PhoneCameraApp>()?.ExitCameraApp();
     }
 
@@ -228,7 +234,11 @@ public class PhoneController : MonoBehaviour
         appOpen = false;
 
         foreach (GameObject panel in appPanels)
+        {
             panel.SetActive(false);
+        }
+
+        homeScreen.SetActive(true);
 
         SelectButton(currentIndex);
     }

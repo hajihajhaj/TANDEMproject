@@ -1,19 +1,12 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PhoneColorManager : MonoBehaviour
 {
-    [Header("Phone Images")]
-    public Image homePhone;
-    public Image radioPhone;
-    public Image galleryPhone;
-    public Image settingsPhone;
-
-    [Header("Phone Sprites")]
-    public Sprite defaultPhone;
-    public Sprite lavenderPhone;
-    public Sprite blackPhone;
-    public Sprite mintPhone;
+    [Header("Phone Objects")]
+    public GameObject defaultPhone;
+    public GameObject lavenderPhone;
+    public GameObject blackPhone;
+    public GameObject mintPhone;
 
     void Start()
     {
@@ -22,64 +15,70 @@ public class PhoneColorManager : MonoBehaviour
 
     public void SetDefault()
     {
-        ChangePhoneColor(defaultPhone);
+        ShowPhone(defaultPhone);
+
         PlayerPrefs.SetInt("PhoneColor", -1);
         PlayerPrefs.Save();
     }
 
     public void SetLavender()
     {
-        ChangePhoneColor(lavenderPhone);
+        ShowPhone(lavenderPhone);
+
         PlayerPrefs.SetInt("PhoneColor", 0);
         PlayerPrefs.Save();
     }
 
     public void SetBlack()
     {
-        ChangePhoneColor(blackPhone);
+        ShowPhone(blackPhone);
+
         PlayerPrefs.SetInt("PhoneColor", 1);
         PlayerPrefs.Save();
     }
 
     public void SetMint()
     {
-        ChangePhoneColor(mintPhone);
+        ShowPhone(mintPhone);
+
         PlayerPrefs.SetInt("PhoneColor", 2);
         PlayerPrefs.Save();
     }
 
-    private void ChangePhoneColor(Sprite phoneSprite)
+    void ShowPhone(GameObject phone)
     {
-        homePhone.sprite = phoneSprite;
-        radioPhone.sprite = phoneSprite;
-        galleryPhone.sprite = phoneSprite;
-        settingsPhone.sprite = phoneSprite;
+        defaultPhone.SetActive(false);
+        lavenderPhone.SetActive(false);
+        blackPhone.SetActive(false);
+        mintPhone.SetActive(false);
+
+        phone.SetActive(true);
     }
 
-    private void LoadPhoneColor()
+    void LoadPhoneColor()
     {
         int savedColor = PlayerPrefs.GetInt("PhoneColor", -1);
 
         switch (savedColor)
         {
             case -1:
-                ChangePhoneColor(defaultPhone);
+                ShowPhone(defaultPhone);
                 break;
 
             case 0:
-                ChangePhoneColor(lavenderPhone);
+                ShowPhone(lavenderPhone);
                 break;
 
             case 1:
-                ChangePhoneColor(blackPhone);
+                ShowPhone(blackPhone);
                 break;
 
             case 2:
-                ChangePhoneColor(mintPhone);
+                ShowPhone(mintPhone);
                 break;
 
             default:
-                ChangePhoneColor(defaultPhone);
+                ShowPhone(defaultPhone);
                 break;
         }
     }

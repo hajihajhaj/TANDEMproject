@@ -73,7 +73,6 @@ public class DeliveryManager : MonoBehaviour
     [Header("Audio")]
     public AudioSource audioSource;
 
-    public AudioClip messageSound;
     public AudioClip successSound;
     public AudioClip failSound;
 
@@ -430,16 +429,17 @@ public class DeliveryManager : MonoBehaviour
         if (messageAudioLock)
             return;
 
-        StartCoroutine(
-            MessageSoundCooldown()
-        );
+        StartCoroutine(MessageSoundCooldown());
     }
 
     IEnumerator MessageSoundCooldown()
     {
         messageAudioLock = true;
 
-        PlaySoundSafe(messageSound, 1f);
+        if (NotificationSoundManager.CurrentNotificationSound != null)
+        {
+            PlaySoundSafe(NotificationSoundManager.CurrentNotificationSound, 1f);
+        }
 
         yield return new WaitForSeconds(0.2f);
 
