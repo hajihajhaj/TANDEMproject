@@ -178,17 +178,20 @@ public class PhoneController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Backspace) || p2Circle)
         {
+            SettingsMenu settings = FindObjectOfType<SettingsMenu>();
+
+            // If we're inside a Settings sub-page, go back to the Settings main menu.
+            if (settings != null && settings.IsOnSubPage())
+            {
+                settings.OpenMainMenu();
+                return;
+            }
+
+            // Otherwise close the current app.
             if (appOpen)
             {
                 CloseAllApps();
                 appOpen = false;
-            }
-            else
-            {
-                // fully close phone
-                phoneOpen = false;
-                phoneUI.SetActive(false);
-                CloseAllApps();
             }
         }
     }
