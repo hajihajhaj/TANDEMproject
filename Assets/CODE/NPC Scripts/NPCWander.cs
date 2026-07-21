@@ -16,12 +16,27 @@ public class NPCWander : MonoBehaviour
     private bool runningAway;
     private float idleTimer;
 
+    [Header("Phone Calls")]
+    public float minTimeBetweenCalls = 10f;
+    public float maxTimeBetweenCalls = 30f;
+
+    public float minCallDuration = 4f;
+    public float maxCallDuration = 10f;
+
+    private float nextPhoneCallTime;
+    private bool talkingOnPhone;
+
+
+    public GameObject phoneObject;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
 
         GoToRandomPoint();
+
+        ScheduleNextPhoneCall();
     }
 
     void Update()
@@ -58,6 +73,14 @@ public class NPCWander : MonoBehaviour
         // ANIMATION
         animator.SetFloat("Speed", agent.velocity.magnitude);
         animator.SetBool("Running", runningAway);
+
+        // Random phone calls
+        if (!runningAway &&
+            !talkingOnPhone &&
+            Time.time >= nextPhoneCallTime)
+        {
+            StartPhoneCall();
+        }
     }
 
     void GoToRandomPoint()
@@ -99,5 +122,34 @@ public class NPCWander : MonoBehaviour
         {
             agent.SetDestination(hit.position);
         }
+    }
+
+    void ScheduleNextPhoneCall()
+    {
+        nextPhoneCallTime = Time.time +
+            Random.Range(minTimeBetweenCalls, maxTimeBetweenCalls);
+    }
+
+    void StartPhoneCall()
+    {
+        talkingOnPhone = true;
+
+        phoneObject.SetActive(true);
+
+        animator.SetBool("TalkingonPhone", true);
+
+        Invoke(nameof(EndPhoneCall),
+            Random.Range(minCallDuration, maxCallDuration));
+    }
+
+    void EndPhoneCall()
+    {
+        talkingOnPhone = false;
+
+        animator.SetBool("TalkingonPhone", false);
+
+        phoneObject.SetActive(false);
+
+        ScheduleNextPhoneCall();
     }
 }

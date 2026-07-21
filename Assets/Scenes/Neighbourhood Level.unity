@@ -37196,6 +37196,14 @@ PrefabInstance:
       propertyPath: walkSpeed
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 1061683704009285768, guid: 12e5748f019cb8e429049a12d707efbf, type: 3}
+      propertyPath: maxCallDuration
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1061683704009285768, guid: 12e5748f019cb8e429049a12d707efbf, type: 3}
+      propertyPath: minCallDuration
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2685385338097358898, guid: 12e5748f019cb8e429049a12d707efbf, type: 3}
       propertyPath: m_Name
       value: Women NPC 2 (1)
@@ -46850,6 +46858,14 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1521819273}
+    - target: {fileID: 9061490351292168155, guid: 9dc9b15cdd1685649b52b365af209486, type: 3}
+      propertyPath: maxCallDuration
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 9061490351292168155, guid: 9dc9b15cdd1685649b52b365af209486, type: 3}
+      propertyPath: minCallDuration
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -89389,6 +89405,14 @@ PrefabInstance:
       propertyPath: walkSpeed
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 9061490351292168155, guid: 9dc9b15cdd1685649b52b365af209486, type: 3}
+      propertyPath: maxCallDuration
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 9061490351292168155, guid: 9dc9b15cdd1685649b52b365af209486, type: 3}
+      propertyPath: minCallDuration
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -125111,6 +125135,14 @@ PrefabInstance:
       propertyPath: walkSpeed
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 9061490351292168155, guid: 9dc9b15cdd1685649b52b365af209486, type: 3}
+      propertyPath: maxCallDuration
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 9061490351292168155, guid: 9dc9b15cdd1685649b52b365af209486, type: 3}
+      propertyPath: minCallDuration
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -137968,6 +138000,14 @@ PrefabInstance:
     - target: {fileID: 1061683704009285768, guid: 12e5748f019cb8e429049a12d707efbf, type: 3}
       propertyPath: walkSpeed
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1061683704009285768, guid: 12e5748f019cb8e429049a12d707efbf, type: 3}
+      propertyPath: maxCallDuration
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1061683704009285768, guid: 12e5748f019cb8e429049a12d707efbf, type: 3}
+      propertyPath: minCallDuration
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2685385338097358898, guid: 12e5748f019cb8e429049a12d707efbf, type: 3}
       propertyPath: m_Name
@@ -172084,6 +172124,71 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 8975690293054908635, guid: 8bd6653f218f8fd4fb5a76b26c9e342d, type: 3}
+--- !u!1001 &1344501329
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 561481480}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: e657ce1f3eb9d5145bdd44f1c7bd4391, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 114.24061
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e657ce1f3eb9d5145bdd44f1c7bd4391, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.79
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e657ce1f3eb9d5145bdd44f1c7bd4391, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7.42
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e657ce1f3eb9d5145bdd44f1c7bd4391, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.23999786
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e657ce1f3eb9d5145bdd44f1c7bd4391, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.6719026
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e657ce1f3eb9d5145bdd44f1c7bd4391, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.2622332
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e657ce1f3eb9d5145bdd44f1c7bd4391, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.2519961
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e657ce1f3eb9d5145bdd44f1c7bd4391, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.6451966
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e657ce1f3eb9d5145bdd44f1c7bd4391, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 42.654
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e657ce1f3eb9d5145bdd44f1c7bd4391, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -0.019
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e657ce1f3eb9d5145bdd44f1c7bd4391, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 87.669
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e657ce1f3eb9d5145bdd44f1c7bd4391, type: 3}
+      propertyPath: m_Name
+      value: phone
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e657ce1f3eb9d5145bdd44f1c7bd4391, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e657ce1f3eb9d5145bdd44f1c7bd4391, type: 3}
 --- !u!1 &1344914759
 GameObject:
   m_ObjectHideFlags: 0
@@ -223853,6 +223958,14 @@ PrefabInstance:
       propertyPath: walkSpeed
       value: 0.007
       objectReference: {fileID: 0}
+    - target: {fileID: 1061683704009285768, guid: 12e5748f019cb8e429049a12d707efbf, type: 3}
+      propertyPath: maxCallDuration
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1061683704009285768, guid: 12e5748f019cb8e429049a12d707efbf, type: 3}
+      propertyPath: minCallDuration
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2685385338097358898, guid: 12e5748f019cb8e429049a12d707efbf, type: 3}
       propertyPath: m_Name
       value: Women NPC (1)
@@ -234416,6 +234529,14 @@ PrefabInstance:
     - target: {fileID: 9061490351292168155, guid: 9dc9b15cdd1685649b52b365af209486, type: 3}
       propertyPath: walkSpeed
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 9061490351292168155, guid: 9dc9b15cdd1685649b52b365af209486, type: 3}
+      propertyPath: maxCallDuration
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 9061490351292168155, guid: 9dc9b15cdd1685649b52b365af209486, type: 3}
+      propertyPath: minCallDuration
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -277332,6 +277453,16 @@ Transform:
   - {fileID: 645340869}
   m_Father: {fileID: 90926187}
   m_LocalEulerAnglesHint: {x: 0, y: -77.845, z: 0}
+--- !u!1 &2112364376 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e657ce1f3eb9d5145bdd44f1c7bd4391, type: 3}
+  m_PrefabInstance: {fileID: 1344501329}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2112364377 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e657ce1f3eb9d5145bdd44f1c7bd4391, type: 3}
+  m_PrefabInstance: {fileID: 1344501329}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2112571831
 GameObject:
   m_ObjectHideFlags: 0
@@ -281596,6 +281727,14 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1521819273}
+    - target: {fileID: 1061683704009285768, guid: 12e5748f019cb8e429049a12d707efbf, type: 3}
+      propertyPath: maxCallDuration
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1061683704009285768, guid: 12e5748f019cb8e429049a12d707efbf, type: 3}
+      propertyPath: minCallDuration
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2685385338097358898, guid: 12e5748f019cb8e429049a12d707efbf, type: 3}
       propertyPath: m_Name
       value: Women NPC
@@ -281716,9 +281855,24 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1521819273}
+    - target: {fileID: 9061490351292168155, guid: 9dc9b15cdd1685649b52b365af209486, type: 3}
+      propertyPath: phoneObject
+      value: 
+      objectReference: {fileID: 2112364376}
+    - target: {fileID: 9061490351292168155, guid: 9dc9b15cdd1685649b52b365af209486, type: 3}
+      propertyPath: maxCallDuration
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 9061490351292168155, guid: 9dc9b15cdd1685649b52b365af209486, type: 3}
+      propertyPath: minCallDuration
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 1437544166612638576, guid: 9dc9b15cdd1685649b52b365af209486, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2112364377}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1781453345413775818, guid: 9dc9b15cdd1685649b52b365af209486, type: 3}
       insertIndex: -1
