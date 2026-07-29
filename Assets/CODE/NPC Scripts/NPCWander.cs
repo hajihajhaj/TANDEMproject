@@ -3,6 +3,9 @@ using UnityEngine.AI;
 
 public class NPCWander : MonoBehaviour
 {
+
+    private NPCConversation conversation;
+
     public Transform player;
 
     public float walkSpeed = 2f;
@@ -24,7 +27,9 @@ public class NPCWander : MonoBehaviour
     public float maxCallDuration = 10f;
 
     private float nextPhoneCallTime;
-    private bool talkingOnPhone;
+
+    [HideInInspector]
+    public bool talkingOnPhone;
 
 
     public GameObject phoneObject;
@@ -33,6 +38,8 @@ public class NPCWander : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+
+        conversation = GetComponent<NPCConversation>();
 
         GoToRandomPoint();
 
@@ -77,6 +84,7 @@ public class NPCWander : MonoBehaviour
         // Random phone calls
         if (!runningAway &&
             !talkingOnPhone &&
+            (conversation == null || !conversation.isTalking) &&
             Time.time >= nextPhoneCallTime)
         {
             StartPhoneCall();
