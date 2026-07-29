@@ -2,33 +2,36 @@ using UnityEngine;
 
 public class MiniMapFollow : MonoBehaviour
 {
+    [Header("References")]
     public Transform player;
-
     public RectTransform mapImage;
 
-    public Vector2 worldMin = new Vector2(-765f, -398f);
-    public Vector2 worldMax = new Vector2(214f, 514f);
+    [Tooltip("Drag your Streets Separated object (with the Box Collider) here.")]
+    public BoxCollider worldBounds;
 
-    void Update()
+    void LateUpdate()
     {
-        float width = mapImage.rect.width;
-        float height = mapImage.rect.height;
+        if (player == null || mapImage == null || worldBounds == null)
+            return;
 
-        float worldWidth = worldMax.x - worldMin.x;
-        float worldHeight = worldMax.y - worldMin.y;
+        Bounds bounds = worldBounds.bounds;
 
-        float x =
-            (player.position.x - worldMin.x) /
-            worldWidth * width;
+        // Convert player world position to 0-1 range
+        float normalizedX = Mathf.InverseLerp(
+            bounds.min.x,
+            bounds.max.x,
+            player.position.x);
 
-        float y =
-            (player.position.z - worldMin.y) /
-            worldHeight * height;
+        float normalizedY = Mathf.InverseLerp(
+            bounds.min.z,
+            bounds.max.z,
+            player.position.z);
 
-        mapImage.anchoredPosition =
-            new Vector2(
-                width * .5f - x,
-                height * .5f - y
-            );
+        // Convert to map coordinates
+        float mapX = (normalizedX - 0.5f) * mapImage.rect.width;
+        float mapY = (normalizedY - 0.5f) * mapImage.rect.height;
+
+        // Move map so player stays centered
+        mapImage.anchoredPosition = new Vector2(-mapX, -mapY);
     }
 }
