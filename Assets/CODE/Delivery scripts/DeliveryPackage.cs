@@ -6,6 +6,11 @@ public class DeliveryPackage : MonoBehaviour
     public GameObject impactPrefab;
     public float destroyDelay = 2f;
 
+    [Header("Impact SFX")]
+    public AudioClip impactSFX;
+    [Range(0f, 1f)]
+    public float impactVolume = 1f;
+
     private bool hasImpacted = false;
 
     void OnCollisionEnter(Collision collision)
@@ -20,10 +25,11 @@ public class DeliveryPackage : MonoBehaviour
 
         hasImpacted = true;
 
+        ContactPoint hit = collision.contacts[0];
+
+        // Spawn VFX
         if (impactPrefab != null)
         {
-            ContactPoint hit = collision.contacts[0];
-
             GameObject impact = Instantiate(
                 impactPrefab,
                 hit.point,
@@ -31,6 +37,16 @@ public class DeliveryPackage : MonoBehaviour
             );
 
             Destroy(impact, destroyDelay);
+        }
+
+        // Play SFX
+        if (impactSFX != null)
+        {
+            AudioSource.PlayClipAtPoint(
+                impactSFX,
+                hit.point,
+                impactVolume
+            );
         }
     }
 }
