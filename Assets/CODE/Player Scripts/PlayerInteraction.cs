@@ -7,6 +7,7 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject shopUI;
     public GameObject achievementsUI;
     public GameObject deliveryUI;
+    public CharacterCustomizationMenu customizationMenu;
 
     [HideInInspector]
     public string currentTrigger = "";
@@ -18,6 +19,13 @@ public class PlayerInteraction : MonoBehaviour
     (Gamepad.current != null && Gamepad.current.buttonSouth.wasPressedThisFrame))
         {
             OpenCurrentUI();
+            if (currentTrigger == "CharacterCustomization")
+            {
+                if (customizationMenu != null)
+                {
+                    customizationMenu.OpenMenu();
+                }
+            }
         }
 
         // CLOSE UI
