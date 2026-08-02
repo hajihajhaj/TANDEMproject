@@ -37,6 +37,9 @@ public class PlayerUpgradeManager : MonoBehaviour
     public float jumpForce = 55f;
     public float jumpCooldown = 6f;
 
+    [Header("Speed Boost SFX")]
+    public AudioSource speedBoostAudio;
+
     void Start()
     {
         Debug.Log("Current Equipped Upgrade: " +
@@ -91,6 +94,12 @@ public class PlayerUpgradeManager : MonoBehaviour
     IEnumerator ActivateSpeedBoost()
     {
         canUseAbility = false;
+
+        if (speedBoostAudio != null)
+        {
+            speedBoostAudio.Play();
+        }
+
         bikeMovement.isBoosting = true;
         float timer = 0f;
 
@@ -111,6 +120,13 @@ public class PlayerUpgradeManager : MonoBehaviour
         }
 
         bikeMovement.isBoosting = false;
+
+        // Stop the sound if it's still playing
+        if (speedBoostAudio != null)
+        {
+            speedBoostAudio.Stop();
+        }
+
         cooldownRemaining = speedBoostCooldown;
 
         while (cooldownRemaining > 0)
