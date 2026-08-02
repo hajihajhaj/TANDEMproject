@@ -49,6 +49,11 @@ public class TandemBikeController : MonoBehaviour
 
     public bool phoneCameraOpen = false;
 
+    [Header("Bike Movement SFX")]
+    public AudioSource movementAudio;
+    public float maxMovementVolume = 1f;
+    public float fadeSpeed = 3f;
+    public float minSpeedForSound = 0.2f;
 
     void Awake()
     {
@@ -64,6 +69,15 @@ public class TandemBikeController : MonoBehaviour
         currentP1MaxSpeed = p1MaxSpeed;
         currentP2MaxSpeed = p2MaxSpeed;
         currentBothMaxSpeed = bothMaxSpeed;
+
+        if (movementAudio != null)
+        {
+            movementAudio.loop = true;
+            movementAudio.volume = 0f;
+
+            if (!movementAudio.isPlaying)
+                movementAudio.Play();
+        }
     }
 
     void Update()
@@ -304,6 +318,20 @@ public class TandemBikeController : MonoBehaviour
                 0
             )
         );
+
+        // MOVEMENT SFX
+        if (movementAudio != null)
+        {
+            bool pedaling = p1Active || p2Active;
+
+            float targetVolume = pedaling ? maxMovementVolume : 0f;
+
+            movementAudio.volume = Mathf.MoveTowards(
+                movementAudio.volume,
+                targetVolume,
+                fadeSpeed * Time.fixedDeltaTime
+            );
+        }
     }
 
     public void RotateFromPhone(float amount)
