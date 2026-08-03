@@ -20,6 +20,9 @@ public class NPCConversation : MonoBehaviour
     private NavMeshAgent agent;
     private NPCWander wander;
 
+
+    private NPCConversation currentPartner;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -72,6 +75,9 @@ public class NPCConversation : MonoBehaviour
         isTalking = true;
         other.isTalking = true;
 
+        currentPartner = other;
+        other.currentPartner = this;
+
         nextConversationTime = Time.time + cooldown;
         other.nextConversationTime = Time.time + cooldown;
 
@@ -119,11 +125,46 @@ public class NPCConversation : MonoBehaviour
 
         isTalking = false;
         other.isTalking = false;
+
+        currentPartner = null;
+        other.currentPartner = null;
     }
 
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, searchRadius);
+    }
+    public void ForceEndConversation()
+    {
+        if (!isTalking)
+            return;
+
+        StopAllCoroutines();
+
+        animator.SetBool("ConvoA", false);
+        animator.SetBool("ConvoB", false);
+
+        agent.isStopped = false;
+        isTalking = false;
+
+        NPCConversation partner = currentPartner;
+        currentPartner = null;
+
+        if (partner != null)
+        {
+            partner.StopAllCoroutines();
+
+            partner.animator.SetBool("ConvoA", false);
+            partner.animator.SetBool("ConvoB", false);
+
+            partner.agent.isStopped = false;
+            partner.isTalking = false;
+            partner.currentPartner = null;
+
+            partner.wander.SendMessage("GoToRandomPoint");
+        }
+
+        wander.SendMessage("GoToRandomPoint");
     }
 }

@@ -34,6 +34,10 @@ public class NPCWander : MonoBehaviour
 
     public GameObject phoneObject;
 
+    [Header("Run Away SFX")]
+    public AudioSource voiceAudio;
+    public AudioClip[] runAwaySounds;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -115,6 +119,41 @@ public class NPCWander : MonoBehaviour
 
     void RunAway()
     {
+        // Stop conversation immediately
+        if (conversation != null)
+        {
+            conversation.ForceEndConversation();
+        }
+
+        // Hang up phone call immediately
+        if (talkingOnPhone)
+        {
+            CancelInvoke(nameof(EndPhoneCall));
+            EndPhoneCall();
+        }
+
+        if (conversation != null)
+        {
+            conversation.ForceEndConversation();
+        }
+
+        if (talkingOnPhone)
+        {
+            CancelInvoke(nameof(EndPhoneCall));
+            EndPhoneCall();
+        }
+
+        if (!runningAway)
+        {
+            if (voiceAudio != null &&
+                runAwaySounds.Length > 0)
+            {
+                int index = Random.Range(0, runAwaySounds.Length);
+
+                voiceAudio.PlayOneShot(runAwaySounds[index]);
+            }
+        }
+
         runningAway = true;
         agent.speed = runSpeed;
 
