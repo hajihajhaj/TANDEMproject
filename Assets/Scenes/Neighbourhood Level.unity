@@ -102133,7 +102133,7 @@ MonoBehaviour:
   musicSource: {fileID: 773073108}
   songs:
   - {fileID: 8300000, guid: 6882b7c53866e5448a39598f66aef082, type: 3}
-  - {fileID: 8300000, guid: 03db34c964d71db4aacd4c8ec12b2633, type: 3}
+  - {fileID: 8300000, guid: 87702e90095a9a745b48d9b144bdcdf7, type: 3}
   - {fileID: 8300000, guid: b5b9c2b24ef1fe544995881a61df2b9a, type: 3}
   - {fileID: 8300000, guid: eb9f99f460f0a3646804e1693794e3c7, type: 3}
   commercials:
@@ -103259,7 +103259,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   miniMapImage: {fileID: 780276331}
   megaMapArrow: {fileID: 67585982}
-  mapOffset: {x: 0, y: 0}
 --- !u!114 &780276333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123256,7 +123255,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -0.10000038, y: 39.835743}
+  m_AnchoredPosition: {x: -0.10000038, y: 39.835766}
   m_SizeDelta: {x: -9.551, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &927938181
@@ -278593,8 +278592,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1583599041}
   m_HandleRect: {fileID: 1583599040}
   m_Direction: 2
-  m_Value: 1.0000001
-  m_Size: 0.12590323
+  m_Value: 1
+  m_Size: 0.12590311
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
