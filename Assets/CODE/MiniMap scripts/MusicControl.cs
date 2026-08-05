@@ -1,98 +1,257 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class MusicControl : MonoBehaviour
 {
-    [Header("Music")]
+    [Header("Audio")]
     public AudioSource musicSource;
 
-    [Header("Volume UI")]
-    public Slider volumeSlider;
+    [Header("Songs (in order)")]
+    public AudioClip[] songs;
 
-    [Header("Controller Volume")]
+    [Header("Advertisements")]
+    public AudioClip[] commercials;
+
+    [Header("DJ One Liners")]
+    public AudioClip[] oneLiners;
+
+    [Header("Conversations")]
+    public AudioClip[] conversations;
+
+
+    [Header("Volume")]
+    public Slider volumeSlider;
     public float volumeStep = 0.1f;
 
-    [Header("Delivery Timer")]
+
+    [Header("Delivery")]
     public DeliveryManager deliveryManager;
+
+
+    int songIndex = 0;
+
+    int lastCategory = -1;
+    AudioClip lastClip;
+
+
+    bool paused;
+
 
     void Start()
     {
-        musicSource.volume = 1f;
+        musicSource.volume = 1;
 
-        volumeSlider.minValue = 0f;
-        volumeSlider.maxValue = 1f;
-        volumeSlider.value = musicSource.volume;
 
-        volumeSlider.onValueChanged.AddListener(ChangeVolume);
+        if (volumeSlider)
+        {
+            volumeSlider.minValue = 0;
+            volumeSlider.maxValue = 1;
+            volumeSlider.value = 1;
+
+            volumeSlider.onValueChanged.AddListener(ChangeVolume);
+        }
+
+
+        StartCoroutine(RadioLoop());
     }
+
 
     void Update()
     {
         if (Gamepad.current != null)
         {
             if (Gamepad.current.dpad.up.wasPressedThisFrame)
-            {
                 VolumeUp();
-            }
 
             if (Gamepad.current.dpad.down.wasPressedThisFrame)
-            {
                 VolumeDown();
-            }
         }
+
 
         UpdateMusicSpeed();
     }
 
+
+    void OnApplicationPause(bool pause)
+    {
+        paused = pause;
+
+
+        if (pause)
+            musicSource.Pause();
+        else
+            musicSource.UnPause();
+    }
+
+
+
+    IEnumerator RadioLoop()
+    {
+        while (true)
+        {
+            // Play song
+            musicSource.clip = songs[songIndex];
+            musicSource.Play();
+
+
+            // Wait for song
+            yield return new WaitWhile(() => musicSource.isPlaying);
+
+
+
+            // Move to next song
+            songIndex++;
+
+            if (songIndex >= songs.Length)
+                songIndex = 0;
+
+
+
+            // Small transition
+            yield return new WaitForSeconds(0.5f);
+
+
+
+            // Always play radio after song
+            yield return StartCoroutine(PlayRandomRadio());
+
+
+            // Small transition before next song
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+
+
+    IEnumerator PlayRandomRadio()
+    {
+        int category;
+
+
+        do
+        {
+            category = Random.Range(0, 3);
+
+        } while (category == lastCategory);
+
+
+
+        lastCategory = category;
+
+
+
+        AudioClip[] clips;
+
+
+
+        if (category == 0)
+            clips = commercials;
+
+        else if (category == 1)
+            clips = oneLiners;
+
+        else
+            clips = conversations;
+
+
+
+        if (clips.Length == 0)
+            yield break;
+
+
+
+        AudioClip chosen;
+
+
+
+        do
+        {
+            chosen = clips[Random.Range(0, clips.Length)];
+
+        } while (clips.Length > 1 && chosen == lastClip);
+
+
+
+        lastClip = chosen;
+
+
+
+        musicSource.clip = chosen;
+        musicSource.Play();
+
+
+
+        yield return new WaitWhile(() => musicSource.isPlaying);
+    }
+
+
+
     void UpdateMusicSpeed()
     {
-        if (deliveryManager == null)
+        if (!deliveryManager)
             return;
+
+
 
         float percent = deliveryManager.GetRemainingTimePercent();
 
-        float targetPitch = 1f;
 
-        // SLIGHT TENSION
-        if (percent <= 0.50f)
-        {
-            targetPitch = 1.03f;
-        }
+        float target = 1f;
 
-        // MEDIUM PANIC
+
+
+        if (percent <= 0.5f)
+            target = 1.03f;
+
+
         if (percent <= 0.25f)
-        {
-            targetPitch = 1.08f;
-        }
+            target = 1.08f;
 
-        // FINAL PANIC
+
         if (percent <= 0.10f)
-        {
-            targetPitch = 1.15f;
-        }
+            target = 1.15f;
+
+
 
         musicSource.pitch = Mathf.Lerp(
             musicSource.pitch,
-            targetPitch,
+            target,
             Time.deltaTime * 2f
         );
     }
 
-    public void ChangeVolume(float volume)
+
+
+    public void ChangeVolume(float value)
     {
-        musicSource.volume = volume;
+        musicSource.volume = value;
     }
+
+
 
     public void VolumeUp()
     {
-        musicSource.volume = Mathf.Clamp01(musicSource.volume + volumeStep);
-        volumeSlider.value = musicSource.volume;
+        musicSource.volume = Mathf.Clamp01(
+            musicSource.volume + volumeStep
+        );
+
+
+        if (volumeSlider)
+            volumeSlider.value = musicSource.volume;
     }
+
+
 
     public void VolumeDown()
     {
-        musicSource.volume = Mathf.Clamp01(musicSource.volume - volumeStep);
-        volumeSlider.value = musicSource.volume;
+        musicSource.volume = Mathf.Clamp01(
+            musicSource.volume - volumeStep
+        );
+
+
+        if (volumeSlider)
+            volumeSlider.value = musicSource.volume;
     }
 }

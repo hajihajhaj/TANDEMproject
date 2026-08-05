@@ -5931,7 +5931,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b7083e71419857468c01dba4f8f93e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainLevelTime: 80
+  mainLevelTime: 500
   mainTimerText: {fileID: 1888726834}
   customers:
   - customerName: Mariam
@@ -102045,6 +102045,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicSource: {fileID: 773073108}
+  songs:
+  - {fileID: 8300000, guid: 6882b7c53866e5448a39598f66aef082, type: 3}
+  - {fileID: 8300000, guid: 03db34c964d71db4aacd4c8ec12b2633, type: 3}
+  - {fileID: 8300000, guid: b5b9c2b24ef1fe544995881a61df2b9a, type: 3}
+  - {fileID: 8300000, guid: eb9f99f460f0a3646804e1693794e3c7, type: 3}
+  commercials:
+  - {fileID: 8300000, guid: 7fa2b132ca0548245ac102a754333334, type: 3}
+  - {fileID: 8300000, guid: 27f55946457420f43ab21fc23fa9d752, type: 3}
+  - {fileID: 8300000, guid: 83feb4c8a5143094199e781451006d56, type: 3}
+  - {fileID: 8300000, guid: 96253f1af22f18e47b72e944a6e53e03, type: 3}
+  - {fileID: 8300000, guid: 5e98cab37c7d67d46ab314b0d814137c, type: 3}
+  - {fileID: 8300000, guid: 716b6f38def8f554c9b6ef0484bd3a69, type: 3}
+  - {fileID: 8300000, guid: 6ad847a5fca452c4f902ef4143595dcd, type: 3}
+  oneLiners:
+  - {fileID: 8300000, guid: 52d85f917b43aff488dff91116c817da, type: 3}
+  - {fileID: 8300000, guid: daaa9fd4ca5645e4aac31c3d651709cc, type: 3}
+  - {fileID: 8300000, guid: c4688dcff4e1d074b9a5ce90d5dcf00c, type: 3}
+  - {fileID: 8300000, guid: 9b2f39e6dd512e343a5fd4215feeab84, type: 3}
+  - {fileID: 8300000, guid: 7e65f79a870e9da4cbec111964e4d6bf, type: 3}
+  - {fileID: 8300000, guid: 61e453eb0211b3342bb0d689f695f73f, type: 3}
+  conversations:
+  - {fileID: 8300000, guid: 7c74377a0d36b974ca18b6999c2cf7af, type: 3}
+  - {fileID: 8300000, guid: cd6ffa59879b66548b86f15b464ecad2, type: 3}
+  - {fileID: 8300000, guid: c10a1190d00ce5c4a9412b17e93d6f8e, type: 3}
   volumeSlider: {fileID: 286112408}
   volumeStep: 0.1
   deliveryManager: {fileID: 39032364}
@@ -102060,10 +102084,10 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: b5b9c2b24ef1fe544995881a61df2b9a, type: 3}
   m_Resource: {fileID: 8300000, guid: b5b9c2b24ef1fe544995881a61df2b9a, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
