@@ -27801,9 +27801,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   searchRadius: 21.19
+  conversationDistance: 7
   conversationChance: 0.2
   conversationDuration: 11
   cooldown: 20
+  arrivalDistance: 0.15
   isTalking: 0
 --- !u!82 &208315112
 AudioSource:
@@ -38352,9 +38354,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   searchRadius: 21.19
+  conversationDistance: 7
   conversationChance: 0.2
   conversationDuration: 11
   cooldown: 20
+  arrivalDistance: 0.15
   isTalking: 0
 --- !u!82 &298390881
 AudioSource:
@@ -48145,9 +48149,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   searchRadius: 21.19
+  conversationDistance: 7
   conversationChance: 0.2
   conversationDuration: 11
   cooldown: 20
+  arrivalDistance: 0.15
   isTalking: 0
 --- !u!82 &359324449
 AudioSource:
@@ -73793,9 +73799,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   searchRadius: 21.19
+  conversationDistance: 7
   conversationChance: 0.2
   conversationDuration: 11
   cooldown: 20
+  arrivalDistance: 0.15
   isTalking: 0
 --- !u!82 &561481485
 AudioSource:
@@ -76426,9 +76434,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   searchRadius: 21.19
+  conversationDistance: 7
   conversationChance: 0.2
   conversationDuration: 11
   cooldown: 20
+  arrivalDistance: 0.15
   isTalking: 0
 --- !u!82 &583574726
 AudioSource:
@@ -86859,9 +86869,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   searchRadius: 21.19
+  conversationDistance: 7
   conversationChance: 0.2
   conversationDuration: 11
   cooldown: 20
+  arrivalDistance: 0.15
   isTalking: 0
 --- !u!136 &655218111
 CapsuleCollider:
@@ -163718,9 +163730,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   searchRadius: 21.19
+  conversationDistance: 7
   conversationChance: 0.2
   conversationDuration: 11
   cooldown: 20
+  arrivalDistance: 0.15
   isTalking: 0
 --- !u!82 &1242146422
 AudioSource:
@@ -218848,9 +218862,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   searchRadius: 21.19
+  conversationDistance: 7
   conversationChance: 0.2
   conversationDuration: 11
   cooldown: 20
+  arrivalDistance: 0.15
   isTalking: 0
 --- !u!82 &1667104821
 AudioSource:
@@ -239015,9 +239031,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   searchRadius: 21.19
+  conversationDistance: 7
   conversationChance: 0.2
   conversationDuration: 11
   cooldown: 20
+  arrivalDistance: 0.15
   isTalking: 0
 --- !u!82 &1818138889
 AudioSource:
@@ -270329,9 +270347,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   searchRadius: 21.19
+  conversationDistance: 7
   conversationChance: 0.2
   conversationDuration: 11
   cooldown: 20
+  arrivalDistance: 0.15
   isTalking: 0
 --- !u!82 &2019016927
 AudioSource:

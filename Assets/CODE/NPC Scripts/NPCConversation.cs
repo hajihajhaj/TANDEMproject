@@ -6,10 +6,11 @@ public class NPCConversation : MonoBehaviour
 {
     [Header("Conversation")]
     public float searchRadius = 2.5f;
+    public float conversationDistance = 1.2f;
     public float conversationChance = 0.2f;
     public float conversationDuration = 8f;
     public float cooldown = 20f;
-
+    public float arrivalDistance = 0.15f;
 
     [HideInInspector]
     public bool isTalking;
@@ -81,20 +82,38 @@ public class NPCConversation : MonoBehaviour
         nextConversationTime = Time.time + cooldown;
         other.nextConversationTime = Time.time + cooldown;
 
+
+        // Midpoint between both NPCs
+        Vector3 center = (transform.position + other.transform.position) * 0.5f;
+
+        // Direction from this NPC to the other
+        Vector3 dir = (other.transform.position - transform.position).normalized;
+        dir.y = 0;
+
+        // Calculate where each NPC should stand
+        Vector3 myPos = center - dir * (conversationDistance * 0.5f);
+        Vector3 otherPos = center + dir * (conversationDistance * 0.5f);
+
+        // Snap them into place
+        agent.Warp(myPos);
+        other.agent.Warp(otherPos);
+
+        // Stop moving
         agent.isStopped = true;
         other.agent.isStopped = true;
 
-        Vector3 dir = other.transform.position - transform.position;
-        dir.y = 0;
+        // Face each other
+        Vector3 lookDir = other.transform.position - transform.position;
+        lookDir.y = 0;
 
-        if (dir != Vector3.zero)
-            transform.rotation = Quaternion.LookRotation(dir);
+        if (lookDir != Vector3.zero)
+            transform.rotation = Quaternion.LookRotation(lookDir);
 
-        Vector3 dir2 = transform.position - other.transform.position;
-        dir2.y = 0;
+        lookDir = transform.position - other.transform.position;
+        lookDir.y = 0;
 
-        if (dir2 != Vector3.zero)
-            other.transform.rotation = Quaternion.LookRotation(dir2);
+        if (lookDir != Vector3.zero)
+            other.transform.rotation = Quaternion.LookRotation(lookDir);
 
         bool thisIsA = Random.value < 0.5f;
 
