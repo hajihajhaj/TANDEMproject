@@ -103737,7 +103737,7 @@ RectTransform:
   m_GameObject: {fileID: 780276330}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 15.542609, y: 17.267838, z: 15.542609}
+  m_LocalScale: {x: 19.059902, y: 21.175549, z: 19.059902}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1000648230}
@@ -103747,7 +103747,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -266, y: 598}
+  m_AnchoredPosition: {x: -325, y: 760}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &780276332
@@ -201093,7 +201093,7 @@ MonoBehaviour:
   arrowRect: {fileID: 67585982}
   miniMapImage: {fileID: 780276331}
   miniMapArrow: {fileID: 557220004}
-  miniMapMultiplier: 15
+  miniMapMultiplier: 28
   worldBounds: {fileID: 1999330940}
 --- !u!64 &1522505970
 MeshCollider:
