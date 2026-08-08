@@ -38,6 +38,11 @@ public class NPCWander : MonoBehaviour
     public AudioSource voiceAudio;
     public AudioClip[] runAwaySounds;
 
+    [Header("Crossing")]
+    public NPCCrosswalk nearbyCrosswalk;
+
+    private bool crossingRoad;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -52,6 +57,19 @@ public class NPCWander : MonoBehaviour
 
     void Update()
     {
+        if (crossingRoad)
+        {
+            if (!agent.pathPending &&
+                agent.remainingDistance <= 0.5f)
+            {
+                crossingRoad = false;
+
+                GoToRandomPoint();
+            }
+
+            return;
+        }
+
         if (!agent.isOnNavMesh || player == null) return;
 
         float distanceToPlayer =
@@ -75,7 +93,16 @@ public class NPCWander : MonoBehaviour
 
                 if (idleTimer > 1.5f)
                 {
-                    GoToRandomPoint();
+                    if (nearbyCrosswalk != null &&
+                        nearbyCrosswalk.ShouldCross())
+                    {
+                        StartCrossing();
+                    }
+                    else
+                    {
+                        GoToRandomPoint();
+                    }
+
                     idleTimer = 0f;
                 }
             }
@@ -198,5 +225,23 @@ public class NPCWander : MonoBehaviour
         phoneObject.SetActive(false);
 
         ScheduleNextPhoneCall();
+    }
+
+    void StartCrossing()
+    {
+        if (nearbyCrosswalk == null)
+            return;
+
+        if (!nearbyCrosswalk.IsSafeToCross())
+            return;
+
+
+        crossingRoad = true;
+
+        agent.speed = walkSpeed;
+
+        agent.SetDestination(
+            nearbyCrosswalk.endPoint.position
+        );
     }
 }

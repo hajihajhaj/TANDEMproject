@@ -9,7 +9,7 @@ public class MiniMapArrow : MonoBehaviour
         transform.localEulerAngles = new Vector3(
             0f,
             0f,
-            -player.eulerAngles.y + 180f
+            -player.eulerAngles.y
         );
     }
 }
