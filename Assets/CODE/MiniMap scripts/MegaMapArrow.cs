@@ -8,95 +8,113 @@ public class MegaMapArrow : MonoBehaviour
     public RectTransform mapRect;
     public RectTransform arrowRect;
 
+    [Tooltip("Controls the Mega Map arrow's left/right movement.")]
+    public float megaMapXMultiplier = 10f;
+
+    [Tooltip("Controls the Mega Map arrow's up/down movement.")]
+    public float megaMapYMultiplier = 10f;
+
     [Header("Mini Map")]
     public RectTransform miniMapImage;
     public RectTransform miniMapArrow;
 
-    [Tooltip("Increase if the minimap barely moves.")]
+    [Tooltip("Controls how much the Mini Map moves.")]
     public float miniMapMultiplier = 10f;
 
     public BoxCollider worldBounds;
 
-    Vector2 startArrowPosition;
-    Vector2 startMiniMapPosition;
-
-    Vector3 startPlayerPosition;
+    Vector3 lastPlayerPosition;
 
     void Start()
     {
-        // Remember exactly where you placed the Mega Map arrow
-        startArrowPosition = arrowRect.anchoredPosition;
-
-        // Remember exactly where you placed the Mini Map image
-        if (miniMapImage != null)
-            startMiniMapPosition = miniMapImage.anchoredPosition;
-
-        // Remember where the player/bike is when the game starts
-        startPlayerPosition = player.position;
+        // Remember where the player starts.
+        if (player != null)
+            lastPlayerPosition = player.position;
     }
 
     void Update()
     {
-        if (player == null || mapRect == null || worldBounds == null)
+        if (player == null || worldBounds == null)
             return;
 
         Bounds bounds = worldBounds.bounds;
 
-        float x = Mathf.InverseLerp(
-            bounds.min.x,
-            bounds.max.x,
-            player.position.x);
+        // =========================================
+        // PLAYER MOVEMENT
+        // =========================================
 
-        float y = Mathf.InverseLerp(
-            bounds.min.z,
-            bounds.max.z,
-            player.position.z);
+        Vector3 playerMovement =
+            player.position - lastPlayerPosition;
 
-        Vector2 mapOffset = new Vector2(
-            (x - 0.5f) * mapRect.rect.width,
-            (y - 0.5f) * mapRect.rect.height
-        );
+        lastPlayerPosition = player.position;
 
-        // Mega Map Arrow
-        arrowRect.anchoredPosition = startArrowPosition + mapOffset;
+        // =========================================
+        // NORMALIZED WORLD MOVEMENT
+        // =========================================
 
-        arrowRect.localEulerAngles = new Vector3(
-            0f,
-            0f,
-            -player.eulerAngles.y
-        );
+        float normalizedMovementX =
+            playerMovement.x / bounds.size.x;
 
-        // Mini Map Image
-        if (miniMapImage != null)
+        float normalizedMovementY =
+            playerMovement.z / bounds.size.z;
+
+        // =========================================
+        // MEGA MAP ARROW
+        // =========================================
+
+        if (arrowRect != null && mapRect != null)
         {
-            // Calculate where the player started on the map
-            float startX = Mathf.InverseLerp(
-                bounds.min.x,
-                bounds.max.x,
-                startPlayerPosition.x);
+            float megaX =
+                normalizedMovementX *
+                mapRect.rect.width *
+                megaMapXMultiplier;
 
-            float startY = Mathf.InverseLerp(
-                bounds.min.z,
-                bounds.max.z,
-                startPlayerPosition.z);
+            float megaY =
+                normalizedMovementY *
+                mapRect.rect.height *
+                megaMapYMultiplier;
 
-            Vector2 startMapOffset = new Vector2(
-                (startX - 0.5f) * mapRect.rect.width,
-                (startY - 0.5f) * mapRect.rect.height
+            arrowRect.anchoredPosition += new Vector2(
+                megaX,
+                megaY
             );
 
-            // Only move the minimap relative to where it started
-            Vector2 movementOffset = mapOffset - startMapOffset;
-
-            Vector2 miniOffset = movementOffset * miniMapMultiplier;
-
-            miniMapImage.anchoredPosition =
-                startMiniMapPosition - miniOffset;
+            // Rotate Mega Map arrow
+            arrowRect.localEulerAngles = new Vector3(
+                0f,
+                0f,
+                -player.eulerAngles.y
+            );
         }
 
-        // Mini Map Arrow
+        // =========================================
+        // MINI MAP IMAGE
+        // =========================================
+
+        if (miniMapImage != null)
+        {
+            Vector2 miniMapMovement = new Vector2(
+                normalizedMovementX *
+                miniMapImage.rect.width *
+                miniMapMultiplier,
+
+                normalizedMovementY *
+                miniMapImage.rect.height *
+                miniMapMultiplier
+            );
+
+            // Move the map opposite the player.
+            miniMapImage.anchoredPosition -= miniMapMovement;
+        }
+
+        // =========================================
+        // MINI MAP ARROW
+        // =========================================
+
         if (miniMapArrow != null)
         {
+            // Don't move the arrow.
+            // Only rotate it.
             miniMapArrow.localEulerAngles = new Vector3(
                 0f,
                 0f,
