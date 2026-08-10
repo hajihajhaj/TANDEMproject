@@ -52,7 +52,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -110,7 +110,57 @@ ModelImporter:
   humanDescription:
     serializedVersion: 3
     human: []
-    skeleton: []
+    skeleton:
+    - name: MaleNPCseperated(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Sphere.001
+      parentName: MaleNPCseperated(Clone)
+      position: {x: 2.0937903, y: 4.227353, z: -0.041626185}
+      rotation: {x: -0.64815557, y: 0.00090169854, z: -0.0010593899, w: 0.76150674}
+      scale: {x: 99.99999, y: 99.99999, z: 99.99999}
+    - name: Sphere.002
+      parentName: MaleNPCseperated(Clone)
+      position: {x: 0.019780874, y: 7.9508286, z: -0.29831812}
+      rotation: {x: -0.6481227, y: -0.0056423075, z: -0.0066292495, w: 0.76148623}
+      scale: {x: 17.539537, y: 17.539536, z: 17.53953}
+    - name: Sphere.026
+      parentName: MaleNPCseperated(Clone)
+      position: {x: 0.03592682, y: 7.712702, z: 0.24103689}
+      rotation: {x: -0.64815557, y: 0.00090169854, z: -0.0010593898, w: 0.76150674}
+      scale: {x: 99.99999, y: 99.99999, z: 99.99999}
+    - name: armL
+      parentName: MaleNPCseperated(Clone)
+      position: {x: 2.8271816, y: 6.30268, z: -0.041626185}
+      rotation: {x: -0.47847962, y: -0.43722284, z: 0.5136854, w: 0.56215733}
+      scale: {x: 99.999985, y: 99.999985, z: 99.99999}
+    - name: armR
+      parentName: MaleNPCseperated(Clone)
+      position: {x: -2.7717433, y: 6.30268, z: -0.04164953}
+      rotation: {x: -0.47726125, y: 0.43855235, z: -0.51524746, w: 0.560726}
+      scale: {x: 99.999985, y: 99.999985, z: 99.99999}
+    - name: feetL
+      parentName: MaleNPCseperated(Clone)
+      position: {x: 0.03592682, y: 7.712702, z: 0.24103689}
+      rotation: {x: -0.64815557, y: 0.00090169854, z: -0.0010593898, w: 0.76150674}
+      scale: {x: 99.99999, y: 99.99999, z: 99.99999}
+    - name: feetR
+      parentName: MaleNPCseperated(Clone)
+      position: {x: -0.4853847, y: 0.0758028, z: 0.6606691}
+      rotation: {x: -0.64815557, y: 0.00090169854, z: -0.0010593898, w: 0.76150674}
+      scale: {x: 99.99999, y: 99.99999, z: 99.99999}
+    - name: legs
+      parentName: MaleNPCseperated(Clone)
+      position: {x: -0.001088474, y: 3.396438, z: 0.023815095}
+      rotation: {x: -0.64815557, y: 0.00090169854, z: -0.0010593898, w: 0.76150674}
+      scale: {x: 99.99999, y: 99.99999, z: 99.99999}
+    - name: torso
+      parentName: MaleNPCseperated(Clone)
+      position: {x: 0.012516206, y: 6.0580406, z: 0.0013144314}
+      rotation: {x: -0.64815557, y: 0.00090169854, z: -0.0010593898, w: 0.76150674}
+      scale: {x: 99.99999, y: 99.99999, z: 99.99999}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -121,13 +171,13 @@ ModelImporter:
     globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0

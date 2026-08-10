@@ -7,6 +7,10 @@ public class TwoPlayerMovement : MonoBehaviour
     public Transform player1;
     public Transform player2;
 
+    [Header("Animators")]
+    public Animator player1Animator;
+    public Animator player2Animator;
+
     [Header("Settings")]
     public float moveSpeed = 5f;
 
@@ -14,7 +18,16 @@ public class TwoPlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (!canMove) return;
+        if (!canMove)
+        {
+            if (player1Animator != null)
+                player1Animator.SetFloat("Speed", 0f);
+
+            if (player2Animator != null)
+                player2Animator.SetFloat("Speed", 0f);
+
+            return;
+        }
 
         MovePlayer1();
         MovePlayer2();
@@ -29,10 +42,17 @@ public class TwoPlayerMovement : MonoBehaviour
         // Keyboard WASD
         if (Keyboard.current != null)
         {
-            if (Keyboard.current.aKey.isPressed) move += Vector3.forward;
-            if (Keyboard.current.dKey.isPressed) move += Vector3.back;
-            if (Keyboard.current.sKey.isPressed) move += Vector3.left;
-            if (Keyboard.current.wKey.isPressed) move += Vector3.right;
+            if (Keyboard.current.aKey.isPressed)
+                move += Vector3.forward;
+
+            if (Keyboard.current.dKey.isPressed)
+                move += Vector3.back;
+
+            if (Keyboard.current.sKey.isPressed)
+                move += Vector3.left;
+
+            if (Keyboard.current.wKey.isPressed)
+                move += Vector3.right;
         }
 
         // Controller 1 left stick
@@ -47,7 +67,17 @@ public class TwoPlayerMovement : MonoBehaviour
             );
         }
 
-        player1.position += move.normalized * moveSpeed * Time.deltaTime;
+        // Move Player 1
+        if (move.magnitude > 1f)
+            move.Normalize();
+
+        player1.position += move * moveSpeed * Time.deltaTime;
+
+        // Tell Animator how fast Player 1 is moving
+        if (player1Animator != null)
+        {
+            player1Animator.SetFloat("Speed", move.magnitude);
+        }
     }
 
     void MovePlayer2()
@@ -59,10 +89,17 @@ public class TwoPlayerMovement : MonoBehaviour
         // Keyboard YGHJ
         if (Keyboard.current != null)
         {
-            if (Keyboard.current.gKey.isPressed) move += Vector3.forward;
-            if (Keyboard.current.jKey.isPressed) move += Vector3.back;
-            if (Keyboard.current.hKey.isPressed) move += Vector3.left;
-            if (Keyboard.current.yKey.isPressed) move += Vector3.right;
+            if (Keyboard.current.gKey.isPressed)
+                move += Vector3.forward;
+
+            if (Keyboard.current.jKey.isPressed)
+                move += Vector3.back;
+
+            if (Keyboard.current.hKey.isPressed)
+                move += Vector3.left;
+
+            if (Keyboard.current.yKey.isPressed)
+                move += Vector3.right;
         }
 
         // Controller 2 left stick
@@ -77,6 +114,16 @@ public class TwoPlayerMovement : MonoBehaviour
             );
         }
 
-        player2.position += move.normalized * moveSpeed * Time.deltaTime;
+        // Move Player 2
+        if (move.magnitude > 1f)
+            move.Normalize();
+
+        player2.position += move * moveSpeed * Time.deltaTime;
+
+        // Tell Animator how fast Player 2 is moving
+        if (player2Animator != null)
+        {
+            player2Animator.SetFloat("Speed", move.magnitude);
+        }
     }
 }
