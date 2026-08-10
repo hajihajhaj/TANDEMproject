@@ -13,6 +13,7 @@ public class TwoPlayerMovement : MonoBehaviour
 
     [Header("Settings")]
     public float moveSpeed = 5f;
+    public float rotationSpeed = 10f;
 
     public bool canMove = true;
 
@@ -73,6 +74,18 @@ public class TwoPlayerMovement : MonoBehaviour
 
         player1.position += move * moveSpeed * Time.deltaTime;
 
+        // Turn Player 1 toward movement
+        if (move != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(move);
+
+            player1.rotation = Quaternion.Slerp(
+                player1.rotation,
+                targetRotation,
+                rotationSpeed * Time.deltaTime
+            );
+        }
+
         // Tell Animator how fast Player 1 is moving
         if (player1Animator != null)
         {
@@ -119,6 +132,18 @@ public class TwoPlayerMovement : MonoBehaviour
             move.Normalize();
 
         player2.position += move * moveSpeed * Time.deltaTime;
+
+        // Turn Player 2 toward movement
+        if (move != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(move);
+
+            player2.rotation = Quaternion.Slerp(
+                player2.rotation,
+                targetRotation,
+                rotationSpeed * Time.deltaTime
+            );
+        }
 
         // Tell Animator how fast Player 2 is moving
         if (player2Animator != null)
