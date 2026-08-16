@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using System.Collections;
-using UnityEngine.UI;
+using TMPro;
 
 public class LevelNode : MonoBehaviour
 {
@@ -11,13 +11,13 @@ public class LevelNode : MonoBehaviour
 
     [Header("Loading Screen")]
     public GameObject loadingScreen;
-    public Slider loadingBar;
-
+    public TMP_Text loadingPercentage;
 
     public string sceneName;
     public GameObject promptUI;
 
     private bool playerInRange = false;
+    private bool isLoading = false;
 
     void Start()
     {
@@ -26,6 +26,9 @@ public class LevelNode : MonoBehaviour
 
     void Update()
     {
+        if (isLoading)
+            return;
+
         bool startPressed = false;
 
         // Keyboard
@@ -56,6 +59,7 @@ public class LevelNode : MonoBehaviour
         if (other.CompareTag("Bike"))
         {
             playerInRange = true;
+
             if (promptUI != null)
                 promptUI.SetActive(true);
         }
@@ -66,6 +70,7 @@ public class LevelNode : MonoBehaviour
         if (other.CompareTag("Bike"))
         {
             playerInRange = false;
+
             if (promptUI != null)
                 promptUI.SetActive(false);
         }
@@ -84,42 +89,88 @@ public class LevelNode : MonoBehaviour
 
     IEnumerator LoadLevelAsync()
     {
-        loadingScreen.SetActive(true);
+        isLoading = true;
 
-        // force UI to update first
+        if (loadingScreen != null)
+            loadingScreen.SetActive(true);
+
+        if (loadingPercentage != null)
+            loadingPercentage.text = "0%";
+
+        // Give Unity one frame to display the loading screen.
         yield return null;
 
         AsyncOperation operation =
             SceneManager.LoadSceneAsync(sceneName);
 
         float displayedProgress = 0f;
+        float previousRealProgress = 0f;
 
         while (!operation.isDone)
         {
-            float targetProgress =
-                Mathf.Clamp01(
-                    operation.progress / 0.9f
+            // Unity's real loading progress.
+            float realProgress =
+                Mathf.Clamp01(operation.progress / 0.9f);
+
+            // How much the real loading progress changed.
+            float progressChange =
+                realProgress - previousRealProgress;
+
+            previousRealProgress = realProgress;
+
+            // If loading is actively progressing, move the
+            // displayed percentage toward it.
+            if (realProgress > displayedProgress)
+            {
+                // Determine speed based on how quickly the
+                // actual scene is loading.
+                float speed = Mathf.Max(
+                    progressChange / Time.deltaTime,
+                    0.05f
                 );
 
-            displayedProgress =
-    Mathf.MoveTowards(
-        displayedProgress,
-        targetProgress,
-        0.8f * Time.deltaTime
-    );
+                displayedProgress = Mathf.MoveTowards(
+                    displayedProgress,
+                    realProgress,
+                    speed * Time.deltaTime
+                );
+            }
 
-            if (loadingBar != null)
+            // Update the percentage.
+            if (loadingPercentage != null)
             {
-                loadingBar.value = displayedProgress;
+                int percentage =
+                    Mathf.FloorToInt(displayedProgress * 100f);
 
-                if (targetProgress >= 0.99f)
-                {
-                    loadingBar.value = 1f;
-                }
-
+                loadingPercentage.text =
+                    percentage + "%";
             }
 
             yield return null;
         }
+
+        // Scene is ready — smoothly finish the last bit.
+        while (displayedProgress < 1f)
+        {
+            displayedProgress = Mathf.MoveTowards(
+                displayedProgress,
+                1f,
+                2f * Time.deltaTime
+            );
+
+            if (loadingPercentage != null)
+            {
+                int percentage =
+                    Mathf.FloorToInt(displayedProgress * 100f);
+
+                loadingPercentage.text =
+                    percentage + "%";
+            }
+
+            yield return null;
+        }
+
+        if (loadingPercentage != null)
+            loadingPercentage.text = "100%";
     }
 }
