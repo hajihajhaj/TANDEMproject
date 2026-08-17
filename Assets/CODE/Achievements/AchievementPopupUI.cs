@@ -19,20 +19,25 @@ public class AchievementPopupUI : MonoBehaviour
 
     public void Show()
     {
+        StartCoroutine(ShowDelayed());
+    }
+
+    IEnumerator ShowDelayed()
+    {
+        // Wait 4 seconds before showing
+        yield return new WaitForSeconds(4f);
+
         panel.SetActive(true);
 
-        // Play sound
+        // Play achievement sound
         if (audioSource != null && achievementSound != null)
         {
             audioSource.PlayOneShot(achievementSound);
         }
 
-        StartCoroutine(Hide());
-    }
+        // Keep popup visible for 4 seconds
+        yield return new WaitForSeconds(4f);
 
-    IEnumerator Hide()
-    {
-        yield return new WaitForSeconds(3f);
         panel.SetActive(false);
     }
 }

@@ -20,29 +20,24 @@ public class MusicControl : MonoBehaviour
     [Header("Conversations")]
     public AudioClip[] conversations;
 
-
     [Header("Volume")]
     public Slider volumeSlider;
     public float volumeStep = 0.1f;
 
-
     [Header("Delivery")]
     public DeliveryManager deliveryManager;
-
 
     int songIndex = 0;
 
     int lastCategory = -1;
     AudioClip lastClip;
 
-
-    bool paused;
+    bool paused = false;
 
 
     void Start()
     {
         musicSource.volume = 1;
-
 
         if (volumeSlider)
         {
@@ -52,7 +47,6 @@ public class MusicControl : MonoBehaviour
 
             volumeSlider.onValueChanged.AddListener(ChangeVolume);
         }
-
 
         StartCoroutine(RadioLoop());
     }
@@ -69,36 +63,63 @@ public class MusicControl : MonoBehaviour
                 VolumeDown();
         }
 
-
         UpdateMusicSpeed();
+    }
+
+
+    // =========================
+    // PAUSE STATE
+    // =========================
+
+    public void SetPaused(bool value)
+    {
+        paused = value;
     }
 
 
     void OnApplicationPause(bool pause)
     {
         paused = pause;
-
-
-        if (pause)
-            musicSource.Pause();
-        else
-            musicSource.UnPause();
     }
 
 
+    // =========================
+    // RADIO LOOP
+    // =========================
 
     IEnumerator RadioLoop()
     {
         while (true)
         {
+            // Wait while the game is paused
+            yield return new WaitWhile(() => paused);
+
+
             // Play song
             musicSource.clip = songs[songIndex];
             musicSource.Play();
 
 
-            // Wait for song
-            yield return new WaitWhile(() => musicSource.isPlaying);
+            // Wait until the song finishes
+            while (true)
+            {
+                // If paused, wait here and DO NOT advance
+                if (paused)
+                {
+                    yield return new WaitWhile(() => paused);
+                    continue;
+                }
 
+                // If the song is still playing, keep waiting
+                if (musicSource.isPlaying)
+                {
+                    yield return null;
+                    continue;
+                }
+
+                // Song really finished
+                break;
+            }
 
 
             // Move to next song
@@ -108,22 +129,27 @@ public class MusicControl : MonoBehaviour
                 songIndex = 0;
 
 
-
             // Small transition
             yield return new WaitForSeconds(0.5f);
 
 
+            // Wait if paused
+            yield return new WaitWhile(() => paused);
 
-            // Always play radio after song
+
+            // Play radio
             yield return StartCoroutine(PlayRandomRadio());
 
 
-            // Small transition before next song
+            // Small transition
             yield return new WaitForSeconds(0.5f);
         }
     }
 
 
+    // =========================
+    // RANDOM RADIO
+    // =========================
 
     IEnumerator PlayRandomRadio()
     {
@@ -137,13 +163,10 @@ public class MusicControl : MonoBehaviour
         } while (category == lastCategory);
 
 
-
         lastCategory = category;
 
 
-
         AudioClip[] clips;
-
 
 
         if (category == 0)
@@ -156,14 +179,11 @@ public class MusicControl : MonoBehaviour
             clips = conversations;
 
 
-
         if (clips.Length == 0)
             yield break;
 
 
-
         AudioClip chosen;
-
 
 
         do
@@ -173,20 +193,39 @@ public class MusicControl : MonoBehaviour
         } while (clips.Length > 1 && chosen == lastClip);
 
 
-
         lastClip = chosen;
-
 
 
         musicSource.clip = chosen;
         musicSource.Play();
 
 
+        // Wait until the radio clip ACTUALLY finishes
+        while (true)
+        {
+            // If paused, wait here
+            if (paused)
+            {
+                yield return new WaitWhile(() => paused);
+                continue;
+            }
 
-        yield return new WaitWhile(() => musicSource.isPlaying);
+            // Still playing
+            if (musicSource.isPlaying)
+            {
+                yield return null;
+                continue;
+            }
+
+            // Really finished
+            break;
+        }
     }
 
 
+    // =========================
+    // MUSIC SPEED
+    // =========================
 
     void UpdateMusicSpeed()
     {
@@ -194,12 +233,9 @@ public class MusicControl : MonoBehaviour
             return;
 
 
-
         float percent = deliveryManager.GetRemainingTimePercent();
 
-
         float target = 1f;
-
 
 
         if (percent <= 0.5f)
@@ -214,7 +250,6 @@ public class MusicControl : MonoBehaviour
             target = 1.15f;
 
 
-
         musicSource.pitch = Mathf.Lerp(
             musicSource.pitch,
             target,
@@ -223,12 +258,14 @@ public class MusicControl : MonoBehaviour
     }
 
 
+    // =========================
+    // VOLUME
+    // =========================
 
     public void ChangeVolume(float value)
     {
         musicSource.volume = value;
     }
-
 
 
     public void VolumeUp()
@@ -241,7 +278,6 @@ public class MusicControl : MonoBehaviour
         if (volumeSlider)
             volumeSlider.value = musicSource.volume;
     }
-
 
 
     public void VolumeDown()
