@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using System.Collections;
 using TMPro;
+using UnityEngine.UI;
 
 public class LevelNode : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class LevelNode : MonoBehaviour
     [Header("Loading Screen")]
     public GameObject loadingScreen;
     public TMP_Text loadingPercentage;
+    public UnityEngine.UI.Image loadingBike;
+    public Sprite[] bikeFrames;
+
+    public float bikeFrameRate = 0.1f;
 
     public string sceneName;
     public GameObject promptUI;
@@ -97,80 +102,73 @@ public class LevelNode : MonoBehaviour
         if (loadingPercentage != null)
             loadingPercentage.text = "0%";
 
-        // Give Unity one frame to display the loading screen.
+        // Give the loading screen one frame to appear.
         yield return null;
 
+        // Start loading the next scene asynchronously.
         AsyncOperation operation =
             SceneManager.LoadSceneAsync(sceneName);
 
-        float displayedProgress = 0f;
-        float previousRealProgress = 0f;
+        // Keep the current scene active until we're ready.
+        operation.allowSceneActivation = false;
+
+        // Animate the bike independently.
+        StartCoroutine(AnimateLoadingBike());
 
         while (!operation.isDone)
         {
-            // Unity's real loading progress.
-            float realProgress =
+            // Unity reports loading progress from 0 to 0.9.
+            // Dividing by 0.9 converts it to 0 to 1.
+            float progress =
                 Mathf.Clamp01(operation.progress / 0.9f);
 
-            // How much the real loading progress changed.
-            float progressChange =
-                realProgress - previousRealProgress;
-
-            previousRealProgress = realProgress;
-
-            // If loading is actively progressing, move the
-            // displayed percentage toward it.
-            if (realProgress > displayedProgress)
-            {
-                // Determine speed based on how quickly the
-                // actual scene is loading.
-                float speed = Mathf.Max(
-                    progressChange / Time.deltaTime,
-                    0.05f
-                );
-
-                displayedProgress = Mathf.MoveTowards(
-                    displayedProgress,
-                    realProgress,
-                    speed * Time.deltaTime
-                );
-            }
-
-            // Update the percentage.
+            // Convert progress to a percentage.
             if (loadingPercentage != null)
             {
                 int percentage =
-                    Mathf.FloorToInt(displayedProgress * 100f);
+                    Mathf.FloorToInt(progress * 100f);
 
                 loadingPercentage.text =
                     percentage + "%";
             }
 
+            // When Unity reaches 0.9, the scene is ready
+            // to activate.
+            if (operation.progress >= 0.9f)
+            {
+                if (loadingPercentage != null)
+                    loadingPercentage.text = "100%";
+
+                yield return null;
+
+                operation.allowSceneActivation = true;
+            }
+
             yield return null;
         }
+    }
 
-        // Scene is ready — smoothly finish the last bit.
-        while (displayedProgress < 1f)
+    IEnumerator AnimateLoadingBike()
+    {
+        if (loadingBike == null ||
+            bikeFrames == null ||
+            bikeFrames.Length == 0)
         {
-            displayedProgress = Mathf.MoveTowards(
-                displayedProgress,
-                1f,
-                2f * Time.deltaTime
-            );
-
-            if (loadingPercentage != null)
-            {
-                int percentage =
-                    Mathf.FloorToInt(displayedProgress * 100f);
-
-                loadingPercentage.text =
-                    percentage + "%";
-            }
-
-            yield return null;
+            yield break;
         }
 
-        if (loadingPercentage != null)
-            loadingPercentage.text = "100%";
+        int currentFrame = 0;
+
+        while (true)
+        {
+            loadingBike.sprite = bikeFrames[currentFrame];
+
+            currentFrame++;
+
+            if (currentFrame >= bikeFrames.Length)
+                currentFrame = 0;
+
+            yield return new WaitForSecondsRealtime(bikeFrameRate);
+        }
     }
 }
