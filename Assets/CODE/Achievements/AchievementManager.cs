@@ -42,7 +42,8 @@ public class AchievementManager : MonoBehaviour
 
         Debug.Log("Achievement Unlocked: " + unlockDate);
 
-        if (AchievementPopupUI.Instance != null)
-            AchievementPopupUI.Instance.Show();
+        // Achievement is unlocked here,
+        // but the popup will be shown after
+        // the final Thank You message.
     }
 }

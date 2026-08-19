@@ -97,6 +97,7 @@ public class DeliveryManager : MonoBehaviour
     int failedCount;
 
     bool levelEnded;
+    bool achievementFinished = false;
 
     Coroutine messageRoutine;
 
@@ -109,6 +110,15 @@ public class DeliveryManager : MonoBehaviour
     CustomerDelivery pendingCustomer;
     string pendingMessage;
     bool pendingPlaySound;
+
+    public void ShowSummaryAfterAchievement()
+    {
+        achievementFinished = true;
+
+        levelEnded = false;
+
+        EndLevel();
+    }
 
     void Awake()
     {
@@ -463,7 +473,8 @@ public class DeliveryManager : MonoBehaviour
 
     IEnumerator CheckEndAfterMessage()
     {
-        yield return new WaitForSeconds(2.2f);
+        // Wait until the thank-you message has finished
+        yield return new WaitForSeconds(5f);
 
         CheckLevelEnd();
     }
@@ -494,6 +505,14 @@ public class DeliveryManager : MonoBehaviour
             return;
 
         levelEnded = true;
+
+        // Show achievement before the level summary
+        if (!achievementFinished &&
+            AchievementPopupUI.Instance != null)
+        {
+            AchievementPopupUI.Instance.Show();
+            return;
+        }
 
         summaryPanel.SetActive(true);
 

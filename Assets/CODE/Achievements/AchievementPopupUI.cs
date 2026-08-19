@@ -24,9 +24,8 @@ public class AchievementPopupUI : MonoBehaviour
 
     IEnumerator ShowDelayed()
     {
-        // Wait 4 seconds before showing
-        yield return new WaitForSeconds(4f);
-
+        // Show achievement immediately
+        // after the thank-you message finishes
         panel.SetActive(true);
 
         // Play achievement sound
@@ -39,5 +38,11 @@ public class AchievementPopupUI : MonoBehaviour
         yield return new WaitForSeconds(4f);
 
         panel.SetActive(false);
+
+        // Show level summary after achievement
+        if (DeliveryManager.instance != null)
+        {
+            DeliveryManager.instance.ShowSummaryAfterAchievement();
+        }
     }
 }
