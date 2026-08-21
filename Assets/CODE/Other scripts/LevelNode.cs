@@ -13,16 +13,23 @@ public class LevelNode : MonoBehaviour
     [Header("Loading Screen")]
     public GameObject loadingScreen;
     public TMP_Text loadingPercentage;
-    public UnityEngine.UI.Image loadingBike;
-    public Sprite[] bikeFrames;
 
-    public float bikeFrameRate = 0.1f;
+    // Bike loading screen stuff temporarily disabled for testing.
+    // public Image loadingBike;
+    // public Sprite[] bikeFrames;
+
+    // public float bikeFrameRate = 0.1f;
+
+    public float minimumLoadingTime = 3f;
 
     public string sceneName;
     public GameObject promptUI;
 
     private bool playerInRange = false;
     private bool isLoading = false;
+
+    // Bike animation coroutine temporarily disabled.
+    // private Coroutine bikeAnimationCoroutine;
 
     void Start()
     {
@@ -102,52 +109,92 @@ public class LevelNode : MonoBehaviour
         if (loadingPercentage != null)
             loadingPercentage.text = "0%";
 
-        // Give the loading screen one frame to appear.
+        // Bike animation temporarily disabled for testing.
+        /*
+        if (bikeAnimationCoroutine != null)
+            StopCoroutine(bikeAnimationCoroutine);
+
+        bikeAnimationCoroutine = StartCoroutine(AnimateLoadingBike());
+        */
+
+        // Give Unity a frame to display the loading screen.
         yield return null;
 
-        // Start loading the next scene asynchronously.
         AsyncOperation operation =
             SceneManager.LoadSceneAsync(sceneName);
 
-        // Keep the current scene active until we're ready.
         operation.allowSceneActivation = false;
 
-        // Animate the bike independently.
-        StartCoroutine(AnimateLoadingBike());
+        float displayedProgress = 0f;
+        float elapsedTime = 0f;
 
-        while (!operation.isDone)
+        while (operation.progress < 0.9f ||
+               elapsedTime < minimumLoadingTime)
         {
-            // Unity reports loading progress from 0 to 0.9.
-            // Dividing by 0.9 converts it to 0 to 1.
-            float progress =
+            elapsedTime += Time.unscaledDeltaTime;
+
+            // Actual Unity loading progress.
+            float realProgress =
                 Mathf.Clamp01(operation.progress / 0.9f);
 
-            // Convert progress to a percentage.
+            // Smoothly move the displayed number toward
+            // the actual loading progress.
+            displayedProgress = Mathf.MoveTowards(
+                displayedProgress,
+                realProgress,
+                0.5f * Time.unscaledDeltaTime
+            );
+
             if (loadingPercentage != null)
             {
                 int percentage =
-                    Mathf.FloorToInt(progress * 100f);
+                    Mathf.FloorToInt(displayedProgress * 100f);
 
-                loadingPercentage.text =
-                    percentage + "%";
-            }
-
-            // When Unity reaches 0.9, the scene is ready
-            // to activate.
-            if (operation.progress >= 0.9f)
-            {
-                if (loadingPercentage != null)
-                    loadingPercentage.text = "100%";
-
-                yield return null;
-
-                operation.allowSceneActivation = true;
+                loadingPercentage.text = percentage + "%";
             }
 
             yield return null;
         }
+
+        // Smoothly finish 0-100 if necessary.
+        while (displayedProgress < 1f)
+        {
+            displayedProgress = Mathf.MoveTowards(
+                displayedProgress,
+                1f,
+                0.5f * Time.unscaledDeltaTime
+            );
+
+            if (loadingPercentage != null)
+            {
+                int percentage =
+                    Mathf.FloorToInt(displayedProgress * 100f);
+
+                loadingPercentage.text = percentage + "%";
+            }
+
+            yield return null;
+        }
+
+        if (loadingPercentage != null)
+            loadingPercentage.text = "100%";
+
+        yield return new WaitForSecondsRealtime(0.2f);
+
+        // Bike animation temporarily disabled.
+        /*
+        if (bikeAnimationCoroutine != null)
+        {
+            StopCoroutine(bikeAnimationCoroutine);
+            bikeAnimationCoroutine = null;
+        }
+        */
+
+        // Allow Unity to activate the loaded scene.
+        operation.allowSceneActivation = true;
     }
 
+    /*
     IEnumerator AnimateLoadingBike()
     {
         if (loadingBike == null ||
@@ -171,4 +218,5 @@ public class LevelNode : MonoBehaviour
             yield return new WaitForSecondsRealtime(bikeFrameRate);
         }
     }
+    */
 }
