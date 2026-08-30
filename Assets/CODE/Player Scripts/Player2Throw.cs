@@ -25,9 +25,12 @@ public class Player2Throw : MonoBehaviour
 
     public Transform cameraTransform;
 
+    // ANIMATION
+    public Animator player2Animator;
+
     void Update()
     {
-        // Player 2 = second connected gamepad
+        // Player 2 = second connected gamepad 
         if (p2 == null && Gamepad.all.Count > 1)
             p2 = Gamepad.all[1];
 
@@ -52,14 +55,25 @@ public class Player2Throw : MonoBehaviour
         bool triggerHeld = controllerHeld || keyboardHeld;
         bool triggerReleased = controllerReleased || keyboardReleased;
 
-        // Start charging
         if (triggerPressed)
         {
+            Debug.Log("PLAYER 2 THROW BUTTON PRESSED");
+
             isCharging = true;
             currentThrowForce = minThrowForce;
+
+            if (player2Animator != null)
+            {
+                Debug.Log("ANIMATOR FOUND - PLAYING THROW");
+                player2Animator.Play("p2Throw", 1, 0f);
+            }
+            else
+            {
+                Debug.LogError("PLAYER 2 ANIMATOR IS NULL!");
+            }
         }
 
-        // Charge throw
+        // Charge throw 
         if (isCharging && triggerHeld)
         {
             currentThrowForce += chargeSpeed * Time.deltaTime;
@@ -71,7 +85,7 @@ public class Player2Throw : MonoBehaviour
             );
         }
 
-        // Throw
+        // Throw 
         if (isCharging && triggerReleased)
         {
             ThrowBox();
