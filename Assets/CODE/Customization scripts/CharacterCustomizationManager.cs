@@ -2,15 +2,8 @@ using UnityEngine;
 
 public class CharacterCustomization : MonoBehaviour
 {
-    [Header("Bodies")]
-    public GameObject maleBody;
+    [Header("Female Body")]
     public GameObject femaleBody;
-
-    [Header("Male Clothing")]
-    public GameObject[] maleShirts;
-    public GameObject[] malePants;
-    public GameObject[] maleShoes;
-    public GameObject[] maleHair;
 
     [Header("Female Clothing")]
     public GameObject[] femaleShirts;
@@ -22,7 +15,6 @@ public class CharacterCustomization : MonoBehaviour
     public GameObject glasses;
     public GameObject beard;
 
-    private bool isFemale = false;
     private bool isDone = false;
 
     private int currentShirt = 0;
@@ -34,7 +26,9 @@ public class CharacterCustomization : MonoBehaviour
     {
         Debug.Log("Character Customization Started");
 
-        ApplyGender();
+        if (femaleBody != null)
+            femaleBody.SetActive(true);
+
         RefreshCharacter();
 
         if (glasses != null)
@@ -42,29 +36,6 @@ public class CharacterCustomization : MonoBehaviour
 
         if (beard != null)
             beard.SetActive(false);
-    }
-
-    //=========================================
-    // Gender
-    //=========================================
-
-    public void ToggleGender()
-    {
-        isDone = false;
-
-        isFemale = !isFemale;
-
-        ApplyGender();
-        RefreshCharacter();
-    }
-
-    void ApplyGender()
-    {
-        if (maleBody != null)
-            maleBody.SetActive(!isFemale);
-
-        if (femaleBody != null)
-            femaleBody.SetActive(isFemale);
     }
 
     //=========================================
@@ -119,10 +90,7 @@ public class CharacterCustomization : MonoBehaviour
 
         isDone = false;
 
-        if (isFemale)
-            currentShirt = NextIndex(currentShirt, femaleShirts.Length);
-        else
-            currentShirt = NextIndex(currentShirt, maleShirts.Length);
+        currentShirt = NextIndex(currentShirt, femaleShirts.Length);
 
         RefreshCharacter();
     }
@@ -131,10 +99,7 @@ public class CharacterCustomization : MonoBehaviour
     {
         isDone = false;
 
-        if (isFemale)
-            currentShirt = PreviousIndex(currentShirt, femaleShirts.Length);
-        else
-            currentShirt = PreviousIndex(currentShirt, maleShirts.Length);
+        currentShirt = PreviousIndex(currentShirt, femaleShirts.Length);
 
         RefreshCharacter();
     }
@@ -147,10 +112,7 @@ public class CharacterCustomization : MonoBehaviour
     {
         isDone = false;
 
-        if (isFemale)
-            currentPants = NextIndex(currentPants, femalePants.Length);
-        else
-            currentPants = NextIndex(currentPants, malePants.Length);
+        currentPants = NextIndex(currentPants, femalePants.Length);
 
         RefreshCharacter();
     }
@@ -159,10 +121,7 @@ public class CharacterCustomization : MonoBehaviour
     {
         isDone = false;
 
-        if (isFemale)
-            currentPants = PreviousIndex(currentPants, femalePants.Length);
-        else
-            currentPants = PreviousIndex(currentPants, malePants.Length);
+        currentPants = PreviousIndex(currentPants, femalePants.Length);
 
         RefreshCharacter();
     }
@@ -175,10 +134,7 @@ public class CharacterCustomization : MonoBehaviour
     {
         isDone = false;
 
-        if (isFemale)
-            currentShoes = NextIndex(currentShoes, femaleShoes.Length);
-        else
-            currentShoes = NextIndex(currentShoes, maleShoes.Length);
+        currentShoes = NextIndex(currentShoes, femaleShoes.Length);
 
         RefreshCharacter();
     }
@@ -187,10 +143,7 @@ public class CharacterCustomization : MonoBehaviour
     {
         isDone = false;
 
-        if (isFemale)
-            currentShoes = PreviousIndex(currentShoes, femaleShoes.Length);
-        else
-            currentShoes = PreviousIndex(currentShoes, maleShoes.Length);
+        currentShoes = PreviousIndex(currentShoes, femaleShoes.Length);
 
         RefreshCharacter();
     }
@@ -203,10 +156,7 @@ public class CharacterCustomization : MonoBehaviour
     {
         isDone = false;
 
-        if (isFemale)
-            currentHair = NextIndex(currentHair, femaleHair.Length);
-        else
-            currentHair = NextIndex(currentHair, maleHair.Length);
+        currentHair = NextIndex(currentHair, femaleHair.Length);
 
         RefreshCharacter();
     }
@@ -215,10 +165,7 @@ public class CharacterCustomization : MonoBehaviour
     {
         isDone = false;
 
-        if (isFemale)
-            currentHair = PreviousIndex(currentHair, femaleHair.Length);
-        else
-            currentHair = PreviousIndex(currentHair, maleHair.Length);
+        currentHair = PreviousIndex(currentHair, femaleHair.Length);
 
         RefreshCharacter();
     }
@@ -249,36 +196,12 @@ public class CharacterCustomization : MonoBehaviour
 
     void RefreshCharacter()
     {
-        Debug.Log("isFemale: " + isFemale);
+        Debug.Log("Refreshing Female Character");
 
-        if (isFemale)
-        {
-            Debug.Log("Female shirts: " + femaleShirts.Length);
-
-            for (int i = 0; i < femaleShirts.Length; i++)
-            {
-                Debug.Log("Female Shirt " + i + " = " + femaleShirts[i].name);
-            }
-
-            SetOnlyActive(femaleShirts, currentShirt);
-            SetOnlyActive(femalePants, currentPants);
-            SetOnlyActive(femaleShoes, currentShoes);
-            SetOnlyActive(femaleHair, currentHair);
-        }
-        else
-        {
-            Debug.Log("Male shirts: " + maleShirts.Length);
-
-            for (int i = 0; i < maleShirts.Length; i++)
-            {
-                Debug.Log("Male Shirt " + i + " = " + maleShirts[i].name);
-            }
-
-            SetOnlyActive(maleShirts, currentShirt);
-            SetOnlyActive(malePants, currentPants);
-            SetOnlyActive(maleShoes, currentShoes);
-            SetOnlyActive(maleHair, currentHair);
-        }
+        SetOnlyActive(femaleShirts, currentShirt);
+        SetOnlyActive(femalePants, currentPants);
+        SetOnlyActive(femaleShoes, currentShoes);
+        SetOnlyActive(femaleHair, currentHair);
     }
 
     //=========================================
