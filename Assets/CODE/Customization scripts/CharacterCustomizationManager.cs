@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class CharacterCustomization : MonoBehaviour
@@ -21,6 +22,9 @@ public class CharacterCustomization : MonoBehaviour
     private int currentPants = 0;
     private int currentShoes = 0;
     private int currentHair = 0;
+
+    [Header("Done Button")]
+    public TMP_Text doneButtonText;
 
     void Start()
     {
@@ -211,6 +215,9 @@ public class CharacterCustomization : MonoBehaviour
     public void SaveCustomization()
     {
         isDone = true;
+
+        if (doneButtonText != null)
+            doneButtonText.text = "SAVED";
 
         Debug.Log(gameObject.name + " customization saved.");
     }
