@@ -6,15 +6,28 @@ public class CharacterCustomization : MonoBehaviour
     [Header("Female Body")]
     public GameObject femaleBody;
 
-    [Header("Female Clothing")]
+    [Header("CUSTOMIZATION PREVIEW - Female Clothing")]
     public GameObject[] femaleShirts;
     public GameObject[] femalePants;
     public GameObject[] femaleShoes;
     public GameObject[] femaleHair;
 
-    [Header("Accessories")]
+    [Header("CUSTOMIZATION PREVIEW - Accessories")]
     public GameObject glasses;
     public GameObject beard;
+
+    [Header("ACTUAL PLAYER - Female Clothing")]
+    public GameObject[] playerFemaleShirts;
+    public GameObject[] playerFemalePants;
+    public GameObject[] playerFemaleShoes;
+    public GameObject[] playerFemaleHair;
+
+    [Header("ACTUAL PLAYER - Accessories")]
+    public GameObject playerGlasses;
+    public GameObject playerBeard;
+
+    [Header("Done Button")]
+    public TMP_Text doneButtonText;
 
     private bool isDone = false;
 
@@ -23,8 +36,13 @@ public class CharacterCustomization : MonoBehaviour
     private int currentShoes = 0;
     private int currentHair = 0;
 
-    [Header("Done Button")]
-    public TMP_Text doneButtonText;
+    private bool glassesSelected = false;
+    private bool beardSelected = false;
+
+
+    //=========================================
+    // START
+    //=========================================
 
     void Start()
     {
@@ -33,6 +51,7 @@ public class CharacterCustomization : MonoBehaviour
         if (femaleBody != null)
             femaleBody.SetActive(true);
 
+        // Set up customization preview
         RefreshCharacter();
 
         if (glasses != null)
@@ -40,10 +59,26 @@ public class CharacterCustomization : MonoBehaviour
 
         if (beard != null)
             beard.SetActive(false);
+
+        // Hide actual player outfit options
+        HideAll(playerFemaleShirts);
+        HideAll(playerFemalePants);
+        HideAll(playerFemaleShoes);
+        HideAll(playerFemaleHair);
+
+        if (playerGlasses != null)
+            playerGlasses.SetActive(false);
+
+        if (playerBeard != null)
+            playerBeard.SetActive(false);
+
+        if (doneButtonText != null)
+            doneButtonText.text = "DONE";
     }
 
+
     //=========================================
-    // Helper Functions
+    // HELPER FUNCTIONS
     //=========================================
 
     void SetOnlyActive(GameObject[] objects, int index)
@@ -58,6 +93,20 @@ public class CharacterCustomization : MonoBehaviour
         }
     }
 
+
+    void HideAll(GameObject[] objects)
+    {
+        if (objects == null)
+            return;
+
+        for (int i = 0; i < objects.Length; i++)
+        {
+            if (objects[i] != null)
+                objects[i].SetActive(false);
+        }
+    }
+
+
     int NextIndex(int current, int length)
     {
         if (length == 0)
@@ -70,6 +119,7 @@ public class CharacterCustomization : MonoBehaviour
 
         return current;
     }
+
 
     int PreviousIndex(int current, int length)
     {
@@ -84,151 +134,272 @@ public class CharacterCustomization : MonoBehaviour
         return current;
     }
 
+
+    void MarkAsUnsaved()
+    {
+        isDone = false;
+
+        if (doneButtonText != null)
+            doneButtonText.text = "DONE";
+    }
+
+
     //=========================================
-    // Shirts
+    // SHIRTS
     //=========================================
 
     public void NextShirt()
     {
         Debug.Log("Next Shirt Clicked");
 
-        isDone = false;
+        MarkAsUnsaved();
 
-        currentShirt = NextIndex(currentShirt, femaleShirts.Length);
+        currentShirt = NextIndex(
+            currentShirt,
+            femaleShirts.Length
+        );
 
         RefreshCharacter();
     }
+
 
     public void PreviousShirt()
     {
-        isDone = false;
+        MarkAsUnsaved();
 
-        currentShirt = PreviousIndex(currentShirt, femaleShirts.Length);
+        currentShirt = PreviousIndex(
+            currentShirt,
+            femaleShirts.Length
+        );
 
         RefreshCharacter();
     }
 
+
     //=========================================
-    // Pants
+    // PANTS
     //=========================================
 
     public void NextPants()
     {
-        isDone = false;
+        MarkAsUnsaved();
 
-        currentPants = NextIndex(currentPants, femalePants.Length);
+        currentPants = NextIndex(
+            currentPants,
+            femalePants.Length
+        );
 
         RefreshCharacter();
     }
+
 
     public void PreviousPants()
     {
-        isDone = false;
+        MarkAsUnsaved();
 
-        currentPants = PreviousIndex(currentPants, femalePants.Length);
+        currentPants = PreviousIndex(
+            currentPants,
+            femalePants.Length
+        );
 
         RefreshCharacter();
     }
 
+
     //=========================================
-    // Shoes
+    // SHOES
     //=========================================
 
     public void NextShoes()
     {
-        isDone = false;
+        MarkAsUnsaved();
 
-        currentShoes = NextIndex(currentShoes, femaleShoes.Length);
+        currentShoes = NextIndex(
+            currentShoes,
+            femaleShoes.Length
+        );
 
         RefreshCharacter();
     }
+
 
     public void PreviousShoes()
     {
-        isDone = false;
+        MarkAsUnsaved();
 
-        currentShoes = PreviousIndex(currentShoes, femaleShoes.Length);
+        currentShoes = PreviousIndex(
+            currentShoes,
+            femaleShoes.Length
+        );
 
         RefreshCharacter();
     }
 
+
     //=========================================
-    // Hair
+    // HAIR
     //=========================================
 
     public void NextHair()
     {
-        isDone = false;
+        MarkAsUnsaved();
 
-        currentHair = NextIndex(currentHair, femaleHair.Length);
+        currentHair = NextIndex(
+            currentHair,
+            femaleHair.Length
+        );
 
         RefreshCharacter();
     }
+
 
     public void PreviousHair()
     {
-        isDone = false;
+        MarkAsUnsaved();
 
-        currentHair = PreviousIndex(currentHair, femaleHair.Length);
+        currentHair = PreviousIndex(
+            currentHair,
+            femaleHair.Length
+        );
 
         RefreshCharacter();
     }
 
+
     //=========================================
-    // Accessories
+    // ACCESSORIES
     //=========================================
 
     public void ToggleGlasses()
     {
-        isDone = false;
+        MarkAsUnsaved();
+
+        glassesSelected = !glassesSelected;
 
         if (glasses != null)
-            glasses.SetActive(!glasses.activeSelf);
+            glasses.SetActive(glassesSelected);
     }
+
 
     public void ToggleBeard()
     {
-        isDone = false;
+        MarkAsUnsaved();
+
+        beardSelected = !beardSelected;
 
         if (beard != null)
-            beard.SetActive(!beard.activeSelf);
+            beard.SetActive(beardSelected);
     }
 
+
     //=========================================
-    // Refresh Character
+    // REFRESH CUSTOMIZATION PREVIEW
     //=========================================
 
     void RefreshCharacter()
     {
         Debug.Log("Refreshing Female Character");
 
-        SetOnlyActive(femaleShirts, currentShirt);
-        SetOnlyActive(femalePants, currentPants);
-        SetOnlyActive(femaleShoes, currentShoes);
-        SetOnlyActive(femaleHair, currentHair);
+        SetOnlyActive(
+            femaleShirts,
+            currentShirt
+        );
+
+        SetOnlyActive(
+            femalePants,
+            currentPants
+        );
+
+        SetOnlyActive(
+            femaleShoes,
+            currentShoes
+        );
+
+        SetOnlyActive(
+            femaleHair,
+            currentHair
+        );
     }
 
+
     //=========================================
-    // Done
+    // APPLY TO ACTUAL PLAYER
+    //=========================================
+
+    void ApplyCustomizationToPlayer()
+    {
+        Debug.Log("Applying customization to actual player: " + gameObject.name);
+
+        // Shirt
+        SetOnlyActive(
+            playerFemaleShirts,
+            currentShirt
+        );
+
+        // Pants
+        SetOnlyActive(
+            playerFemalePants,
+            currentPants
+        );
+
+        // Shoes
+        SetOnlyActive(
+            playerFemaleShoes,
+            currentShoes
+        );
+
+        // Hair
+        SetOnlyActive(
+            playerFemaleHair,
+            currentHair
+        );
+
+        // Glasses
+        if (playerGlasses != null)
+            playerGlasses.SetActive(glassesSelected);
+
+        // Beard
+        if (playerBeard != null)
+            playerBeard.SetActive(beardSelected);
+
+        Debug.Log("Player outfit applied!");
+    }
+
+
+    //=========================================
+    // DONE / SAVE
     //=========================================
 
     public void SaveCustomization()
     {
         isDone = true;
 
+        // Apply the selected outfit to the actual character
+        ApplyCustomizationToPlayer();
+
+        // Change DONE -> SAVED
         if (doneButtonText != null)
             doneButtonText.text = "SAVED";
 
         Debug.Log(gameObject.name + " customization saved.");
     }
 
+
+    //=========================================
+    // STATUS
+    //=========================================
+
     public bool IsDone()
     {
         return isDone;
     }
 
+
     public void ResetDone()
     {
         isDone = false;
+
+        if (doneButtonText != null)
+            doneButtonText.text = "DONE";
     }
 }
