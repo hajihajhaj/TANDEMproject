@@ -103256,7 +103256,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &773073107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103538,6 +103538,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 774114845}
+  animator: {fileID: 0}
   basePedalForce: 40
   turnSpeed: 120
   p1MaxSpeed: 12
@@ -201858,6 +201859,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 774114845}
+  animator: {fileID: 1796385910}
   basePedalForce: 40
   turnSpeed: 120
   p1MaxSpeed: 12

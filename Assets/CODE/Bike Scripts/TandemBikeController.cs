@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 public class TandemBikeController : MonoBehaviour
 {
     public Rigidbody rb;
+    public Animator animator;
 
     public float basePedalForce = 40f;
     public float turnSpeed = 120f;
@@ -113,6 +114,12 @@ public class TandemBikeController : MonoBehaviour
         }
 
         turnInput = Mathf.Clamp(turnInput, -1f, 1f);
+        Debug.Log("TURN INPUT: " + turnInput);
+
+        if (animator != null)
+        {
+            animator.SetFloat("Turn", turnInput);
+        }
 
         bool p1Pedaled = false;
         bool p2Pedaled = false;
