@@ -82831,6 +82831,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: real bike body
       objectReference: {fileID: 0}
+    - target: {fileID: 4389257200512060115, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9112025303683761468, guid: 4d673b60482851748936bb6ba1026910, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -281513,7 +281517,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1583599040}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.12590311
+  m_Size: 0.25180626
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
