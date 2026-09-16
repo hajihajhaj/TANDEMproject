@@ -56,8 +56,25 @@ public class TandemBikeController : MonoBehaviour
     public float fadeSpeed = 3f;
     public float minSpeedForSound = 0.2f;
 
+    [Header("Steering Visual")]
+    public Transform steeringHandlebars;
+
+    public float handlebarTurnAngle = 30f;
+    public float frontWheelTurnAngle = 30f;
+    public float handlebarSmoothSpeed = 10f;
+
+    Quaternion handlebarStartRotation;
+    Quaternion frontWheelStartRotation;
+
     void Awake()
     {
+        if (steeringHandlebars != null)
+        {
+            handlebarStartRotation = steeringHandlebars.localRotation;
+        }
+
+      
+
         rb = GetComponent<Rigidbody>();
 
         rb.useGravity = true;
@@ -114,12 +131,7 @@ public class TandemBikeController : MonoBehaviour
         }
 
         turnInput = Mathf.Clamp(turnInput, -1f, 1f);
-        Debug.Log("TURN INPUT: " + turnInput);
-
-        if (animator != null)
-        {
-            animator.SetFloat("Turn", turnInput);
-        }
+     
 
         bool p1Pedaled = false;
         bool p2Pedaled = false;
@@ -341,6 +353,31 @@ public class TandemBikeController : MonoBehaviour
         }
     }
 
+    void LateUpdate()
+    {
+        float steeringAmount = Mathf.Clamp(
+            turnInput + phoneCameraTurnInput,
+            -1f,
+            1f
+        );
+
+        if (steeringHandlebars != null)
+        {
+            Quaternion targetHandlebarRotation =
+                handlebarStartRotation *
+                Quaternion.Euler(
+                    0f,
+                    -steeringAmount * handlebarTurnAngle,
+                    0f
+                );
+
+            steeringHandlebars.localRotation = Quaternion.Slerp(
+                steeringHandlebars.localRotation,
+                targetHandlebarRotation,
+                handlebarSmoothSpeed * Time.deltaTime
+            );
+        }
+    }
     public void RotateFromPhone(float amount)
     {
         rb.MoveRotation(
