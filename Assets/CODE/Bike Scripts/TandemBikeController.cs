@@ -63,17 +63,16 @@ public class TandemBikeController : MonoBehaviour
     public float frontWheelTurnAngle = 30f;
     public float handlebarSmoothSpeed = 10f;
 
-    Quaternion handlebarStartRotation;
+    Vector3 handlebarStartEuler;
     Quaternion frontWheelStartRotation;
 
     void Awake()
     {
         if (steeringHandlebars != null)
         {
-            handlebarStartRotation = steeringHandlebars.localRotation;
+            handlebarStartEuler = steeringHandlebars.localEulerAngles;
         }
 
-      
 
         rb = GetComponent<Rigidbody>();
 
@@ -363,19 +362,24 @@ public class TandemBikeController : MonoBehaviour
 
         if (steeringHandlebars != null)
         {
-            Quaternion targetHandlebarRotation =
-                handlebarStartRotation *
-                Quaternion.Euler(
-                    0f,
-                    -steeringAmount * handlebarTurnAngle,
-                    0f
-                );
+            Vector3 targetRotation = handlebarStartEuler;
 
-            steeringHandlebars.localRotation = Quaternion.Slerp(
-                steeringHandlebars.localRotation,
-                targetHandlebarRotation,
+            targetRotation.y =
+                handlebarStartEuler.y +
+                (steeringAmount * handlebarTurnAngle);
+
+            Vector3 currentRotation = steeringHandlebars.localEulerAngles;
+
+            currentRotation.x = targetRotation.x;
+            currentRotation.z = targetRotation.z;
+
+            currentRotation.y = Mathf.LerpAngle(
+                currentRotation.y,
+                targetRotation.y,
                 handlebarSmoothSpeed * Time.deltaTime
             );
+
+            steeringHandlebars.localEulerAngles = currentRotation;
         }
     }
     public void RotateFromPhone(float amount)
