@@ -5,16 +5,22 @@ public class ApplyBikeColor : MonoBehaviour
     [Header("Bike Parts")]
     public Renderer[] bikeParts;
 
-    [Header("Bike Colors")]
+
+[Header("Bike Colors")]
     public Color[] bikeColors =
-    {
-        new Color32(223, 255, 19, 255),     // Yellow #DFFF13
-        new Color32(255, 32, 51, 255),      // Red #FF2033
-        new Color32(157, 0, 255, 255),      // Purple #9D00FF
-        new Color32(0, 162, 255, 255)       // Blue #00A2FF
-    };
+{
+    new Color32(223, 255, 19, 255),     // Yellow #DFFF13
+    new Color32(255, 32, 51, 255),      // Red #FF2033
+    new Color32(157, 0, 255, 255),      // Purple #9D00FF
+    new Color32(0, 162, 255, 255)       // Blue #00A2FF
+};
 
     void Start()
+    {
+        UpdateBikeColor();
+    }
+
+    public void UpdateBikeColor()
     {
         int selectedColor = PlayerPrefs.GetInt("BikeColor", 0);
 
@@ -27,7 +33,11 @@ public class ApplyBikeColor : MonoBehaviour
 
         foreach (Renderer part in bikeParts)
         {
-            part.material.color = color;
+            if (part != null)
+            {
+                part.material.color = color;
+            }
         }
     }
+
 }

@@ -91025,6 +91025,10 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   pauseOpenSound: {fileID: 0}
   pauseCloseSound: {fileID: 0}
+  homeSceneName: SampleScene
+  musicControl: {fileID: 0}
+  firstPauseButton: {fileID: 0}
+  firstHelpButton: {fileID: 0}
 --- !u!4 &684568471
 Transform:
   m_ObjectHideFlags: 0
@@ -103420,6 +103424,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 774114845}
+  animator: {fileID: 0}
   basePedalForce: 40
   turnSpeed: 120
   p1MaxSpeed: 12
@@ -103440,6 +103445,10 @@ MonoBehaviour:
   maxMovementVolume: 1
   fadeSpeed: 3
   minSpeedForSound: 0.2
+  steeringHandlebars: {fileID: 0}
+  handlebarTurnAngle: 30
+  frontWheelTurnAngle: 30
+  handlebarSmoothSpeed: 10
 --- !u!114 &774114849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103475,6 +103484,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bellSound: {fileID: 774114851}
+  bellSounds: []
 --- !u!82 &774114851
 AudioSource:
   m_ObjectHideFlags: 0
@@ -103594,6 +103604,7 @@ MonoBehaviour:
   linePoints: 30
   timeBetweenPoints: 0.1
   cameraTransform: {fileID: 875115619}
+  player2Animator: {fileID: 0}
 --- !u!114 &774114853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124610,7 +124621,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -0.10000038, y: 39.835754}
+  m_AnchoredPosition: {x: -0.10000038, y: 39.835762}
   m_SizeDelta: {x: -9.551, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &927938181
@@ -201558,6 +201569,7 @@ MonoBehaviour:
   linePoints: 30
   timeBetweenPoints: 0.1
   cameraTransform: {fileID: 875115619}
+  player2Animator: {fileID: 0}
 --- !u!114 &1521819265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201571,6 +201583,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bellSound: {fileID: 1521819266}
+  bellSounds: []
 --- !u!82 &1521819266
 AudioSource:
   m_ObjectHideFlags: 0
@@ -201726,6 +201739,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 774114845}
+  animator: {fileID: 0}
   basePedalForce: 40
   turnSpeed: 120
   p1MaxSpeed: 12
@@ -201746,6 +201760,10 @@ MonoBehaviour:
   maxMovementVolume: 1
   fadeSpeed: 12
   minSpeedForSound: 1.5
+  steeringHandlebars: {fileID: 0}
+  handlebarTurnAngle: 30
+  frontWheelTurnAngle: 30
+  handlebarSmoothSpeed: 10
 --- !u!114 &1521819270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281303,7 +281321,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1583599040}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.25180626
+  m_Size: 0.12590311
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

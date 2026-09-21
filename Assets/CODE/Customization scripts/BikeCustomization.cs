@@ -6,7 +6,8 @@ public class BikeCustomization : MonoBehaviour
     [Header("Bike Preview Images")]
     public GameObject[] bikeImages;
 
-    [Header("Select Button Text")]
+
+[Header("Select Button Text")]
     public TMP_Text selectButtonText;
 
     private int currentColor = 0;
@@ -60,12 +61,22 @@ public class BikeCustomization : MonoBehaviour
 
     public void Select()
     {
+        // Save the selected bike color
         selectedColor = currentColor;
 
         PlayerPrefs.SetInt("BikeColor", selectedColor);
         PlayerPrefs.Save();
 
+        // Update the Select button
         UpdateSelectButton();
+
+        // Update all bikes in the current scene
+        ApplyBikeColor[] bikes = FindObjectsOfType<ApplyBikeColor>();
+
+        foreach (ApplyBikeColor bike in bikes)
+        {
+            bike.UpdateBikeColor();
+        }
 
         Debug.Log("Bike color saved! Selected color: " + selectedColor);
     }
@@ -81,4 +92,5 @@ public class BikeCustomization : MonoBehaviour
             selectButtonText.text = "Select";
         }
     }
+
 }
