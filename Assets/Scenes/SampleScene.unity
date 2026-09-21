@@ -9790,7 +9790,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &625221228
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10451,7 +10451,7 @@ RectTransform:
   m_GameObject: {fileID: 700325678}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.07, y: 0.92, z: 1}
+  m_LocalScale: {x: 1.07, y: 0.83720005, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2012014528}
@@ -10508,10 +10508,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
+  m_fontSize: 26.85
   m_fontSizeBase: 24
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
@@ -10546,7 +10546,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 7.9764404, y: 0, z: 8.748405, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -19775,10 +19775,7 @@ MonoBehaviour:
   - {fileID: 324347883}
   - {fileID: 2077763371}
   - {fileID: 1673517216}
-  bikeColors:
-  - {r: 1, g: 0.1254902, b: 0.2, a: 1}
-  - {r: 0.6156863, g: 0, b: 1, a: 1}
-  - {r: 0, g: 0.63529414, b: 1, a: 1}
+  selectButtonText: {fileID: 700325680}
 --- !u!4 &1328354237
 Transform:
   m_ObjectHideFlags: 0
@@ -23199,7 +23196,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1517119408
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23213,10 +23210,10 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 501384097}
-  - {fileID: 2077763372}
-  - {fileID: 1673517217}
   - {fileID: 1165996073}
   - {fileID: 324347884}
+  - {fileID: 2077763372}
+  - {fileID: 1673517217}
   - {fileID: 1051873686}
   - {fileID: 1630988609}
   - {fileID: 2012014528}
@@ -29047,7 +29044,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2033838826
 RectTransform:
   m_ObjectHideFlags: 0

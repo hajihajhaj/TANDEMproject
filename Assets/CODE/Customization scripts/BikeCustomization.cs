@@ -1,25 +1,27 @@
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class BikeCustomization : MonoBehaviour
 {
     [Header("Bike Preview Images")]
     public GameObject[] bikeImages;
 
-    [Header("Colors")]
-    public Color[] bikeColors =
-    {
-        new Color32(255, 255, 0, 255),     // Yellow - Default
-        new Color32(255, 32, 51, 255),     // Red
-        new Color32(157, 0, 255, 255),     // Purple
-        new Color32(0, 162, 255, 255)      // Blue
-    };
+    [Header("Select Button Text")]
+    public TMP_Text selectButtonText;
 
     private int currentColor = 0;
+    private int selectedColor = 0;
 
     void Start()
     {
+        // Load the saved bike color
+        selectedColor = PlayerPrefs.GetInt("BikeColor", 0);
+
+        // Start on the saved bike color
+        currentColor = selectedColor;
+
         ShowBike();
+        UpdateSelectButton();
     }
 
     public void Forward()
@@ -32,6 +34,7 @@ public class BikeCustomization : MonoBehaviour
         }
 
         ShowBike();
+        UpdateSelectButton();
     }
 
     public void Back()
@@ -44,6 +47,7 @@ public class BikeCustomization : MonoBehaviour
         }
 
         ShowBike();
+        UpdateSelectButton();
     }
 
     void ShowBike()
@@ -56,13 +60,25 @@ public class BikeCustomization : MonoBehaviour
 
     public void Select()
     {
-        Color color = bikeColors[currentColor];
+        selectedColor = currentColor;
 
-        PlayerPrefs.SetFloat("BikeColorR", color.r);
-        PlayerPrefs.SetFloat("BikeColorG", color.g);
-        PlayerPrefs.SetFloat("BikeColorB", color.b);
+        PlayerPrefs.SetInt("BikeColor", selectedColor);
         PlayerPrefs.Save();
 
-        Debug.Log("Bike color saved!");
+        UpdateSelectButton();
+
+        Debug.Log("Bike color saved! Selected color: " + selectedColor);
+    }
+
+    void UpdateSelectButton()
+    {
+        if (currentColor == selectedColor)
+        {
+            selectButtonText.text = "Selected";
+        }
+        else
+        {
+            selectButtonText.text = "Select";
+        }
     }
 }
