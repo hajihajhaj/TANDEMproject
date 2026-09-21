@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class BellCustomization : MonoBehaviour
 {
@@ -9,16 +10,24 @@ public class BellCustomization : MonoBehaviour
     [Header("Bell UI")]
     public GameObject[] bellOptions;
 
+    [Header("Select Button Text")]
+    public TMP_Text selectButtonText;
+
     [Header("Preview Audio")]
     public AudioSource previewAudio;
 
     private int currentBell = 0;
+    private int selectedBell = 0;
+
     private Gamepad p1;
 
     void Start()
     {
-        currentBell = PlayerPrefs.GetInt("SelectedBell", 0);
+        selectedBell = PlayerPrefs.GetInt("SelectedBell", 0);
+        currentBell = selectedBell;
+
         ShowBell();
+        UpdateSelectButton();
     }
 
     void Update()
@@ -48,6 +57,7 @@ public class BellCustomization : MonoBehaviour
             currentBell = 0;
 
         ShowBell();
+        UpdateSelectButton();
     }
 
     public void PreviousBell()
@@ -58,6 +68,7 @@ public class BellCustomization : MonoBehaviour
             currentBell = bellOptions.Length - 1;
 
         ShowBell();
+        UpdateSelectButton();
     }
 
     void ShowBell()
@@ -70,10 +81,25 @@ public class BellCustomization : MonoBehaviour
 
     public void SelectBell()
     {
-        PlayerPrefs.SetInt("SelectedBell", currentBell);
+        selectedBell = currentBell;
+
+        PlayerPrefs.SetInt("SelectedBell", selectedBell);
         PlayerPrefs.Save();
 
-        Debug.Log("Bell sound saved!");
+        UpdateSelectButton();
+
+        Debug.Log("Bell sound saved! Selected bell: " + selectedBell);
+    }
+
+    void UpdateSelectButton()
+    {
+        if (selectButtonText != null)
+        {
+            if (currentBell == selectedBell)
+                selectButtonText.text = "Selected";
+            else
+                selectButtonText.text = "Select";
+        }
     }
 
     public void TestBell()
