@@ -5,6 +5,9 @@ public class InteractionTrigger : MonoBehaviour
     public GameObject promptUI;
     public string triggerType;
 
+    [Header("UI Opened By This Trigger")]
+    public GameObject menuUI;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -34,6 +37,15 @@ public class InteractionTrigger : MonoBehaviour
             {
                 interaction.currentTrigger = "";
             }
+        }
+    }
+
+    private void Update()
+    {
+        // Turn off this trigger's prompt when its UI opens
+        if (menuUI != null && menuUI.activeSelf)
+        {
+            promptUI.SetActive(false);
         }
     }
 }

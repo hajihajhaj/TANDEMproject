@@ -9,6 +9,12 @@ public class CharacterCustomizationMenu : MonoBehaviour
     [Header("UI")]
     public GameObject customizationUI;
 
+    [Header("All Customization Pages")]
+    public GameObject[] customizationPages;
+
+    [Header("Player Page")]
+    public GameObject playerPage;
+
     [Header("Unsaved Popup")]
     public GameObject unsavedPopup;
 
@@ -29,6 +35,10 @@ public class CharacterCustomizationMenu : MonoBehaviour
         if (customizationUI != null)
             customizationUI.SetActive(false);
 
+        // Player Page is the default page the first time
+        if (playerPage != null)
+            playerPage.SetActive(true);
+
         if (unsavedPopup != null)
             unsavedPopup.SetActive(false);
 
@@ -44,8 +54,6 @@ public class CharacterCustomizationMenu : MonoBehaviour
 
     public void OpenMenu()
     {
-        Debug.Log("OPENING CHARACTER CUSTOMIZATION");
-
         // Stop player movement
         if (playerMovement != null)
             playerMovement.canMove = false;

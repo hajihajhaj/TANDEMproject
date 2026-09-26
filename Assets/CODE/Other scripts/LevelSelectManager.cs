@@ -29,21 +29,21 @@ public class LevelSelectManager : MonoBehaviour
     {
         // ENTER MAP
         if (playerNearTrigger &&
-    !inLevelSelect &&
-    (
-        (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame) ||
-        (Gamepad.current != null && Gamepad.current.buttonSouth.wasPressedThisFrame)
-    ))
+            !inLevelSelect &&
+            (
+                (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame) ||
+                (Gamepad.current != null && Gamepad.current.buttonSouth.wasPressedThisFrame)
+            ))
         {
             EnterLevelSelect();
         }
 
         // EXIT MAP
         if (inLevelSelect &&
-     (
-         (Keyboard.current != null && Keyboard.current.backspaceKey.wasPressedThisFrame) ||
-         (Gamepad.current != null && Gamepad.current.buttonEast.wasPressedThisFrame)
-     ))
+            (
+                (Keyboard.current != null && Keyboard.current.backspaceKey.wasPressedThisFrame) ||
+                (Gamepad.current != null && Gamepad.current.buttonEast.wasPressedThisFrame)
+            ))
         {
             ExitLevelSelect();
         }
@@ -64,7 +64,7 @@ public class LevelSelectManager : MonoBehaviour
             enterPromptUI.SetActive(false);
     }
 
-    void ExitLevelSelect()
+    public void ExitLevelSelect()
     {
         inLevelSelect = false;
 
