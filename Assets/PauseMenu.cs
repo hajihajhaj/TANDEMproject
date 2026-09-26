@@ -244,4 +244,39 @@ public class PauseMenu : MonoBehaviour
 
         SceneManager.LoadScene(homeSceneName);
     }
+
+
+    // =========================
+    // MAIN MENU
+    // =========================
+
+    public void GoToMainMenu()
+    {
+        // Make sure the game isn't paused
+        Time.timeScale = 1f;
+
+
+        // Tell MusicControl the game is no longer paused
+        if (musicControl != null)
+        {
+            musicControl.SetPaused(false);
+        }
+
+
+        SceneManager.LoadScene("StartScreen");
+    }
+
+
+    // =========================
+    // CLOSE GAME
+    // =========================
+
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
 }
