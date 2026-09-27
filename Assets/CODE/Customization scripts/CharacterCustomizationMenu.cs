@@ -25,6 +25,11 @@ public class CharacterCustomizationMenu : MonoBehaviour
     [Header("Player Movement")]
     public TwoPlayerMovement playerMovement;
 
+    [Header("UI Sounds")]
+    public AudioSource uiAudioSource;
+    public AudioClip openSound;
+    public AudioClip closeSound;
+
 
     void Start()
     {
@@ -73,6 +78,10 @@ public class CharacterCustomizationMenu : MonoBehaviour
         // Hide unsaved popup
         if (unsavedPopup != null)
             unsavedPopup.SetActive(false);
+
+        // Play OPEN sound
+        if (uiAudioSource != null && openSound != null)
+            uiAudioSource.PlayOneShot(openSound);
     }
 
 
@@ -100,7 +109,6 @@ public class CharacterCustomizationMenu : MonoBehaviour
         if (unsavedPopup != null)
             unsavedPopup.SetActive(false);
 
-        // IMPORTANT:
         // Allow both players to move again
         if (playerMovement != null)
         {
@@ -113,6 +121,10 @@ public class CharacterCustomizationMenu : MonoBehaviour
         {
             Debug.LogError("TwoPlayerMovement is NOT assigned!");
         }
+
+        // Play CLOSE sound
+        if (uiAudioSource != null && closeSound != null)
+            uiAudioSource.PlayOneShot(closeSound);
     }
 
 
