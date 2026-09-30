@@ -65,7 +65,7 @@ public class Player2Throw : MonoBehaviour
             if (player2Animator != null)
             {
                 Debug.Log("ANIMATOR FOUND - PLAYING THROW");
-                player2Animator.Play("p2Throw", 1, 0f);
+                player2Animator.SetTrigger("Throw");
             }
             else
             {
@@ -153,5 +153,10 @@ public class Player2Throw : MonoBehaviour
 
             aimLine.SetPosition(i, point);
         }
+    }
+
+    public void ReleaseBox()
+    {
+        Debug.Log("BOX RELEASE!");
     }
 }

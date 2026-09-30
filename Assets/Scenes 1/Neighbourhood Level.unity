@@ -82791,14 +82791,58 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8563814600961193194, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.000000010011718
+      objectReference: {fileID: 0}
+    - target: {fileID: -8563814600961193194, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.006328599
+      objectReference: {fileID: 0}
+    - target: {fileID: -8563814600961193194, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.00000005355104
+      objectReference: {fileID: 0}
+    - target: {fileID: -8563814600961193194, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.87996525
+      objectReference: {fileID: 0}
+    - target: {fileID: -8563814600961193194, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.2714922
+      objectReference: {fileID: 0}
+    - target: {fileID: -8563814600961193194, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.2123695
+      objectReference: {fileID: 0}
+    - target: {fileID: -8563814600961193194, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.32688293
+      objectReference: {fileID: 0}
+    - target: {fileID: -8563814600961193194, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -38.072
+      objectReference: {fileID: 0}
+    - target: {fileID: -8563814600961193194, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -14.436
+      objectReference: {fileID: 0}
+    - target: {fileID: -8563814600961193194, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -35.753
+      objectReference: {fileID: 0}
+    - target: {fileID: -7436075588924813184, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.000000001788139
+      objectReference: {fileID: 0}
     - target: {fileID: -3655802286416253887, guid: 4d673b60482851748936bb6ba1026910, type: 3}
       propertyPath: 'm_Materials.Array.data[3]'
       value: 
-      objectReference: {fileID: 4218046369211427024, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      objectReference: {fileID: -1828449446267038352, guid: c89fa5bd1398f3f4e8133fa795f87e5a, type: 3}
     - target: {fileID: -3655802286416253887, guid: 4d673b60482851748936bb6ba1026910, type: 3}
       propertyPath: 'm_Materials.Array.data[4]'
       value: 
-      objectReference: {fileID: 4218046369211427024, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      objectReference: {fileID: -1828449446267038352, guid: c89fa5bd1398f3f4e8133fa795f87e5a, type: 3}
     - target: {fileID: -3221260770327953055, guid: 4d673b60482851748936bb6ba1026910, type: 3}
       propertyPath: m_Name
       value: BackWheel
@@ -82819,6 +82863,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: real bike body
       objectReference: {fileID: 0}
+    - target: {fileID: 4590699564599791444, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9112025303683761468, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      propertyPath: m_Name
+      value: Ameliabody
+      objectReference: {fileID: 0}
+    - target: {fileID: 9112025303683761468, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -82832,6 +82888,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4d673b60482851748936bb6ba1026910, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1796385911}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1796385912}
     - targetCorrespondingSourceObject: {fileID: 4389257200512060115, guid: 4d673b60482851748936bb6ba1026910, type: 3}
       insertIndex: -1
       addedObject: {fileID: 626551462}
@@ -124621,7 +124680,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -0.10000038, y: 39.835762}
+  m_AnchoredPosition: {x: -0.10000038, y: 39.835766}
   m_SizeDelta: {x: -9.551, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &927938181
@@ -201554,7 +201613,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1521819262}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 134b71ab34afce64ca35ed6b1a77f4bc, type: 3}
   m_Name: 
@@ -201569,7 +201628,7 @@ MonoBehaviour:
   linePoints: 30
   timeBetweenPoints: 0.1
   cameraTransform: {fileID: 875115619}
-  player2Animator: {fileID: 0}
+  player2Animator: {fileID: 1796385910}
 --- !u!114 &1521819265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238031,6 +238090,29 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1796385912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1796385909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 134b71ab34afce64ca35ed6b1a77f4bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boxPrefab: {fileID: 1866551559}
+  throwPoint: {fileID: 1305730766}
+  aimLine: {fileID: 705400437}
+  minThrowForce: 5
+  maxThrowForce: 25
+  chargeSpeed: 15
+  upwardForce: 10
+  linePoints: 30
+  timeBetweenPoints: 0.1
+  cameraTransform: {fileID: 875115619}
+  player2Animator: {fileID: 1796385910}
 --- !u!1 &1796550856 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7551998153222281223, guid: 4814b84a988924e408160a0d91c3fc8e, type: 3}
@@ -281321,7 +281403,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1583599040}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.12590311
+  m_Size: 0.25180626
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
