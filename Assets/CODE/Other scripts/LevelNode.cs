@@ -13,6 +13,7 @@ public class LevelNode : MonoBehaviour
     [Header("Loading Screen")]
     public GameObject loadingScreen;
     public TMP_Text loadingPercentage;
+    public GameObject levelSelectBackButton;
 
     // Bike loading screen stuff temporarily disabled for testing.
     // public Image loadingBike;
@@ -105,6 +106,9 @@ public class LevelNode : MonoBehaviour
 
         if (loadingScreen != null)
             loadingScreen.SetActive(true);
+
+        if (levelSelectBackButton != null)
+            levelSelectBackButton.SetActive(false);
 
         if (loadingPercentage != null)
             loadingPercentage.text = "0%";

@@ -28,7 +28,6 @@ public class CharacterCustomizationMenu : MonoBehaviour
     [Header("UI Sounds")]
     public AudioSource uiAudioSource;
     public AudioClip openSound;
-    public AudioClip closeSound;
 
 
     void Start()
@@ -121,10 +120,6 @@ public class CharacterCustomizationMenu : MonoBehaviour
         {
             Debug.LogError("TwoPlayerMovement is NOT assigned!");
         }
-
-        // Play CLOSE sound
-        if (uiAudioSource != null && closeSound != null)
-            uiAudioSource.PlayOneShot(closeSound);
     }
 
 
