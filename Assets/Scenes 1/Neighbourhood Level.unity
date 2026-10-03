@@ -82793,15 +82793,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8563814600961193194, guid: 4d673b60482851748936bb6ba1026910, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.000000010011718
+      value: -0.000000042724423
       objectReference: {fileID: 0}
     - target: {fileID: -8563814600961193194, guid: 4d673b60482851748936bb6ba1026910, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.006328599
+      value: 0.006328598
       objectReference: {fileID: 0}
     - target: {fileID: -8563814600961193194, guid: 4d673b60482851748936bb6ba1026910, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.00000005355104
+      value: -0.00000006251502
       objectReference: {fileID: 0}
     - target: {fileID: -8563814600961193194, guid: 4d673b60482851748936bb6ba1026910, type: 3}
       propertyPath: m_LocalRotation.w
@@ -82834,6 +82834,22 @@ PrefabInstance:
     - target: {fileID: -7436075588924813184, guid: 4d673b60482851748936bb6ba1026910, type: 3}
       propertyPath: m_LocalPosition.z
       value: -0.000000001788139
+      objectReference: {fileID: 0}
+    - target: {fileID: -4472533055352497719, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.426637e-16
+      objectReference: {fileID: 0}
+    - target: {fileID: -4472533055352497719, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.01207028
+      objectReference: {fileID: 0}
+    - target: {fileID: -4472533055352497719, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.490116e-10
+      objectReference: {fileID: 0}
+    - target: {fileID: -4472533055352497719, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.2125308
       objectReference: {fileID: 0}
     - target: {fileID: -3655802286416253887, guid: 4d673b60482851748936bb6ba1026910, type: 3}
       propertyPath: 'm_Materials.Array.data[3]'
