@@ -17,17 +17,26 @@ public class RoomCustomization : MonoBehaviour
 
     void Start()
     {
-        // Load saved room
-        selectedRoom = PlayerPrefs.GetInt("SelectedRoom", 0);
-        currentRoom = selectedRoom;
+        // Always start with Room 1
+        currentRoom = 0;
+        selectedRoom = 0;
 
-        // Show the correct UI preview
+        // Turn every room OFF
+        for (int i = 0; i < roomModels.Length; i++)
+        {
+            if (roomModels[i] != null)
+            {
+                roomModels[i].SetActive(false);
+            }
+        }
+
+        // Turn Room 1 ON
+        if (roomModels.Length > 0 && roomModels[0] != null)
+        {
+            roomModels[0].SetActive(true);
+        }
+
         ShowRoom();
-
-        // Show the saved actual room
-        ApplySelectedRoom();
-
-        // Update Select button
         UpdateSelectButton();
     }
 
@@ -55,48 +64,40 @@ public class RoomCustomization : MonoBehaviour
 
     void ShowRoom()
     {
-        // Change the room picture/preview in the UI
         for (int i = 0; i < roomOptions.Length; i++)
         {
-            roomOptions[i].SetActive(i == currentRoom);
+            if (roomOptions[i] != null)
+            {
+                roomOptions[i].SetActive(i == currentRoom);
+            }
         }
     }
 
     public void SelectRoom()
     {
-        // Save the room the player is currently looking at
         selectedRoom = currentRoom;
 
-        PlayerPrefs.SetInt("SelectedRoom", selectedRoom);
-        PlayerPrefs.Save();
-
-        // Change the actual room
-        ApplySelectedRoom();
-
-        // Update button
-        UpdateSelectButton();
-
-        Debug.Log("Room saved! Selected room: " + selectedRoom);
-    }
-
-    void ApplySelectedRoom()
-    {
+        // Turn all rooms OFF
         for (int i = 0; i < roomModels.Length; i++)
         {
-            if (roomModels[i] == null)
-                continue;
-
-            // Get every Renderer inside this room
-            Renderer[] renderers = roomModels[i].GetComponentsInChildren<Renderer>(true);
-
-            // Show selected room, hide the others
-            bool shouldShow = (i == selectedRoom);
-
-            foreach (Renderer renderer in renderers)
+            if (roomModels[i] != null)
             {
-                renderer.enabled = shouldShow;
+                roomModels[i].SetActive(false);
             }
         }
+
+        // Turn selected room ON
+        if (selectedRoom >= 0 && selectedRoom < roomModels.Length)
+        {
+            if (roomModels[selectedRoom] != null)
+            {
+                roomModels[selectedRoom].SetActive(true);
+            }
+        }
+
+        UpdateSelectButton();
+
+        Debug.Log("Selected Room: " + selectedRoom);
     }
 
     void UpdateSelectButton()
