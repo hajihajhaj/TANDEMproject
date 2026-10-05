@@ -18,19 +18,20 @@ public class Player2Throw : MonoBehaviour
     public int linePoints = 30;
     public float timeBetweenPoints = 0.1f;
 
+    [Header("Animation")]
+    public Animator player2Animator;
+
+    [Header("Camera")]
+    public Transform cameraTransform;
+
     private Gamepad p2;
 
     private bool isCharging;
+    private bool isThrowing;
     private float currentThrowForce;
-
-    public Transform cameraTransform;
-
-    // ANIMATION
-    public Animator player2Animator;
 
     void Update()
     {
-        // Player 2 = second connected gamepad 
         if (p2 == null && Gamepad.all.Count > 1)
             p2 = Gamepad.all[1];
 
@@ -43,40 +44,50 @@ public class Player2Throw : MonoBehaviour
 
     void HandleThrowInput()
     {
-        bool controllerPressed = p2 != null && p2.rightTrigger.wasPressedThisFrame;
-        bool controllerHeld = p2 != null && p2.rightTrigger.isPressed;
-        bool controllerReleased = p2 != null && p2.rightTrigger.wasReleasedThisFrame;
+        bool controllerPressed =
+            p2 != null && p2.rightTrigger.wasPressedThisFrame;
 
-        bool keyboardPressed = Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame;
-        bool keyboardHeld = Keyboard.current != null && Keyboard.current.spaceKey.isPressed;
-        bool keyboardReleased = Keyboard.current != null && Keyboard.current.spaceKey.wasReleasedThisFrame;
+        bool controllerHeld =
+            p2 != null && p2.rightTrigger.isPressed;
 
-        bool triggerPressed = controllerPressed || keyboardPressed;
-        bool triggerHeld = controllerHeld || keyboardHeld;
-        bool triggerReleased = controllerReleased || keyboardReleased;
+        bool controllerReleased =
+            p2 != null && p2.rightTrigger.wasReleasedThisFrame;
 
-        if (triggerPressed)
+        bool keyboardPressed =
+            Keyboard.current != null &&
+            Keyboard.current.spaceKey.wasPressedThisFrame;
+
+        bool keyboardHeld =
+            Keyboard.current != null &&
+            Keyboard.current.spaceKey.isPressed;
+
+        bool keyboardReleased =
+            Keyboard.current != null &&
+            Keyboard.current.spaceKey.wasReleasedThisFrame;
+
+        bool pressed =
+            controllerPressed || keyboardPressed;
+
+        bool held =
+            controllerHeld || keyboardHeld;
+
+        bool released =
+            controllerReleased || keyboardReleased;
+
+        // PRESS
+        if (pressed && !isCharging && !isThrowing)
         {
-            Debug.Log("PLAYER 2 THROW BUTTON PRESSED");
+            Debug.Log("P2 PRESSED - CHARGING");
 
             isCharging = true;
             currentThrowForce = minThrowForce;
-
-            if (player2Animator != null)
-            {
-                Debug.Log("ANIMATOR FOUND - PLAYING THROW");
-                player2Animator.SetTrigger("Throw");
-            }
-            else
-            {
-                Debug.LogError("PLAYER 2 ANIMATOR IS NULL!");
-            }
         }
 
-        // Charge throw 
-        if (isCharging && triggerHeld)
+        // HOLD
+        if (isCharging && held)
         {
-            currentThrowForce += chargeSpeed * Time.deltaTime;
+            currentThrowForce +=
+                chargeSpeed * Time.deltaTime;
 
             currentThrowForce = Mathf.Clamp(
                 currentThrowForce,
@@ -85,14 +96,34 @@ public class Player2Throw : MonoBehaviour
             );
         }
 
-        // Throw 
-        if (isCharging && triggerReleased)
+        // RELEASE
+        if (isCharging && released)
         {
-            ThrowBox();
+            Debug.Log("P2 RELEASED - PLAY THROW");
 
             isCharging = false;
-            aimLine.enabled = false;
+            isThrowing = true;
+
+            if (aimLine != null)
+                aimLine.enabled = false;
+
+            if (player2Animator != null)
+            {
+                player2Animator.Play(
+                    "Throw",
+                    1,
+                    0f
+                );
+            }
         }
+    }
+
+    // THIS IS CALLED BY THE ANIMATION EVENT
+    public void ReleaseBox()
+    {
+        Debug.Log("BOX RELEASE!");
+
+        ThrowBox();
     }
 
     void ThrowBox()
@@ -109,7 +140,9 @@ public class Player2Throw : MonoBehaviour
 
         if (rb != null)
         {
-            Vector3 throwDirection = cameraTransform.forward;
+            Vector3 throwDirection =
+                cameraTransform.forward;
+
             throwDirection.y = 0f;
             throwDirection.Normalize();
 
@@ -125,16 +158,28 @@ public class Player2Throw : MonoBehaviour
     {
         if (!isCharging)
         {
-            aimLine.enabled = false;
+            if (aimLine != null)
+                aimLine.enabled = false;
+
             return;
         }
+
+        if (
+            aimLine == null ||
+            throwPoint == null ||
+            cameraTransform == null
+        )
+            return;
 
         aimLine.enabled = true;
         aimLine.positionCount = linePoints;
 
-        Vector3 startPosition = throwPoint.position;
+        Vector3 startPosition =
+            throwPoint.position;
 
-        Vector3 throwDirection = cameraTransform.forward;
+        Vector3 throwDirection =
+            cameraTransform.forward;
+
         throwDirection.y = 0f;
         throwDirection.Normalize();
 
@@ -144,7 +189,8 @@ public class Player2Throw : MonoBehaviour
 
         for (int i = 0; i < linePoints; i++)
         {
-            float time = i * timeBetweenPoints;
+            float time =
+                i * timeBetweenPoints;
 
             Vector3 point =
                 startPosition +
@@ -153,10 +199,5 @@ public class Player2Throw : MonoBehaviour
 
             aimLine.SetPosition(i, point);
         }
-    }
-
-    public void ReleaseBox()
-    {
-        Debug.Log("BOX RELEASE!");
     }
 }
