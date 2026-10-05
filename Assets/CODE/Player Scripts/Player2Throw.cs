@@ -74,16 +74,30 @@ public class Player2Throw : MonoBehaviour
         bool released =
             controllerReleased || keyboardReleased;
 
+        // =========================
         // PRESS
+        // =========================
         if (pressed && !isCharging && !isThrowing)
         {
             Debug.Log("P2 PRESSED - CHARGING");
 
             isCharging = true;
             currentThrowForce = minThrowForce;
+
+            // PLAY THROW READY
+            if (player2Animator != null)
+            {
+                player2Animator.Play(
+                    "Throw Ready",
+                    1,
+                    0f
+                );
+            }
         }
 
+        // =========================
         // HOLD
+        // =========================
         if (isCharging && held)
         {
             currentThrowForce +=
@@ -96,7 +110,9 @@ public class Player2Throw : MonoBehaviour
             );
         }
 
+        // =========================
         // RELEASE
+        // =========================
         if (isCharging && released)
         {
             Debug.Log("P2 RELEASED - PLAY THROW");
@@ -107,6 +123,7 @@ public class Player2Throw : MonoBehaviour
             if (aimLine != null)
                 aimLine.enabled = false;
 
+            // PLAY THROW
             if (player2Animator != null)
             {
                 player2Animator.Play(
@@ -118,12 +135,15 @@ public class Player2Throw : MonoBehaviour
         }
     }
 
-    // THIS IS CALLED BY THE ANIMATION EVENT
+    // THIS IS CALLED BY THE THROW ANIMATION EVENT
     public void ReleaseBox()
     {
         Debug.Log("BOX RELEASE!");
 
         ThrowBox();
+
+        // Allow the player to throw again
+        isThrowing = false;
     }
 
     void ThrowBox()
