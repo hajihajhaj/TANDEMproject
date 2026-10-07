@@ -23,9 +23,6 @@ public class AchievementManager : MonoBehaviour
 
     public void AddDelivery()
     {
-        if (unlocked)
-            return;
-
         deliveries++;
 
         Debug.Log("Deliveries completed: " + deliveries);
@@ -40,14 +37,21 @@ public class AchievementManager : MonoBehaviour
 
     public void UnlockAchievement()
     {
+        // Already unlocked this achievement
         if (unlocked)
+        {
+            Debug.Log("Achievement was already unlocked.");
             return;
+        }
 
         unlocked = true;
 
-        // ONLY month + day
-        unlockDate = System.DateTime.Now.ToString("MMM dd");
+        unlockDate =
+            System.DateTime.Now.ToString("MMM dd");
 
-        Debug.Log("Achievement Unlocked: " + unlockDate);
+        Debug.Log(
+            "Achievement Unlocked: " +
+            unlockDate
+        );
     }
 }

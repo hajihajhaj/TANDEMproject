@@ -103999,7 +103999,6 @@ MonoBehaviour:
   upwardForce: 10
   linePoints: 30
   timeBetweenPoints: 0.1
-  player2Animator: {fileID: 0}
   cameraTransform: {fileID: 875115619}
 --- !u!114 &774114853
 MonoBehaviour:
@@ -292649,7 +292648,6 @@ MonoBehaviour:
   upwardForce: 10
   linePoints: 30
   timeBetweenPoints: 0.1
-  player2Animator: {fileID: 1796385910}
   cameraTransform: {fileID: 875115619}
 --- !u!1 &919132149331642239
 GameObject:

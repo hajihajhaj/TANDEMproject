@@ -11,35 +11,64 @@ public class AchievementPopupUI : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip achievementSound;
 
+    bool isShowing = false;
+
     void Awake()
     {
         Instance = this;
-        panel.SetActive(false);
+
+        if (panel != null)
+        {
+            panel.SetActive(false);
+        }
     }
 
     public void Show()
     {
+        // Don't start the popup more than once
+        if (isShowing)
+            return;
+
         StartCoroutine(ShowDelayed());
     }
 
     IEnumerator ShowDelayed()
     {
-        // Show achievement immediately
-        // after the thank-you message finishes
-        panel.SetActive(true);
+        isShowing = true;
 
-        // Play achievement sound
-        if (audioSource != null && achievementSound != null)
+        // Show achievement
+        if (panel != null)
         {
-            audioSource.PlayOneShot(achievementSound);
+            panel.SetActive(true);
         }
 
-        // Keep popup visible for 4 seconds
+        // Play achievement sound
+        if (
+            audioSource != null &&
+            achievementSound != null
+        )
+        {
+            audioSource.PlayOneShot(
+                achievementSound
+            );
+        }
+
+        Debug.Log("Achievement popup shown.");
+
+        // Keep achievement visible for 4 seconds
         yield return new WaitForSeconds(4f);
 
-        panel.SetActive(false);
+        // Hide achievement
+        if (panel != null)
+        {
+            panel.SetActive(false);
+        }
 
-        // Show level summary after achievement
+        isShowing = false;
+
+        Debug.Log("Achievement popup closed.");
+
+        // Now show the level summary
         if (DeliveryManager.instance != null)
         {
             DeliveryManager.instance.ShowSummaryAfterAchievement();

@@ -18,20 +18,17 @@ public class Player2Throw : MonoBehaviour
     public int linePoints = 30;
     public float timeBetweenPoints = 0.1f;
 
-    [Header("Animation")]
-    public Animator player2Animator;
-
     [Header("Camera")]
     public Transform cameraTransform;
 
     private Gamepad p2;
 
     private bool isCharging;
-    private bool isThrowing;
     private float currentThrowForce;
 
     void Update()
     {
+        // Get Player 2 controller
         if (p2 == null && Gamepad.all.Count > 1)
             p2 = Gamepad.all[1];
 
@@ -44,6 +41,7 @@ public class Player2Throw : MonoBehaviour
 
     void HandleThrowInput()
     {
+        // Controller
         bool controllerPressed =
             p2 != null && p2.rightTrigger.wasPressedThisFrame;
 
@@ -53,6 +51,7 @@ public class Player2Throw : MonoBehaviour
         bool controllerReleased =
             p2 != null && p2.rightTrigger.wasReleasedThisFrame;
 
+        // Keyboard
         bool keyboardPressed =
             Keyboard.current != null &&
             Keyboard.current.spaceKey.wasPressedThisFrame;
@@ -74,30 +73,16 @@ public class Player2Throw : MonoBehaviour
         bool released =
             controllerReleased || keyboardReleased;
 
-        // =========================
-        // PRESS
-        // =========================
-        if (pressed && !isCharging && !isThrowing)
+        // Start charging
+        if (pressed && !isCharging)
         {
-            Debug.Log("P2 PRESSED - CHARGING");
-
             isCharging = true;
             currentThrowForce = minThrowForce;
 
-            // PLAY THROW READY
-            if (player2Animator != null)
-            {
-                player2Animator.Play(
-                    "Throw Ready",
-                    1,
-                    0f
-                );
-            }
+            Debug.Log("P2 THROW START");
         }
 
-        // =========================
-        // HOLD
-        // =========================
+        // Charge while holding
         if (isCharging && held)
         {
             currentThrowForce +=
@@ -110,44 +95,43 @@ public class Player2Throw : MonoBehaviour
             );
         }
 
-        // =========================
-        // RELEASE
-        // =========================
+        // Throw when released
         if (isCharging && released)
         {
-            Debug.Log("P2 RELEASED - PLAY THROW");
-
             isCharging = false;
-            isThrowing = true;
+
+            Debug.Log(
+                "P2 THROW RELEASE - FORCE: " +
+                currentThrowForce
+            );
+
+            ThrowBox();
 
             if (aimLine != null)
                 aimLine.enabled = false;
-
-            // PLAY THROW
-            if (player2Animator != null)
-            {
-                player2Animator.Play(
-                    "Throw",
-                    1,
-                    0f
-                );
-            }
         }
-    }
-
-    // THIS IS CALLED BY THE THROW ANIMATION EVENT
-    public void ReleaseBox()
-    {
-        Debug.Log("BOX RELEASE!");
-
-        ThrowBox();
-
-        // Allow the player to throw again
-        isThrowing = false;
     }
 
     void ThrowBox()
     {
+        if (boxPrefab == null)
+        {
+            Debug.LogError("Box Prefab is missing!");
+            return;
+        }
+
+        if (throwPoint == null)
+        {
+            Debug.LogError("Throw Point is missing!");
+            return;
+        }
+
+        if (cameraTransform == null)
+        {
+            Debug.LogError("Camera Transform is missing!");
+            return;
+        }
+
         GameObject box = Instantiate(
             boxPrefab,
             throwPoint.position,
