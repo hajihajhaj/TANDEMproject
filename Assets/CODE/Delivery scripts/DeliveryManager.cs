@@ -44,7 +44,7 @@ public class DeliveryManager : MonoBehaviour
 
     [Header("Summary")]
     public GameObject summaryPanel;
-    
+
     public TMP_Text deliveredText;
 
     [Header("Summary Buttons")]
@@ -53,7 +53,6 @@ public class DeliveryManager : MonoBehaviour
     public Button firstSelectedButton;
 
     [Header("Level Summary Extra")]
-
     public TMP_Text totalTimeTakenText;
 
     public TMP_Text deliveriesSummaryText;
@@ -88,7 +87,6 @@ public class DeliveryManager : MonoBehaviour
         new Vector3(2f, 1f, 5f);
 
     public float confettiDestroyTime = 4f;
-
 
     int totalStars;
     int totalCoins;
@@ -127,6 +125,12 @@ public class DeliveryManager : MonoBehaviour
 
     void Start()
     {
+        // Reset achievement delivery count for this level
+        if (AchievementManager.Instance != null)
+        {
+            AchievementManager.Instance.ResetDeliveries();
+        }
+
         currentMainTime = mainLevelTime;
 
         messagePanel.SetActive(false);
@@ -157,8 +161,6 @@ public class DeliveryManager : MonoBehaviour
                     }
                 }
             }
-
-         
         }
     }
 
@@ -227,11 +229,11 @@ public class DeliveryManager : MonoBehaviour
                 customer.hurryShown = true;
 
                 ShowMessage(
-     customer,
-     customer.hurryMessage,
-     true,
-     false
- );
+                    customer,
+                    customer.hurryMessage,
+                    true,
+                    false
+                );
             }
 
             // FAIL
@@ -244,11 +246,11 @@ public class DeliveryManager : MonoBehaviour
                 PlaySoundSafe(failSound, 0.7f);
 
                 ShowMessage(
-     customer,
-     customer.angryMessage,
-     false,
-     false
- );
+                    customer,
+                    customer.angryMessage,
+                    false,
+                    false
+                );
             }
         }
     }
@@ -262,9 +264,10 @@ public class DeliveryManager : MonoBehaviour
 
         deliveredCount++;
 
-        AchievementManager.Instance.AddDelivery();
-
-
+        if (AchievementManager.Instance != null)
+        {
+            AchievementManager.Instance.AddDelivery();
+        }
 
         float percent =
             customer.currentTime /
@@ -313,12 +316,13 @@ public class DeliveryManager : MonoBehaviour
                 }
             }
         }
+
         ShowMessage(
-    customer,
-    customer.successMessage,
-    false,
-    true
-);
+            customer,
+            customer.successMessage,
+            false,
+            true
+        );
 
         rewardCoinsText.text = "+" + earnedCoins;
 
@@ -330,7 +334,7 @@ public class DeliveryManager : MonoBehaviour
         if (totalCoinsText != null)
         {
             totalCoinsText.text =
-      totalCoins.ToString();
+                totalCoins.ToString();
         }
     }
 
@@ -339,16 +343,16 @@ public class DeliveryManager : MonoBehaviour
         if (totalStarsText != null)
         {
             totalStarsText.text =
-    totalStars.ToString();
+                totalStars.ToString();
         }
     }
 
     void ShowMessage(
-    CustomerDelivery customer,
-    string message,
-    bool playSound,
-    bool showRewards = false
-)
+        CustomerDelivery customer,
+        string message,
+        bool playSound,
+        bool showRewards = false
+    )
     {
         // Don't let hurry/angry messages interrupt a success popup
         if (successMessageShowing && !showRewards)
@@ -372,10 +376,10 @@ public class DeliveryManager : MonoBehaviour
     }
 
     IEnumerator MessagePopup(
-     CustomerDelivery customer,
-     string message,
-     bool showRewards
- )
+        CustomerDelivery customer,
+        string message,
+        bool showRewards
+    )
     {
         messagePanel.SetActive(true);
         successMessageShowing = showRewards;
@@ -431,7 +435,6 @@ public class DeliveryManager : MonoBehaviour
             pendingMessage = "";
             pendingPlaySound = false;
         }
-
     }
 
     void PlayMessageSound()
@@ -448,7 +451,10 @@ public class DeliveryManager : MonoBehaviour
 
         if (NotificationSoundManager.CurrentNotificationSound != null)
         {
-            PlaySoundSafe(NotificationSoundManager.CurrentNotificationSound, 1f);
+            PlaySoundSafe(
+                NotificationSoundManager.CurrentNotificationSound,
+                1f
+            );
         }
 
         yield return new WaitForSeconds(0.2f);
@@ -506,11 +512,22 @@ public class DeliveryManager : MonoBehaviour
 
         levelEnded = true;
 
-        // Show achievement before the level summary
+        // Achievement ONLY happens if:
+        // 1. ALL customers were delivered
+        // 2. The main timer has NOT run out
+        bool completedAllDeliveries =
+            deliveredCount >= customers.Length &&
+            currentMainTime > 0;
+
         if (!achievementFinished &&
+            completedAllDeliveries &&
+            AchievementManager.Instance != null &&
             AchievementPopupUI.Instance != null)
         {
+            AchievementManager.Instance.UnlockAchievement();
+
             AchievementPopupUI.Instance.Show();
+
             return;
         }
 
@@ -520,15 +537,14 @@ public class DeliveryManager : MonoBehaviour
         if (firstSelectedButton != null)
         {
             EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(firstSelectedButton.gameObject);
+            EventSystem.current.SetSelectedGameObject(
+                firstSelectedButton.gameObject
+            );
         }
-
 
         // DELIVERIES
         deliveredText.text =
             deliveredCount.ToString();
-
-       
 
         // TOTAL COINS
         if (summaryCoinsText != null)
@@ -567,10 +583,13 @@ public class DeliveryManager : MonoBehaviour
             Mathf.RoundToInt(averageOutOf3);
 
         string sceneName =
-    SceneManager.GetActiveScene().name;
+            SceneManager.GetActiveScene().name;
 
         int currentBest =
-            PlayerPrefs.GetInt(sceneName + "_Stars", 0);
+            PlayerPrefs.GetInt(
+                sceneName + "_Stars",
+                0
+            );
 
         if (roundedAverage > currentBest)
         {
@@ -718,7 +737,10 @@ public class DeliveryManager : MonoBehaviour
         left.transform.localPosition =
             leftConfettiPos;
 
-        foreach (ParticleSystem ps in left.GetComponentsInChildren<ParticleSystem>())
+        foreach (
+            ParticleSystem ps
+            in left.GetComponentsInChildren<ParticleSystem>()
+        )
         {
             ps.Play();
         }
@@ -733,7 +755,10 @@ public class DeliveryManager : MonoBehaviour
         right.transform.localPosition =
             rightConfettiPos;
 
-        foreach (ParticleSystem ps in right.GetComponentsInChildren<ParticleSystem>())
+        foreach (
+            ParticleSystem ps
+            in right.GetComponentsInChildren<ParticleSystem>()
+        )
         {
             ps.Play();
         }
@@ -741,5 +766,4 @@ public class DeliveryManager : MonoBehaviour
         Destroy(left, 5f);
         Destroy(right, 5f);
     }
-
 }

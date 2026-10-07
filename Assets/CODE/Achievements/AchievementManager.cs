@@ -23,27 +23,31 @@ public class AchievementManager : MonoBehaviour
 
     public void AddDelivery()
     {
-        if (unlocked) return;
+        if (unlocked)
+            return;
 
         deliveries++;
 
-        if (deliveries >= 3)
-        {
-            UnlockAchievement();
-        }
+        Debug.Log("Deliveries completed: " + deliveries);
     }
 
-    void UnlockAchievement()
+    public void ResetDeliveries()
     {
+        deliveries = 0;
+
+        Debug.Log("Achievement deliveries reset.");
+    }
+
+    public void UnlockAchievement()
+    {
+        if (unlocked)
+            return;
+
         unlocked = true;
 
         // ONLY month + day
         unlockDate = System.DateTime.Now.ToString("MMM dd");
 
         Debug.Log("Achievement Unlocked: " + unlockDate);
-
-        // Achievement is unlocked here,
-        // but the popup will be shown after
-        // the final Thank You message.
     }
 }

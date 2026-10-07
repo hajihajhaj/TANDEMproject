@@ -202259,12 +202259,12 @@ GameObject:
   - component: {fileID: 1521819267}
   - component: {fileID: 1521819266}
   - component: {fileID: 1521819265}
-  - component: {fileID: 1521819264}
   - component: {fileID: 1521819263}
   - component: {fileID: 1521819274}
   - component: {fileID: 1521819275}
   - component: {fileID: 1521819276}
   - component: {fileID: 1521819277}
+  - component: {fileID: 1521819278}
   m_Layer: 0
   m_Name: 'bike root 2 '
   m_TagString: Player
@@ -202300,29 +202300,6 @@ MonoBehaviour:
   jumpForce: 30
   jumpCooldown: 3
   speedBoostAudio: {fileID: 1806494448}
---- !u!114 &1521819264
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1521819262}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 134b71ab34afce64ca35ed6b1a77f4bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boxPrefab: {fileID: 1866551559}
-  throwPoint: {fileID: 1305730766}
-  aimLine: {fileID: 705400437}
-  minThrowForce: 5
-  maxThrowForce: 25
-  chargeSpeed: 15
-  upwardForce: 10
-  linePoints: 30
-  timeBetweenPoints: 0.1
-  player2Animator: {fileID: 1796385910}
-  cameraTransform: {fileID: 875115619}
 --- !u!114 &1521819265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202678,6 +202655,69 @@ MonoBehaviour:
   - {r: 1, g: 0.1254902, b: 0.2, a: 1}
   - {r: 0.6156863, g: 0, b: 1, a: 1}
   - {r: 0, g: 0.63529414, b: 1, a: 1}
+--- !u!114 &1521819278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1521819262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2d8418b0b9634b1892b0268dd9c2743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boneShape: 1
+  drawBones: 1
+  drawTripods: 0
+  boneSize: 1
+  tripodSize: 1
+  boneColor: {r: 0, g: 0, b: 1, a: 0.5}
+  m_Transforms:
+  - {fileID: 3164982296424036761}
+  - {fileID: 3553608600410933669}
+  - {fileID: 2469964885260275774}
+  - {fileID: 922558526103603631}
+  - {fileID: 5142426673661773577}
+  - {fileID: 6588941069730664574}
+  - {fileID: 4275819391980597604}
+  - {fileID: 2917428171236630084}
+  - {fileID: 9044128199947578988}
+  - {fileID: 7469599865684639856}
+  - {fileID: 2233628050241760690}
+  - {fileID: 1455347853812498771}
+  - {fileID: 5270862212526802547}
+  - {fileID: 7404314641527110503}
+  - {fileID: 6357410911679249515}
+  - {fileID: 1415504185018972981}
+  - {fileID: 3568622350587163477}
+  - {fileID: 3001296089090480487}
+  - {fileID: 460248521390071501}
+  - {fileID: 829505182084114011}
+  - {fileID: 2295830561295260750}
+  - {fileID: 6124789169632796198}
+  - {fileID: 6583733712010870456}
+  - {fileID: 2170532315766540285}
+  - {fileID: 5723134752679128618}
+  - {fileID: 5589615857749296444}
+  - {fileID: 7169308254072874073}
+  - {fileID: 3199699971491706394}
+  - {fileID: 7654389861813879621}
+  - {fileID: 1787296448387660321}
+  - {fileID: 1294307609585011175}
+  - {fileID: 2067787759759017623}
+  - {fileID: 4750838980887311208}
+  - {fileID: 659557436478185911}
+  - {fileID: 3802939101067823385}
+  - {fileID: 2286050874446321233}
+  - {fileID: 1671308291777805857}
+  - {fileID: 3903451175586894665}
+  - {fileID: 6334042703069078131}
+  - {fileID: 1067876054062168831}
+  - {fileID: 187030450940933798}
+  - {fileID: 8097052026899414350}
+  - {fileID: 2901226595180067641}
+  - {fileID: 7919659780286411855}
 --- !u!64 &1522505970
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -292580,6 +292620,7 @@ GameObject:
   - component: {fileID: 1796385910}
   - component: {fileID: 1796385911}
   - component: {fileID: 1796385912}
+  - component: {fileID: 919132148572968945}
   m_Layer: 0
   m_Name: PlayersPedalFINALtest
   m_TagString: Untagged
@@ -292587,6 +292628,29 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &919132148572968945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148572968944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 134b71ab34afce64ca35ed6b1a77f4bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boxPrefab: {fileID: 1866551559}
+  throwPoint: {fileID: 1305730766}
+  aimLine: {fileID: 705400437}
+  minThrowForce: 5
+  maxThrowForce: 25
+  chargeSpeed: 15
+  upwardForce: 10
+  linePoints: 30
+  timeBetweenPoints: 0.1
+  player2Animator: {fileID: 1796385910}
+  cameraTransform: {fileID: 875115619}
 --- !u!1 &919132149331642239
 GameObject:
   m_ObjectHideFlags: 0
