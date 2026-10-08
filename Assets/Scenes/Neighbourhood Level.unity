@@ -39019,7 +39019,7 @@ PrefabInstance:
     - target: {fileID: 3932217567967344326, guid: 12e5748f019cb8e429049a12d707efbf, type: 3}
       propertyPath: 'm_Materials.Array.data[2]'
       value: 
-      objectReference: {fileID: 5723662465289774497, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      objectReference: {fileID: 5723662465289774497, guid: c89fa5bd1398f3f4e8133fa795f87e5a, type: 3}
     - target: {fileID: 3932217567967344326, guid: 12e5748f019cb8e429049a12d707efbf, type: 3}
       propertyPath: 'm_Materials.Array.data[3]'
       value: 
@@ -92780,11 +92780,11 @@ PrefabInstance:
     - target: {fileID: 6354239898652185180, guid: 9dc9b15cdd1685649b52b365af209486, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 1268166873824194552, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      objectReference: {fileID: 2100000, guid: 635da5ab0d4ab3a44933a8d88170def6, type: 2}
     - target: {fileID: 6354239898652185180, guid: 9dc9b15cdd1685649b52b365af209486, type: 3}
       propertyPath: 'm_Materials.Array.data[2]'
       value: 
-      objectReference: {fileID: -5870167618974708512, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+      objectReference: {fileID: -5870167618974708512, guid: 88784c7cff9f4d749900d3850450f833, type: 3}
     - target: {fileID: 6354239898652185180, guid: 9dc9b15cdd1685649b52b365af209486, type: 3}
       propertyPath: 'm_Materials.Array.data[4]'
       value: 
@@ -125028,7 +125028,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -0.10000038, y: 39.835766}
+  m_AnchoredPosition: {x: -0.10000038, y: 39.835743}
   m_SizeDelta: {x: -9.551, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &927938181
@@ -150959,7 +150959,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5729777304666546144, guid: 4d673b60482851748936bb6ba1026910, type: 3}
+  - {fileID: 2100000, guid: 971421e039796de4da357dcab17acd6a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -282958,8 +282958,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1583599041}
   m_HandleRect: {fileID: 1583599040}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.12590311
+  m_Value: 1.0000001
+  m_Size: 0.12590323
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
