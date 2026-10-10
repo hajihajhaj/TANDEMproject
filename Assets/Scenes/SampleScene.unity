@@ -23434,7 +23434,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1396508513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23516,6 +23516,8 @@ MonoBehaviour:
   speedBoostButtonText: {fileID: 1117834710}
   jumpBoostButtonText: {fileID: 465504489}
   coinsText: {fileID: 1635985503}
+  speedBoostCoinImage: {fileID: 1330422967}
+  jumpBoostCoinImage: {fileID: 1533007647}
   notEnoughCoinsPopup: {fileID: 1546229793}
   firstSelectedButton: {fileID: 597717534}
 --- !u!1 &1397181861 stripped

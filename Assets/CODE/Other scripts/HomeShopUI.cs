@@ -11,6 +11,10 @@ public class HomeShopUI : MonoBehaviour
     [Header("Coins")]
     public TMP_Text coinsText;
 
+    [Header("Upgrade Coin Images")]
+    public GameObject speedBoostCoinImage;
+    public GameObject jumpBoostCoinImage;
+
     [Header("Not Enough Coins Popup")]
     public GameObject notEnoughCoinsPopup;
 
@@ -29,7 +33,7 @@ public class HomeShopUI : MonoBehaviour
         UpdateUI();
     }
 
-    
+
 
     // =========================
     // SPEED BOOST
@@ -197,6 +201,19 @@ public class HomeShopUI : MonoBehaviour
             jumpBoostButtonText.text =
                 jumpBoostCost.ToString();
         }
+
+        // HIDE COIN IMAGES WHEN UPGRADE IS OWNED
+        if (speedBoostCoinImage != null)
+        {
+            speedBoostCoinImage.SetActive(
+                !UpgradeData.ownsSpeedBoost);
+        }
+
+        if (jumpBoostCoinImage != null)
+        {
+            jumpBoostCoinImage.SetActive(
+                !UpgradeData.ownsJumpBoost);
+        }
     }
 
     public void SelectFirstButton()
@@ -211,6 +228,4 @@ public class HomeShopUI : MonoBehaviour
         return notEnoughCoinsPopup != null &&
                notEnoughCoinsPopup.activeSelf;
     }
-
-
 }
