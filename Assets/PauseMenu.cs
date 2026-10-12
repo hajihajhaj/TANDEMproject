@@ -42,21 +42,44 @@ public class PauseMenu : MonoBehaviour
     }
 
 
+
     void Update()
     {
         // Keyboard - ESC
         if (Keyboard.current != null &&
             Keyboard.current.escapeKey.wasPressedThisFrame)
         {
-            TogglePause();
+            if (helpPanel.activeSelf)
+            {
+                CloseHelp();
+            }
+            else
+            {
+                TogglePause();
+            }
         }
 
-
-        // PS5 Controller - OPTIONS button
-        if (Gamepad.current != null &&
-            Gamepad.current.startButton.wasPressedThisFrame)
+        // PS5 Controller
+        if (Gamepad.current != null)
         {
-            TogglePause();
+            // OPTIONS button - Open or close the pause menu
+            if (Gamepad.current.startButton.wasPressedThisFrame)
+            {
+                TogglePause();
+            }
+
+            // CIRCLE / O - Go back from Help, or close Pause
+            if (Gamepad.current.buttonEast.wasPressedThisFrame)
+            {
+                if (helpPanel.activeSelf)
+                {
+                    CloseHelp();
+                }
+                else if (pausePanel.activeSelf)
+                {
+                    Resume();
+                }
+            }
         }
     }
 
