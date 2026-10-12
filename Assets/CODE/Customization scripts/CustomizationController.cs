@@ -52,6 +52,17 @@ public class CustomizationController : MonoBehaviour
                 tabController.NextTab();
         }
 
+
+        // R2: Test the current bell sound, only on the Bell tab.
+        if (tabController != null &&
+            tabController.CurrentTab == 3 &&
+            controller.rightTrigger.wasPressedThisFrame)
+        {
+            if (bellCustomization != null)
+                bellCustomization.TestBell();
+        }
+
+
         // D-pad: Browse options on the active tab.
         if (controller.dpad.left.wasPressedThisFrame)
         {
