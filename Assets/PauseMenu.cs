@@ -59,17 +59,17 @@ public class PauseMenu : MonoBehaviour
             }
         }
 
-        // PS5 Controller
-        if (Gamepad.current != null)
+        // PS5 Controllers - Both Players
+        foreach (Gamepad gamepad in Gamepad.all)
         {
             // OPTIONS button - Open or close the pause menu
-            if (Gamepad.current.startButton.wasPressedThisFrame)
+            if (gamepad.startButton.wasPressedThisFrame)
             {
                 TogglePause();
             }
 
             // CIRCLE / O - Go back from Help, or close Pause
-            if (Gamepad.current.buttonEast.wasPressedThisFrame)
+            if (gamepad.buttonEast.wasPressedThisFrame)
             {
                 if (helpPanel.activeSelf)
                 {

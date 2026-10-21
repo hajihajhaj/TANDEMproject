@@ -6235,6 +6235,16 @@ MonoBehaviour:
     - {fileID: 771796656}
     - {fileID: 1989396171}
     - {fileID: 174302008}
+  uiElementsToHide:
+  - {fileID: 232842862}
+  - {fileID: 1888726832}
+  - {fileID: 1762410961}
+  - {fileID: 48699818}
+  - {fileID: 935162991}
+  - {fileID: 335774885}
+  - {fileID: 1704278469}
+  - {fileID: 944006912}
+  - {fileID: 2094345578}
   totalCoinsText: {fileID: 798233473}
   summaryCoinsText: {fileID: 963642038}
   totalStarsText: {fileID: 205100749}
@@ -283362,6 +283372,16 @@ MonoBehaviour:
   backCamera: {fileID: 1054098929}
   galleryManager: {fileID: 529852595}
   phoneController: {fileID: 2055835293}
+  uiElementsToHide:
+  - {fileID: 335774885}
+  - {fileID: 1704278469}
+  - {fileID: 935162991}
+  - {fileID: 48699818}
+  - {fileID: 1762410961}
+  - {fileID: 1888726832}
+  - {fileID: 232842862}
+  - {fileID: 944006912}
+  - {fileID: 2094345578}
   cameraPanel: {fileID: 2137048899}
   renderTexture: {fileID: 8400000, guid: 3b103a4d7839bed4bae82a92f2c126f5, type: 2}
   captureKey: 112

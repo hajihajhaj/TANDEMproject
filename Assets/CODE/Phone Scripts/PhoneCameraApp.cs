@@ -1,6 +1,8 @@
+
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.InputSystem;
 
 public class PhoneCameraApp : MonoBehaviour
@@ -14,6 +16,14 @@ public class PhoneCameraApp : MonoBehaviour
     public GalleryManager galleryManager;
 
     public PhoneController phoneController;
+
+    [Header("UI Elements to Hide While Camera Is Open")]
+    public List<GameObject> uiElementsToHide = new List<GameObject>();
+
+    private Dictionary<GameObject, bool> originalUIStates =
+        new Dictionary<GameObject, bool>();
+
+    private bool uiElementsHidden = false;
 
     private enum CameraState
     {
@@ -43,7 +53,6 @@ public class PhoneCameraApp : MonoBehaviour
     float pitch;
     float yaw;
 
-
     Quaternion frontStartRotation;
     Quaternion backStartRotation;
 
@@ -51,7 +60,6 @@ public class PhoneCameraApp : MonoBehaviour
 
     public float selfieLookHeight = 2.8f;
     public float selfieTilt = -8f;
-
 
     public TandemBikeController bikeController;
 
@@ -75,21 +83,19 @@ public class PhoneCameraApp : MonoBehaviour
 
         if (Gamepad.all.Count > 1)
         {
-            p2Triangle = Gamepad.all[1].buttonNorth.wasPressedThisFrame;      // Triangle
-            p2R3 = Gamepad.all[1].rightStickButton.wasPressedThisFrame;        // R3
-            p2Circle = Gamepad.all[1].buttonEast.wasPressedThisFrame;          // Circle/B
-            p2Look = Gamepad.all[1].rightStick.ReadValue();                    // Right Stick
+            p2Triangle = Gamepad.all[1].buttonNorth.wasPressedThisFrame;
+            p2R3 = Gamepad.all[1].rightStickButton.wasPressedThisFrame;
+            p2Circle = Gamepad.all[1].buttonEast.wasPressedThisFrame;
+            p2Look = Gamepad.all[1].rightStick.ReadValue();
         }
 
         // Keyboard input
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
 
-        // Use mouse by default
         float lookX = mouseX;
         float lookY = mouseY;
 
-        // If Player 2 is using the right stick, use that instead
         if (Gamepad.all.Count > 1)
         {
             if (p2Look.sqrMagnitude > 0.001f)
@@ -104,15 +110,12 @@ public class PhoneCameraApp : MonoBehaviour
         {
             if (Gamepad.all.Count > 1)
             {
-                // Player 2 right stick controls bike rotation
                 bikeController.phoneCameraTurnInput = p2Look.x;
             }
 
-            // Only control vertical look
             pitch -= p2Look.y * lookSpeed * Time.deltaTime;
             pitch = Mathf.Clamp(pitch, -35f, 35f);
 
-            // Keep camera aligned with bike rotation
             backCamera.transform.localRotation =
                 Quaternion.Euler(pitch, 0f, 0f);
         }
@@ -124,8 +127,6 @@ public class PhoneCameraApp : MonoBehaviour
 
             yaw += lookX * lookSpeed * Time.deltaTime;
 
-
-            // Once camera reaches the side limit, rotate the bike
             if (yaw > frontLimit)
             {
                 float overflow = yaw - frontLimit;
@@ -141,11 +142,8 @@ public class PhoneCameraApp : MonoBehaviour
                 bikeController.RotateFromPhone(overflow);
             }
 
-
             yaw = Mathf.Clamp(yaw, -frontLimit, frontLimit);
 
-
-            // Update vertical look
             pitch -= lookY * lookSpeed * Time.deltaTime;
             pitch = Mathf.Clamp(pitch, -25f, 25f);
 
@@ -154,7 +152,6 @@ public class PhoneCameraApp : MonoBehaviour
             float yawRad = yaw * Mathf.Deg2Rad;
             float pitchRad = pitch * Mathf.Deg2Rad;
 
-            // Move camera in a spherical arc
             frontCamera.transform.localPosition = new Vector3(
                 Mathf.Sin(yawRad) * Mathf.Cos(pitchRad) * radius,
                 frontStartPosition.y + Mathf.Sin(pitchRad) * radius,
@@ -162,33 +159,91 @@ public class PhoneCameraApp : MonoBehaviour
             );
 
             frontCamera.transform.LookAt(
-                bikeController.transform.position + Vector3.up * selfieLookHeight
+                bikeController.transform.position +
+                Vector3.up * selfieLookHeight
             );
 
-            frontCamera.transform.Rotate(selfieTilt, 0f, 0f, Space.Self);
+            frontCamera.transform.Rotate(
+                selfieTilt, 0f, 0f, Space.Self
+            );
         }
 
-        // Switch camera (C or R3)
+        // Switch camera
         if (Input.GetKeyDown(KeyCode.C) || p2R3)
         {
             SwitchCamera();
         }
 
-        // Exit (Backspace or Circle)
+        // Exit camera app
         if (Input.GetKeyDown(KeyCode.Backspace) || p2Circle)
         {
             ExitCameraApp();
         }
 
-        // Take photo (P or Triangle)
+        // Take photo
         if (Input.GetKeyDown(captureKey) || p2Triangle)
         {
             StartCoroutine(TakePhoto());
         }
     }
+
+    // -------------------------
+    // HIDE AND RESTORE UI
+    // -------------------------
+
+    void HideUIElements()
+    {
+        if (uiElementsHidden)
+            return;
+
+        originalUIStates.Clear();
+
+        foreach (GameObject obj in uiElementsToHide)
+        {
+            if (obj == null)
+                continue;
+
+            // Save the object's current active state
+            if (!originalUIStates.ContainsKey(obj))
+            {
+                originalUIStates.Add(obj, obj.activeSelf);
+            }
+
+            // Hide without destroying or resetting the object
+            obj.SetActive(false);
+        }
+
+        uiElementsHidden = true;
+    }
+
+    void RestoreUIElements()
+    {
+        if (!uiElementsHidden)
+            return;
+
+        foreach (KeyValuePair<GameObject, bool> entry in originalUIStates)
+        {
+            if (entry.Key != null)
+            {
+                // Restore its original active state
+                entry.Key.SetActive(entry.Value);
+            }
+        }
+
+        originalUIStates.Clear();
+        uiElementsHidden = false;
+    }
+
+    // -------------------------
+    // OPEN CAMERA APP
+    // -------------------------
+
     public void OpenCameraApp()
     {
         bikeController.phoneCameraOpen = true;
+
+        // Hide selected UI elements
+        HideUIElements();
 
         cameraAppOpen = true;
 
@@ -199,15 +254,15 @@ public class PhoneCameraApp : MonoBehaviour
 
         currentCamera = frontCamera;
 
-        // SAVE ORIGINAL CAMERA ROTATIONS
-        
-
-
         yaw = 0f;
         pitch = 0f;
 
         cameraPanel.SetActive(true);
     }
+
+    // -------------------------
+    // EXIT CAMERA APP
+    // -------------------------
 
     public void ExitCameraApp()
     {
@@ -218,16 +273,20 @@ public class PhoneCameraApp : MonoBehaviour
         frontCamera.enabled = false;
         backCamera.enabled = false;
 
-
         currentCamera = null;
 
         cameraPanel.SetActive(false);
 
-        // ? IMPORTANT FIX:
-        // Do NOT close the whole phone or app system
-        // Just tell controller to return to phone home UI
+        // Restore selected UI elements to their original states
+        RestoreUIElements();
+
+        // Return to phone home UI
         phoneController.ReturnToHome();
     }
+
+    // -------------------------
+    // SWITCH CAMERA
+    // -------------------------
 
     public void SwitchCamera()
     {
@@ -242,9 +301,10 @@ public class PhoneCameraApp : MonoBehaviour
 
             yaw = 0f;
             pitch = 0f;
+
             frontCamera.transform.localPosition = frontStartPosition;
             frontCamera.transform.localRotation = frontStartRotation;
-            
+
             backCamera.transform.localRotation = backStartRotation;
         }
         else
@@ -260,23 +320,24 @@ public class PhoneCameraApp : MonoBehaviour
 
             yaw = 0f;
             pitch = 0f;
-            //frontCamera.transform.localRotation = frontStartRotation;
         }
     }
 
     // -------------------------
     // PHOTO SYSTEM
     // -------------------------
+
     IEnumerator TakePhoto()
     {
-        // STOP if storage full
+        // Stop if storage is full
         if (galleryManager != null &&
-     galleryManager.IsGalleryFull())
+            galleryManager.IsGalleryFull())
         {
             galleryManager.ShowFullPopup();
             yield break;
         }
-        // shutter flash
+
+        // Shutter flash
         if (shutterPanel != null)
             shutterPanel.SetActive(true);
 
@@ -296,7 +357,11 @@ public class PhoneCameraApp : MonoBehaviour
         );
 
         photo.ReadPixels(
-            new Rect(0, 0, renderTexture.width, renderTexture.height),
+            new Rect(
+                0, 0,
+                renderTexture.width,
+                renderTexture.height
+            ),
             0,
             0
         );
@@ -310,7 +375,7 @@ public class PhoneCameraApp : MonoBehaviour
             galleryManager.AddPhoto(photo);
         }
 
-        // remove shutter
+        // Remove shutter
         if (shutterPanel != null)
             shutterPanel.SetActive(false);
     }

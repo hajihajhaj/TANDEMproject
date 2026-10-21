@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class DeliverySummaryUI
@@ -63,6 +64,14 @@ public class DeliveryManager : MonoBehaviour
 
     public DeliverySummaryUI[] customerSummaryUI;
 
+    [Header("UI Elements to Hide When Level Summary Opens")]
+    public List<GameObject> uiElementsToHide = new List<GameObject>();
+
+    private Dictionary<GameObject, bool> originalUIStates =
+        new Dictionary<GameObject, bool>();
+
+    private bool summaryUIHidden = false;
+
     [Header("Coins")]
     public TMP_Text totalCoinsText;
     public TMP_Text summaryCoinsText;
@@ -110,6 +119,70 @@ public class DeliveryManager : MonoBehaviour
     string pendingMessage;
     bool pendingPlaySound;
 
+
+    // =========================
+    // HIDE SUMMARY UI ELEMENTS
+    // =========================
+
+    void HideSummaryUIElements()
+    {
+        if (summaryUIHidden)
+            return;
+
+        originalUIStates.Clear();
+
+        foreach (GameObject obj in uiElementsToHide)
+        {
+            if (obj == null)
+                continue;
+
+            if (!originalUIStates.ContainsKey(obj))
+            {
+                originalUIStates.Add(obj, obj.activeSelf);
+            }
+
+            obj.SetActive(false);
+        }
+
+        summaryUIHidden = true;
+    }
+
+
+    // =========================
+    // RESTORE SUMMARY UI ELEMENTS
+    // =========================
+
+    public void RestoreSummaryUIElements()
+    {
+        if (!summaryUIHidden)
+            return;
+
+        foreach (KeyValuePair<GameObject, bool> entry in originalUIStates)
+        {
+            if (entry.Key != null)
+            {
+                entry.Key.SetActive(entry.Value);
+            }
+        }
+
+        originalUIStates.Clear();
+        summaryUIHidden = false;
+    }
+
+
+    // =========================
+    // CLOSE LEVEL SUMMARY
+    // =========================
+
+    public void CloseSummary()
+    {
+        if (summaryPanel != null)
+        {
+            summaryPanel.SetActive(false);
+        }
+
+        RestoreSummaryUIElements();
+    }
 
     // =========================================================
     // ACHIEVEMENT FINISHED
@@ -905,6 +978,8 @@ public class DeliveryManager : MonoBehaviour
 
     void ShowSummary()
     {
+        HideSummaryUIElements();
+
         if (summaryPanel != null)
         {
             summaryPanel.SetActive(true);
