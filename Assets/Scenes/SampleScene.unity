@@ -3543,7 +3543,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'press e to go to level 1
+  m_text: 'press X to go to level 1
 
 '
   m_isRightToLeft: 0
@@ -32004,7 +32004,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1968073449
 RectTransform:
   m_ObjectHideFlags: 0
